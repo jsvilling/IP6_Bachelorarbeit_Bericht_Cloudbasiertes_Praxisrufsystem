@@ -19,3 +19,16 @@
 * Sprachkommunikation 1:1 implementiert
 * Sprachkommunikation 1:m implementiert
 * Text To Speech Funktionalität implementiert
+
+## Anforderungen
+
+* Sprachverbindung wird direkt aufgebaut ohne Abnehmen auf anderer Seite
+* Sprachverbindung hält, solange knopf gedrückt, wenn nicht gedrückt für < x Sekunden, wird Verbindung geschlossen.
+* Sprachverbindung 1:1 funktioniert
+* Sprachverbindung 1:m funktioniert
+* Sprachverbindung auflegen als empfänger
+* Sprachverbindung nicht stören modus
+* Buttons zum Sprachverbindung zu relevanten Geräten aufbauen sehen
+* Buttons für Calls konfigurieren
+* Benachrichtigungen werden vorgelesen, wenn App in vordergrund
+* Konfigurierbar ob Benachrichtigungen vorgelesen werden
