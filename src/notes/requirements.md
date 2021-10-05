@@ -39,3 +39,20 @@
 * Buttons für Calls konfigurieren
 * Benachrichtigungen werden vorgelesen, wenn App in vordergrund
 * Konfigurierbar ob Benachrichtigungen vorgelesen werden
+
+
+## User Stories
+
+* Als Praxismitarbeiter möchte ich mit der neuen App alle Funktionen der alten App haben, damit ich diese Vorteile behalte. 
+* Als Praxismitarbeiter möchte ich, dass mir Benachrichtigungen vorgelesen werden, damit den Inhalt der Benachrichtigung kenne, ohne auf den Bildschirm zu schauen. 
+* Als Praxismitarbeiter möchte ich, dass nur relevante Benachrichtigungen vorgelesen werden, damit ich nicht unnötig gestört werde. 
+* Als Praxismitarbeiter möchte ich, per Button eine Sprachverbindung zu einem anderen Praxiszimmer aufbauen können damit ich kommunizieren kann. 
+* Als Praxismitarbeiter möchte ich, per Button eine Sprachverbindung zu mehreren anderen Praxiszimmern aufbauen können damit ich kommunizieren kann.
+* Als Praxismitarbeiter möchte ich über geöffnete Sprachverbindungen in echtzeit kommunizieren können damit es die Funktion einer Gegensprechanlage wirklich erfüllt. 
+* Als Praxismitarbeiter möchte ich nur Buttons für Sprachverbindungen sehen, die für mich relevant sind. 
+* Als Praxismitarbeiter möchte ich benachrichtigt werden, wenn ein anderes Zimmer versucht eine Sprachverbindung zu öffnen, während die App minimiert ist, damit ich mich zurückmelden kann. 
+* Als Praxismitarbeiter möchte ich, dass eingehende Sprachverbindungen aus anderen Praxiszimmern automatisch geöffnet werden damit ich meine Hände für besseres brauchen kann. 
+* Als Praxismitarbeiter möchte ich, direkte Sprachverbindungen aus anderen Praxiszimmern trennen können damit ich nicht unnötig zugetextet werde. 
+* Als Praxismitarbeiter möchte ich, aus Sprachverbindungen zu mehreren Praxiszimmern (Gruppenunterhaltungen) austreten können damit ich nicht unnötig zugetextet werde. 
+
+
