@@ -43,7 +43,7 @@
 
 ## User Stories
 
-* Als Praxismitarbeiter möchte ich mit der neuen App alle Funktionen der alten App haben, damit ich diese Funktionen weiter nutzen kann. 
+* Als Praxismitarbeiter möchte ich mit der neuen App alle Funktionen der alten App haben, damit ich diese Funktionen weiter nutzen kann.
 * Als Praxismitarbeiter möchte ich, dass eingehende Benachrichtigungen vorgelesen werden, damit den Inhalt der Benachrichtigung kenne, ohne auf den Bildschirm zu schauen. 
 * Als Praxismitarbeiter möchte ich, das Vorlesen von Benachrichtigungen deaktivieren können, damit ich bei der Arbeit nicht unnötig gestört werde. 
 * Als Praxismitarbeiter möchte ich, per Button eine Sprachverbindung zu einem anderen Praxiszimmer aufbauen können damit ich kommunizieren kann. 
