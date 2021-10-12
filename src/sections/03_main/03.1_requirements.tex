@@ -1,7 +1,15 @@
-\section{Anforderungen}
+\section{Anforderungen}\label{sec:anforderungen}
 
-TODO: Einleitung\\
-TODO: Rollendefinition von IP5 übernehmen\footnote{Siehe Projektbericht Cloudbasiertes Praxisrufsystem\cite{ip5}}.
+Es gibt drei Rollen von Stakeholdern, welche Anforderungen an Praxisruf stellen.
+Die meisten Benutzer des Systems fallen in die Rolle Praxismitarbeitende.
+Diese verwenden die mobile Applikation von Praxisruf, um in der Praxis miteinander zu kommunizieren.
+Neben der Rolle der Praxismitarbeitenden, arbeitet auch die Rolle des Praxisverantwortlichen mit dem Praxisrufsystem.
+Diese Benutzergruppe ist dafür verantwortlich, Praxisruf für Praxismitarbeitende zu konfigurieren.
+Als dritte Rolle hat zudem der Auftraggeber ein Interesse daran, dass gewisse Rahmenbedingungen gesetzt und eingehalten werden.{Siehe Projektbericht Cloudbasiertes Praxisrufsystem \cite{ip5}}. \\
+
+Im folgenden Kapitel werden die Anforderungen dokumentiert, die bei Projektstart ermittelt wurden.
+Die Anforderungen werden dabei aus fachlicher Sicht mit User Stories festgehalten.
+Jede User Story beschreibt ein konkretes Bedürniss einer Stakeholdergruppe.
 
 \subsubsection*{Praxismitarbeitende}
 
@@ -9,33 +17,37 @@ TODO: Rollendefinition von IP5 übernehmen\footnote{Siehe Projektbericht Cloudba
     \centering
     \begin{tabular}{|l|p{15cm}|}
         \hline
-        \textbf{Id} & \textbf{Anforderung}                                                                                                                                                                       \\
+        \textbf{Id} & \textbf{Anforderung}                                                                                                                                                                                      \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich mit der neuen App alle Funktionen der alten App haben, damit ich diese Funktionen weiter nutzen kann. \footnote[2]{} \\
+        U           & Als Praxismitarbeiter/in möchte ich alle Funktionen aus der existierenden Applikation weiterhin verwenden können, damit mir diese weiterhin die Arbeit erleichtern. \footnote[2]{}                        \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, dass eingehende Benachrichtigungen vorgelesen werden, damit den Inhalt der Benachrichtigung kenne, ohne auf den Bildschirm zu schauen.                   \\
+
+        U           & Als Praxismitarbeiter/in möchte ich, dass wichtige eingehende Benachrichtigungen vorgelesen werden, damit den Inhalt der Benachrichtigung kenne, ohne meine Aufmerksamkeit auf den Bildschirm zu richten. \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, das Vorlesen von Benachrichtigungen deaktivieren können, damit ich bei der Arbeit nicht unnötig gestört werde.                                           \\
+        U           & Als Praxismitarbeiter/in möchte ich, das Vorlesen von Benachrichtigungen deaktivieren können, damit ich bei der Arbeit nicht unnötig gestört werde.                                                       \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, per Button eine Sprachverbindung zu einem anderen Praxiszimmer aufbauen können damit ich kommunizieren kann.                                             \\
+        U           & Als Praxismitarbeiter/in möchte ich, per Button eine Sprachverbindung zu einem anderen Praxiszimmer aufbauen können, damit ich mich mit einer anderen Person absprechen kann.                             \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, per Button eine Sprachverbindung zu mehreren anderen Praxiszimmern aufbauen können damit ich kommunizieren kann.                                         \\
+        U           & Als Praxismitarbeiter/in möchte ich, per Button eine Sprachverbindung zu mehreren anderen Praxiszimmern aufbauen können damit, ich mich mit mehreren anderen Personen absprechen kann.                    \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich über geöffnete Sprachverbindungen in Echtzeit kommunizieren können damit es die Funktion einer Gegensprechanlage wirklich erfüllt.                        \\
+        U           & Als Praxismitarbeiter/in möchte ich über geöffnete Sprachverbindungen in Echtzeit kommunizieren können damit es die Funktion einer Gegensprechanlage wirklich erfüllt.                                    \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich nur Buttons für Sprachverbindungen sehen, die für mich relevant sind.                                                                                     \\
+        U           & Als Praxismitarbeiter/in möchte ich nur Buttons für Sprachverbindungen sehen, die für mich relevant sind.                                                                                                 \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich benachrichtigt werden, wenn ein anderes Zimmer versucht eine Sprachverbindung zu öffnen, während die App minimiert ist, damit ich mich zurückmelden kann. \\
+        U           & Als Praxismitarbeiter/in möchte ich benachrichtigt werden, wenn ein anderes Zimmer eine Sprachverbindung öffnet, damit ich auf die Anfrage Antworten kann.                                                \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, dass eingehende Sprachverbindungen aus anderen Praxiszimmern automatisch geöffnet werden damit ich meine Hände für besseres brauchen kann.               \\
+        U           & Als Praxismitarbeiter/in möchte ich vergangene und verpasste Sprachverbindungen nachvollziehen können, damit ich mich zurückmelden kann.                                                                  \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, direkte Sprachverbindungen aus anderen Praxiszimmern trennen können damit ich nicht unnötig zugetextet werde.                                            \\
+        U           & Als Praxismitarbeiter/in möchte ich, dass eingehende Sprachverbindungen aus anderen Praxiszimmern automatisch geöffnet werden damit ich meine Hände für besseres brauchen kann.                           \\
         \hline
-        U           & Als Praxismitarbeiter möchte ich, aus Sprachverbindungen zu mehreren Praxiszimmern (Gruppenunterhaltungen) austreten können damit ich nicht unnötig zugetextet werde.                      \\
+        U           & Als Praxismitarbeiter/in möchte ich, direkte Sprachverbindungen aus anderen Praxiszimmern trennen können damit ich ein Gespräch beenden kann.                                                             \\
+        \hline
+        U           & Als Praxismitarbeiter/in möchte ich, aus Sprachverbindungen zu mehreren Praxiszimmern (Gruppenunterhaltungen) austreten können, damit ich nicht unnötig bei der Arbeit gestört werde.                     \\
         \hline
     \end{tabular}\label{tab:userstories1}
 \end{table}
 
+\clearpage
 
 \subsubsection*{Praxisadministrator}
 
@@ -43,13 +55,13 @@ TODO: Rollendefinition von IP5 übernehmen\footnote{Siehe Projektbericht Cloudba
     \centering
     \begin{tabular}{|l|p{15cm}|}
         \hline
-        \textbf{Id} & \textbf{Anforderung}            \\
+        \textbf{Id} & \textbf{Anforderung}                                                                                                                                                                                                    \\
         \hline
-        U           & Konfigurieren TTS               \\
+        U           & Als Praxisadministrator möchte ich konfigurieren können, welche Benachrichtigungen dem Praxismitarbeitenden vorgelesen werden, damit nur relevante Benachrichtigungen vorgelesen werden.                                \\
         \hline
-        U           & Konfigurieren Gegensprechanalge \\
+        U           & Als Praxisadministrator möchte ich konfigurieren können, aus welchen Zimmern Sprachverbindungen zu welchen anderen Zimmern aufgebaut werden können, damit die Mitarbeitendend das System effizient bedienen können.     \\
         \hline
-        U           & Bestehende Konfig gleich wie vorher verwalten können \\
+        U           & Als Praxisadministrator möchte ich Benachrichtigungen, Clients und Benutzer wie zuvor konfigurieren können, damit ich das System weiterhin auf meine Praxis zuschneiden und bestehende Konfigurationen übernehmen kann. \\
         \hline
     \end{tabular}\label{tab:userstories2}
 \end{table}
@@ -60,9 +72,11 @@ TODO: Rollendefinition von IP5 übernehmen\footnote{Siehe Projektbericht Cloudba
     \centering
     \begin{tabular}{|l|p{15cm}|}
         \hline
-        \textbf{Id} & \textbf{Anforderung}        \\
+        \textbf{Id} & \textbf{Anforderung}                                                                                                                                                             \\
         \hline
-        U           & Bestehende Infra übernehmen \\
+        U           & Als Auftraggeber möchte ich die bestehende Betriebsinfrastruktur übernehmen, um von der bereits geleisteten Arbeit profitieren zu können.                                        \\
+        \hline
+        U           & Als Auftraggeber möchte ichm, dass die bestehende Komopnenten des Systems wo immer möglich weiter verwendet werden, um von der bereits geleisteten Arbeit profitieren zu können. \\
         \hline
     \end{tabular}\label{tab:userstories3}
 \end{table}
