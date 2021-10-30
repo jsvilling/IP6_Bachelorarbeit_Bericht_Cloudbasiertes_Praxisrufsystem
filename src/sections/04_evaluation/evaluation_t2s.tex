@@ -1,5 +1,71 @@
 \subsection{Text To Speech}
 
-Lorem Ipsum
+Praxisruf soll es neu Unterstützen, dass empfangene Benachrichtigungen vorgelesen werden.
+Um dies zu ermöglichen muss eine Technologie integriert werden, die es erlaubt den Textinhalt einer Benachrichtigung
+in Audio zu konvertieren welches abgespielt werden kann.
+
+Grundsätzlich gibt es zwei Varianten wie dies erreicht werden kann.
+Die erste Option ist es, die Konvertierung auf dem Mobile Client selbst vorzunehmen.
+In diesem Fall ist die Konvertierung teil der Mobile App.
+Das IOS Core Framework bietet Packages welches dies erlauben.
+
+Die zweite Option ist es, die Konvertierung an einen Cloud Service zu delegieren.
+Dazu muss ein externer Text To Speech Provider angebunden werden, der vom Praxisruf angesprochen werden kann.
+
+
+\subsubsection{Nativ}
+
+Vorteile \\
+
+Einfach einzubinden \\
+Garantierter nativer support \\
+
+Nachteile \\
+
+Starke bindung an Apple. \\
+Wenn die Funktion künftig nicht mehr zur Verfügung steht, geht sie verloren \\
+Mehr Verantwortung im Mobile Client selbst (weniger klar getrennte Verantwortung) \\
+Funktion für Android Client kann damit nicht umgesetzt werden \\
+
+
+Anbieter \\
+Speech Synthesis von IOS (https://developer.apple.com/documentation/avfoundation/speech_synthesis)
+
+\subsubsection{Cloud}
+
+Vorteile \\
+
+Unabhängig von Apple \\
+Einfacher austauschbar (bei entsprechender implementation der Anbindung) \\
+Klar getrennte Verantwortung \\
+Funktion für Android Clients kann gleich Umgesetzt werden.
+
+Nachteile \\
+Zusätzliche Anbindung von Service \\
+Mehrere Umsetzmöglichkeiten (Client spricht direkt mit T2S Cloud oder Cloud Service Spricht mit T2s Cloud) \\
+Zusätzlicher Point of Failure / Komlexität \\
+
+
+
+Anbieter \\
+
+AWS Polly (https://aws.amazon.com/polly/) \\
+Unterstützt alles \\
+Rest Infrastruktur ist bereits bei Amazon \\
+Kunde wünscht einheitlich bei AWS wo möglich \\
+
+
+\subsubsection{Entscheidung}
+
+Anbindung per Cloud wird genommen.
+Die Implementierung kann dadurch komplizierter werden.
+Es ist aber sehr wichtig unabhängig zu bleiben.
+Apple Version bindet zu stark an Apple.
+Kann nicht für künftigen Android Client wiederverwendet werden.
+Zukunftssicherer weil der Konkrete T2S Service ausgewechselt werden kann.
+Es bestehen SDKs für Java und für Client.
+Damit ist die Anbindung direkt aus Client oder aus Cloud Service möglich.
+Welche Option implementiert wird, ist im Konzeptteil zu beschreiben.
+
 
 \clearpage
