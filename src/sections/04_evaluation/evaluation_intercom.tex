@@ -13,6 +13,57 @@ Die Technologien hinter WebRTC sind als offener Webstandard implementiert und in
 Für native Clients wie Android- und iOS-Anwendungen steht eine Bibliothek mit derselben Funktionalität zur Verfügung."\cite{webrtc}
 
 
-\subsubsection*{Other Option}
+Varianten \\
+Externer Anbieter (twilio) \\
+
+Vorteile: \\
+
+Einfachere Integration auf Client Seite durch Vendor SDK \\
+Auf Cloud Service Seite nur Configuration Domain betroffen, keine andere Erweiterung nötig \\
+Alles andere kann auf Client Seite erledigt werden.
+
+
+Nachteile: \\
+Kompliziertere Integration mit Client -> Client muss korrekte Verbindungen anhand Button Konfiguration aufmachen \\
+Verantwortung des Clients wächst. Aktuell hat er nur Verantwortung zum Empfangen, die Arbeit wird immer von andern gemacht \\
+
+
+Self Hosted (WebRtc Server als Teil von cloud service implementieren) \\
+
+Vorteile: \\
+
+Vermittlung und Signaling kann vom Cloud Service übernommen werden. \\
+Grössere Flexibilität, da Vermittlung in Cloud Serivce \\
+Evtl. Synergie mit Rules Engine in Configuration Domain \\
+
+Nachteile: \\
+
+Kompliziertere Einbindung auf Client Seite.
+
+
+\subsubsection*{Meeting Solution}
+
+AWS Chime, Teams oder Ähnliches als Basis \\
+Nicht wirklich p2p? \\
+Starke Vendor Bindung \\
+
+
+
+\subsection*{Full on VOIP mit Telefonnummern}
+
+Not feasible \\
+Nicht was wir brauchen, da nur vordefinierte calls zwischen clients gemäss konfiguration möglich sein sollen \\
+Es ist nicht gefordert und nicht gewünscht dass "irgendjemand" per telefonnummer, den client erreichen kann. \\
+
+
+\subsubsection*{Entscheidung}
+
+WebRTC self hosted. \\
+
+Synergie Rules Engine \\
+Dispatching in Verantwortung Cloud Service \\
+SDK gut genug \\
+Nicht vendor abhängig \\
+
 
 \clearpage
