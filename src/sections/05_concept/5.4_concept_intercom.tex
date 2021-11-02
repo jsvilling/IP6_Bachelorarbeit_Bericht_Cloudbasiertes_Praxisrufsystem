@@ -1,4 +1,8 @@
-\subsection{Integration Gegensprechanlage}
+\subsection{Detailkonzept Gegensprechanlage}
+
+\subsubsection*{Übersicht}
+
+
 
 \subsubsection*{Benutzeroberfläche}
 
@@ -14,7 +18,12 @@ Erweiterung Configuration Domain um CallType.
 Hat text property, dass als Anzeige auf dem Button dient.
 Hat Liste von Clients, die im Call angesprochen werden können.
 
-\subsubsection*{Laufzeitsicht}
+
+\subsubsection*{Verfügbarkeit und Registrierung}
+
+Client muss sich beim Startup beim Signaling Service registrieren.
+
+\subsubsection*{Verbindungsaufbau}
 
 \begin{figure}[h]
     \centering
@@ -24,10 +33,31 @@ Hat Liste von Clients, die im Call angesprochen werden können.
     \end{minipage}
 \end{figure}
 
-\clearpage
+
+
+\subsubsection*{Unterhaltung}
+
+Mute Button
+End Call Button
+
+
+\subsubsection*{Verbindungsende}
+
+Caller nimmt Finger vom Button.
+Receiver hat button zum abbrechen.
+
+
 
 \subsection{Übersicht Erweiterung Praxisruf Cloud Service}
 
-<< Erweitertes ERD für Configuration Domain (Cloud Service) >>
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \includegraphics[width=\textwidth]{graphics/diagramms/erd_v01}
+        \caption{Ablauf Verbindungsaufbau Gegensprechanalge}
+    \end{minipage}
+\end{figure}
+
+
 
 \clearpage
