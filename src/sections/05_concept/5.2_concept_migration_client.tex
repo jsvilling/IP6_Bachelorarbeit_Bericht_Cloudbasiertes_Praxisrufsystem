@@ -1,0 +1,39 @@
+\subsection{Migration Benachrichtigungen}
+
+Mit IP5 wurde bereits ein Client umgesetzt.
+Dieser muss für IP6 migiert werden.
+Hier wird beschrieben, wie die bestehenden Anforderungen mit dem nativen client umgesetzt werden können.
+
+\subsubsection*{Benutzeroberfläche}
+SwiftUI bietet alles was man braucht.
+
+
+\subsubsection*{Anbindung Cloud Service}
+Anbindung an REST Schnittstellen ist mit SwiftUI natürlich Möglich.
+Ein zentraler API Service wird erstellt.
+Pro Domain die angesprochen wird, wird eine Extension erstellt.
+Der Api Service macht den Rest call, setzt authentication.
+Es muss für jeden Api Call ein Callback mitgegeben werden, dass bei completion ausgeführt wird.
+Dabei muss dieses Callback den Erfolgs und den Fehlerfall behandeln. \\
+
+Integration in die Benutzeroberfläche funktionert über einen zwischengeschalteten Service (ViewModel?).
+Dieses verwendet @ObservableObject um die View über den SwiftUI Lifecycle zu aktualisieren. \\
+
+Sämtliche Calls und Abläufe können mit diesen Mitteln analog zu IP5 umgesetzt werden.
+
+
+\subsubsection*{Anbindung Firebase}
+
+Die Anbindung von Firebase ist nicht rein mit SwiftUI möglich.
+Wir benötigen die Lifecycle Integration zu iOS, die mit den AppDelegates von UIKit möglich ist.
+Auch mit SwiftUI können AppDelegates verwendet werden.
+Die Anbindung an Firebase Messaging wird dementsprechend mit AppDelegates gelöst.
+Die Anbindung erfolgt damit wie in der offiziellen Dokumentation vorgesehen.
+Damit die Abhängigkeit zu AppDelegates minimiert ist, sollen innerhalb der AppDelegates nur minimale Logik ausgeführt werden.
+Die echte Logik wird an unabhängige Services delegiert.
+
+
+\subsubsection*{Scheduled Reminder für Inbox}
+IOS Development unterstützt scheduled tasks.
+
+\clearpage
