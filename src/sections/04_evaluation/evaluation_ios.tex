@@ -1,12 +1,57 @@
 
 \subsection{Appentwicklung IOS}
 
-Übersicht \\
+Mit dem Projekt ''IP5 Cloudbasiertes Praxisrufsystem''\cite{ip5} wurde bereits eine mobile Applikation für Praxisruf umgesetzt.
+Mit dieser Applikation können bereits heute Benachrichtungen über Praxisruf versendet und empfangen werden.
+Die bestehende Applikation wurde mit Nativescript als Multi-Platform Applikation gebaut.
+Um die Wartbarkeit und Hardware- sowie Betriebssystemkomaptibilität zu gewährleisten wurde im Fazit des Vorgängerprojekts empfohlen,
+die Applikation neu als native Applikation für iOS und Android zu schreiben.\cite{ip5}
 
-Bisherige Funktionalität muss implementiert werden können. \\
-Firebase Anbindung muss funktionieren. \\
-Audio abspielen muss funktionieren. \\
-Push Benachrichtigungen müssen funktionieren. \\
+Mit diesem Projekt soll die Applikation dementsprechend neu als native iOS Applikation umgesetzt werden.
+Dabei ist es wichtig, dass sämtliche bestehende Funktionalität auch im neu entwickelten nativen Mobile Client zur Verfügung steht.
+Um weiterhin Benachrichtungen senden und empfangen zu können, muss die gewählte Technologie es ermöglichen Firebase Cloud Messaging anzubinden
+und Push Benachrichtigungen im Vorder- sowie im Hintergrund empfängen können.
+Weiter muss die Technologie es ermöglichen, Hintergrundtasks zu erstellen und Audiosignale abzuspielen.
+Dadurch wird es möglich, regelmässig ein Signal abzuspielen um die Praxismitarbeitenden an verpasste Benachrichtigungen zu erinnern.
+
+\subsubsection*{Programmiersprache}
+
+Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift als Standard gesetzt.\cite{ios_swift}
+
+
+\subsubsection*{Framework}
+
+Für die Umsetzung von iOS Applikationen stellt Apple die zwei Frameworks UIKit\cite{ios_uikit} und SwiftUI\cite{ios_swift_ui} zur Verfügung.
+UIKit ist das ältere der beiden Frameworks und ist seit iOS 2.0 verfügbar.
+Dementsprechend ist das Framework ausgereifter und bietet viele Funktionen zur Integration einer Applikation mit iOS.
+Es hat allerdings den Nachteil das es schwerer zu erlernen und langsamer zu schreiben ist. (Citation Needed)
+
+SwiftUI ist deutlich neuer als UIKit und steht seit iOS 13.0 zur Verfügung.
+Es hat eine tiefere Einstiegshürde als UIKit und ist grundsätzlich einfacher zu schreiben und warten (Citation Needed).
+In den Worten von Apple selbst: "SwiftUI helps you build great-looking apps across all Apple platforms with the power of Swift — and as little code as possible."\cite{ios_swift_ui}
+
+SwiftUI bietet zudem ausgezeichnete Integration des Entwicklungsworkflows in die XCode Entwicklungsumgebung.
+Es bietet schnelle live previews der Komponenten die geschrieben werden.
+Dies vereinfacht Design und Umsetzung der Ansichten.
+
+SwiftUI bietet weiter viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten, die es einfacher machen
+eine Benutzeroberfläche zu erstellen die den Look und Feel einer nativen iOS Applikation hat.
+Die Ansichten aus dem bestehenden Mobile Client können mit SwiftUI umgesetzt werden.
+
+
+
+
+
+Alles nötige unterstützt.
+Neuer und encouraged.
+
+
+\subsection*{Unterstützung Features}
+
+Firebase Messaging mit App Delegate \cite{firebase_ios}
+
+Erinnerungen mit Timer\cite{ios_timer} und BGTaskScheduler\cite{ios_bgtaskscheduler}
+
 
 Optionen \\
 
@@ -19,6 +64,8 @@ Gewisse Hooks in den IOS Lifecycle sind mit rein SwiftUI noch nicht möglich. \\
 Die entsprechenden Teil (AppDelegates) können auch in SwiftUI verwendet werden. \\
 
 Kleiner POC wurde mit SwiftUI erstellt um zu verifizieren, dass Anforderungen von oben möglich sind. \\
+
+\subsubsection*{Zusammenfassung}
 
 Entscheidung: \\
 
