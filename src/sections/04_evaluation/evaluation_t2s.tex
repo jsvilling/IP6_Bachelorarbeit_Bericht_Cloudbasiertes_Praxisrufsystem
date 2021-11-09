@@ -12,24 +12,22 @@ Das IOS Core Framework bietet Packages welches dies erlauben.
 Die zweite Option ist es, die Konvertierung an einen Cloud Service zu delegieren.
 Dazu muss ein externer Text To Speech Provider angebunden werden, der vom Praxisruf angesprochen werden kann.
 
-
 \subsubsection{Nativ}
 
-Vorteile \\
+Die Standardbibliothek von für iOS unterstützt das Konvertieren von Text zu Sprache.\cite{ios_speech_synthesis}
+Dementsprechend ist es mit Boardmitteln von iOS möglich, Sprach Synthetisierung umzusetzten.
+Diese Variante bietet den Vorteil, dass die Synthese ohne das Einbinden von weiteren Frameworks umgesetzt werden kann.
+Es ist weiter garantiert, dass die Funktion mit iOS funktionieren wird.
+Da die Funktion von Apple selbst zur Verfügung gestellt wird.
 
-Einfach einzubinden \\
-Garantierter nativer support \\
+Diese Variante hat allerdings den Nachteil, dass eine starke Bindung zu Apple stattfindet.
+Sollte Apple sich je entscheiden, diese Funktion nicht mehr zur Verfügung zu stellen, muss die ganze Funktionalität
+auf einen anderen Provider umgeschrieben werden.
+Weiter hat die Variante den Nachteil, dass sie mehr Funktionalität in den Mobile Client auslagert.
+Die Verantwortung des Mobile Clients wird weniger klar getrennt.
+Er wäre nicht nur für die Interaktion mit dem Benutzer verantwortlich sonder muss die fachliche Anforderung der Sprachsynthese übernehmen.
+Letztlich hat diese Variante den Nachteil, dass dieselbe Funktionaltät für einen Android Client komplett neu entwickelt werden müsste.
 
-Nachteile \\
-
-Starke bindung an Apple. \\
-Wenn die Funktion künftig nicht mehr zur Verfügung steht, geht sie verloren \\
-Mehr Verantwortung im Mobile Client selbst (weniger klar getrennte Verantwortung) \\
-Funktion für Android Client kann damit nicht umgesetzt werden \\
-
-
-Anbieter \\
-Speech Synthesis von IOS\cite{ios_speech_synthesis}
 
 \subsubsection{Cloud}
 
