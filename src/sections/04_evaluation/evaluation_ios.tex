@@ -19,7 +19,7 @@ Dadurch wird es möglich, regelmässig ein Signal abzuspielen um die Praxismitar
 Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift als Standard gesetzt.\cite{ios_swift}
 
 
-\subsubsection*{Framework}
+\subsubsection*{Frameworks}
 
 Für die Umsetzung von iOS Applikationen stellt Apple die zwei Frameworks UIKit\cite{ios_uikit} und SwiftUI\cite{ios_swift_ui} zur Verfügung.
 UIKit ist das ältere der beiden Frameworks und ist seit iOS 2.0 verfügbar.
@@ -34,43 +34,47 @@ SwiftUI bietet zudem ausgezeichnete Integration des Entwicklungsworkflows in die
 Es bietet schnelle live previews der Komponenten die geschrieben werden.
 Dies vereinfacht Design und Umsetzung der Ansichten.
 
-SwiftUI bietet weiter viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten, die es einfacher machen
-eine Benutzeroberfläche zu erstellen die den Look und Feel einer nativen iOS Applikation hat.
-Die Ansichten aus dem bestehenden Mobile Client können mit SwiftUI umgesetzt werden.
+\clearpage
 
 
+\subsubsection*{Unterstützung Features}
 
+Die Ansichten aus dem bestehenden Mobile Client können mit SwiftUI und UIKit umgesetzt werden.
+SwiftUI bietet weiter viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten,
+die es einfacher machen eine Benutzeroberfläche zu erstellen die den Look und Feel einer nativen iOS Applikation hat.
 
+Die funktionalen Anforderungen zum Versenden und Empfangen von Benachrichtigungen sowie
+dem Abspielen von regelmässigen Erinnerungstönen können unabhängig vom gewählten UI Framework umgesetzt werden.
 
-Alles nötige unterstützt.
-Neuer und encouraged.
+Für die Integration von Firebase Cloud Messaging stellt Firebase eine iOS Library zur Verfügung.\cite{firebase_github_ios}
+Die Registrierung bei Messaging Service\footnote{Vgl. IP5 Kapitel X} sowie das Versenden der Benachrichtigung kann direkt in über Services,
+welche die Library zur Verfügung stellt gemacht werden.
+Das Empfangen von Benachrichtigungen, benötigt Integration mit dem iOS Betriebssystem (citation needed).
+Mit sogenannten AppDelegates\cite{ios_app_delegate} ist es möglich sich in den Lifecycle des Betriebssystems einzuhängen
+und auf entsprechende Events zu hören.
+Um Hintergrundbenachrichtigungen empfangen zu können, muss die Methode ``HERE_GOES_THE_METHOD`` von UIApplicationDelegate verwendet werden.
+AppDelegates sind ein Konzept welches aus UIKit stammt.
+SwiftUI verwendet grundsätzlich keine AppDelegates. (Citation Needed)
+Es ist allerdings möglich, AppDelegates auch mit SwiftUI zu verwenden.
+Dazu müssen diese explizit eingebunden werden. (Citation Needed.)
 
+Erinnerungen können mit Boardmitteln aus den Libraries die Apple zur Verfügung stellt umgesetzt werden.
+Einerseits können mit Timer\cite{ios_timer} regelmässig wiederholbare Tasks erfasst werden, die ausgeführt werden, wenn die App geladen ist.
+Weiter können über die Klasse BGTaskScheduler\cite{ios_bgtaskscheduler} Tasks erfasst werden, die im Hintergrund ausgeführt werden.
 
-\subsection*{Unterstützung Features}
+\subsubsection*{Entscheid}
 
-Firebase Messaging mit App Delegate \cite{firebase_ios}
+Der native iOS Mobile Client für Praxisruf wird mit Swift und SwiftUI umgesetzt.
+Als Zielplatform wird IOS15 verwendet, damit möglichst alle Funktionen aus SwiftUI zur Verfügung stehen.
+SwiftUI ist der neue Standard oder zumindest die Richtung in die Apple pushed.
+SwiftUI ist leichtgewichtiger und flexibler als UIKit.
+Es bietet ausgezeichnete Integration mit der Entwicklungsumgebung XCode und Entwicklungstools zur Umsetzung
+von Benutzeroberflächen mit nativem Look und Feel.
+Es ist davon auszugehen, dass die Entwicklung dadurch schneller und der resultierende Code schlanker und wartbarer ist.
 
-Erinnerungen mit Timer\cite{ios_timer} und BGTaskScheduler\cite{ios_bgtaskscheduler}
-
-
-Optionen \\
-
-Swift ist standard \\
-UIKit oder SwiftUI \\
-
-SwiftUI ist neu und die Richtung in die Apple seit einiger Zeit pushed. \\
-Es wird SwiftUI genommen, weil es der neue Standard ist. \\
-Gewisse Hooks in den IOS Lifecycle sind mit rein SwiftUI noch nicht möglich. \\
-Die entsprechenden Teil (AppDelegates) können auch in SwiftUI verwendet werden. \\
-
-Kleiner POC wurde mit SwiftUI erstellt um zu verifizieren, dass Anforderungen von oben möglich sind. \\
-
-\subsubsection*{Zusammenfassung}
-
-Entscheidung: \\
-
-Target IOS15 \\
-Swift 5 \\
-SwiftUI 3.0 \\
+SwiftUI ist neuer als UIKit und hat dementsprechend noch nicht denselben Umfang.
+SwiftUI ist aber mit UIKit kompatibel.
+Das heisst für Funktionen, die nur mit UIKIt umgesetzt werden können, kann UIKit verwendet werden.
+Diese Teile der Applikation können in Zukunft, wenn diese Funktionen mit SwiftUI umgesetzt werden migriert werden.
 
 \clearpage
