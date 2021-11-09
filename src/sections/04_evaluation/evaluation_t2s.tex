@@ -12,7 +12,7 @@ Das IOS Core Framework bietet Packages welches dies erlauben.
 Die zweite Option ist es, die Konvertierung an einen Cloud Service zu delegieren.
 Dazu muss ein externer Text To Speech Provider angebunden werden, der vom Praxisruf angesprochen werden kann.
 
-\subsubsection{Nativ}
+\subsubsection*{Nativ in Mobile Client}
 
 Die Standardbibliothek von für iOS unterstützt das Konvertieren von Text zu Sprache.\cite{ios_speech_synthesis}
 Dementsprechend ist es mit Boardmitteln von iOS möglich, Sprach Synthetisierung umzusetzten.
@@ -28,42 +28,42 @@ Die Verantwortung des Mobile Clients wird weniger klar getrennt.
 Er wäre nicht nur für die Interaktion mit dem Benutzer verantwortlich sonder muss die fachliche Anforderung der Sprachsynthese übernehmen.
 Letztlich hat diese Variante den Nachteil, dass dieselbe Funktionaltät für einen Android Client komplett neu entwickelt werden müsste.
 
+\subsubsection*{Externer Provider in Mobile Client}
 
-\subsubsection{Cloud}
+Als zweite Option ist es möglich, die Sprachsynthese an einen externen Provider zu delegieren.
+Mit AWS Polly\cite{aws_polly} ist es möglich, den Provider direkt aus einer iOS Applikation anzusprechen.
+Diese Variante hat den Vorteil, dass keine Bindung mehr zu Apple vorhanden ist.
+Für die Integration mit Android besteht hier ein wenig mehr Synergie.
+Es kann für iOS derselbe Provider verwendet werden.
+Da AWS Polly auch für Android einen SDK bietet.
+Diese Variante hat aber trotzdem noch die Nachteile, dass die Verantwortung des Mobile Clients grösser wird
+und dass unterschiedliche SDKs für die Android und iOS Plattformen verwendet werden.
 
-Vorteile \\
+\subsubsection*{Externer Provider über Cloud Service}
 
-Unabhängig von Apple \\
-Einfacher austauschbar (bei entsprechender implementation der Anbindung) \\
-Klar getrennte Verantwortung \\
-Funktion für Android Clients kann gleich Umgesetzt werden.
+Als Dritte Variante ist es möglich, die Sprachsynthese im Cloud Service vorzunehmen.
+Da AWS Polly auch einen SDK für Java bietet, ist es möglich, die Synthese dort einzubinden.
+Dies hat einerseits den Vorteil, dass alle Clients eine einheitliche Schnittstelle haben können.
+Sowohl iOS als auch Android und WebClients können die Audiodaten über genau dieselbe Schnittstelle beziehen.
+Dies ermöglicht es auch den Provider in Zukunft auszutauschen ohne in den Clients etwas verändern zu müssen.
+Die Option hat zusaätzlich den Vorteil, dass Optimierungen die nicht Client spezifisch sind getroffen werden können.
+So wäre es z.B. möglich einen externen File Storage anzubinden auf dem Audiodaten gespeichert werden.
+Dadurch muss der Sprachsynthese Provider weniger oft angesprochen werden.
+Die Variante hat den Nachteil, dass der Cloud Service komplexer wird.
+Durch das Hinzufügen von neuer Funktionaltiät ist das auf Systemebene aber so oder so gegeben.
+Der Einfluss davon kan weiter minimiert werden, indem die neue Funktionalität gekapselt wird.
+Sie kann so umgesetzt werden, dass sie unabhängig von restlichen system ist und alle nötigen Daten über die
+Schnittstelle der anderen Module bezieht. \footnote{Vgl. Kapitel Systemarchitektur}
 
-Nachteile \\
-Zusätzliche Anbindung von Service \\
-Mehrere Umsetzmöglichkeiten (Client spricht direkt mit T2S Cloud oder Cloud Service Spricht mit T2s Cloud) \\
-Zusätzlicher Point of Failure / Komlexität \\
+\subsubsection*{Entscheidung}
 
+Die Sprachsynthese wird durch die Anbindung des externen Providers AWS Polly umgesetzt.
+Der Cloud Service übernimmt die Kommunikation mit AWS Polly und bietet eine Schnittstelle über die der Mobile Client Audiodaten beziehen knan.
 
-
-Anbieter \\
-
-AWS Polly \cite{aws_polly} \\
-Unterstützt alles \\
-Rest Infrastruktur ist bereits bei Amazon \\
-Kunde wünscht einheitlich bei AWS wo möglich \\
-
-
-\subsubsection{Entscheidung}
-
-Anbindung per Cloud wird genommen.
-Die Implementierung kann dadurch komplizierter werden.
-Es ist aber sehr wichtig unabhängig zu bleiben.
-Apple Version bindet zu stark an Apple.
-Kann nicht für künftigen Android Client wiederverwendet werden.
-Zukunftssicherer weil der Konkrete T2S Service ausgewechselt werden kann.
-Es bestehen SDKs für Java und für Client.
-Damit ist die Anbindung direkt aus Client oder aus Cloud Service möglich.
-Welche Option implementiert wird, ist im Konzeptteil zu beschreiben.
-
+Durch diesen Ansatz kann die Abhängigkeit zu einem spezifischen Provider minimiert werden und
+die Umsetzung für alle Platformen gleich gelöst werden.
+Dies macht diese Variante zukunftssicher und einfach wartbar.
+Der Einfluss von zusätzlicher Komplexität, die dieser Ansatz mit sich bringt,
+soll durch eine entsprechende Kapselung in der Systemarchitektur minimiert werden.
 
 \clearpage
