@@ -1,4 +1,3 @@
-
 \subsection{Sprachsynthese}
 
 \subsubsection*{Benutzeroberfläche}
@@ -8,13 +7,21 @@ Erweiterung Admin UI um Checkbox. \\
 Zusätzlich Configuration Page mit preferences. \\
 
 \subsubsection*{Konfiguration}
+
 Erweiterung NotificationType um ein boolean Flag für isTextToSpeech.
 Wenn Aktiviert, wird Benachrichtigung bei Empfang vorgelesen.
+
+Weiter wird auf dem NotificationType ein Feld version hinzugefügt.
+Damit soll die aktuelle Version des NotificationType verfolgt werden.
+Wird eine Änderung am NotificationType persisteirt, wird die Version entsprechend angepasst.
+Sowohl das Flag isTextToSpeech als auch das version Property werden neu beim Versenden von Benachrichtigungen mitgegeben.
+
 Text To Speech kann auf Client Seite dekativiert werden.
 Ist es deaktiviert, werden keine Benachrichtigungen vorgelesen.
 Audio Signal, dass Benachrichtung empfangen wurde ertönt aber trotzdem.
 Keine zusätzlichen Endpoints am Cloud Service nötig. \\
 
+\clearpage
 
 \subsection*{Laufzeitsicht}
 
