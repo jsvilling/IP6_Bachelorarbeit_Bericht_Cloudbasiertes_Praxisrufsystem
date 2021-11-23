@@ -60,10 +60,50 @@ Dabei werden für jeden CallType aber nur der technische Identifikator und der A
 Zu welchen Zielen Verbindungen aufgebaut werden sollen, wird bei jedem Verbindungsabbau erneut beim CloudService angefragt.
 Dies ermögicht es, dass Änderungen an der Konfiguration sofort angewendet werden, ohne dass die ganze Konfiguration neu geladen werden muss.
 
-
+\clearpage
 \subsubsection*{Verfügbarkeit und Registrierung}
 
-Client muss sich beim Startup beim Signaling Service registrieren.
+Um Sprachverbindungen zwischen Clients aufzubauen, müssen diese Nachrichten austauschen können.
+Die Verbindung wird durch den Sender mit einem Offer initialisiert.
+Dieses muss an den Empfänger übermittelt werden.
+Dieser antwortet schliesslich mit einer Answer, welche an den Sender übermittelt werden ist.
+Bevor die Verbindung aufgebaut ist, kennen die beiden Clients sich gegenseitig noch nicht.
+Es braucht deshalb eine Instanz, welche beide Seiten kennt und die Übermittlung der Daten übernehmen kann.
+Bei Praxisruf fällt diese Aufgabe dem Cloud Service zu.
+Um dies zu ermöglichen wird Cloud Service umeine Schnittstelle erweitert, die es ermöglicht langlebige Verbindungen
+zu öffnen und registrieren.
+Sobald ein Client sich angemeldet hat, baut er eine Verbindung zum CloudService auf.
+Beim Verbindungsaufbau gibt der Client seine technische Identifikation mit.
+Der Cloud Service kann damit intern eine der verfügbaren Verbindungen und den dazugehörigen Identifikatoren führen.
+Diese Liste kann beim Verbindungsaufbau verwendet werden, um die Offers und Answers an die jeweiligen Clients zu übermitteln.
+
+Dieses Konzept wird im intercom Modul des Cloud Service umgesetzt.
+Um die Funktionalität zu ermöglichen werden zwei Komponenten benötigt.
+Diese kapseln die Funktionalität die unabhängig von der Technologie zum Verbindungsaufbau notwendig ist.
+Um sicherzustellen, dass diese Unabhägigkeit bleibt, werden hier die Interfaces für diese beiden Komponenten spezifiziert.
+Es braucht erstens eine Komponente, welche Verbindungen etabliert und Nachrichten über diese Verbindungen senden kann.
+Diese Funktionalität wird mit der Komponente ClientConnector umgesetzt.
+
+\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ClientConnector.java}
+
+
+\clearpage
+Weiter braucht es eine Komponente, welche Buch führt über bekannte Verbindungen.
+Diese muss Verbindungen anhand einer id registrieren und Verbindungen wieder entfernen können.
+
+\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ConnectionRegistry.java}
+
+Der Ablauf von Anmeldung und Registrierung funktioniert damit grundsätzlich wie bisher.
+Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung zum Intercom Modul ergänzt.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_Registration}
+        \caption{Mockup Home}
+    \end{minipage}
+\end{figure}
+
 
 \clearpage
 
