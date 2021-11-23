@@ -54,11 +54,20 @@ Es ist möglich, dass dieselbe Gruppe an Zielen auf verschiedenen Clients versch
 Um dies einfach zu ermöglichen, werden die Ziele der Unterhaltung in eine eigene Entität CallGroup ausgelagert.
 So kann pro Client ein CallType definiert werden der einen eigenen Anzeigtext definiert.
 Die CallGroup muss aber nur einmal erstellt werden und kann auf mehreren CallTypes verwendet werden.
-
 Die ClientConfiguration die bei der Anmeldung vom Mobile Client geladen wird, wird um diese CallTypes erweitert.
 Dabei werden für jeden CallType aber nur der technische Identifikator und der Anzeigename mitgegeben.
 Zu welchen Zielen Verbindungen aufgebaut werden sollen, wird bei jedem Verbindungsabbau erneut beim CloudService angefragt.
 Dies ermögicht es, dass Änderungen an der Konfiguration sofort angewendet werden, ohne dass die ganze Konfiguration neu geladen werden muss.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.75\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_intercom_v01.drawio}
+        \caption{ERD Ausschnitt - Konfiguration Gegensprechanalge}
+    \end{minipage}
+\end{figure}
+
+
 
 \clearpage
 \subsubsection*{Verfügbarkeit und Registrierung}
