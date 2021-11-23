@@ -58,14 +58,17 @@ Die ClientConfiguration die bei der Anmeldung vom Mobile Client geladen wird, wi
 Dabei werden für jeden CallType aber nur der technische Identifikator und der Anzeigename mitgegeben.
 Zu welchen Zielen Verbindungen aufgebaut werden sollen, wird bei jedem Verbindungsabbau erneut beim CloudService angefragt.
 Dies ermögicht es, dass Änderungen an der Konfiguration sofort angewendet werden, ohne dass die ganze Konfiguration neu geladen werden muss.
+Für die beiden neuen Entitäten werden Endpoints für CRUD Operationen analog zu den anderen Konfigurationsentitäten hinzugefügt.
+Zudem wird das Admin UI um Ansichten erweitert, um diese Entitäten anzuzeigen, bearbeiten und löschen.
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.75\textwidth}
+    \begin{minipage}[b]{0.7\textwidth}
         \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_intercom_v01.drawio}
         \caption{ERD Ausschnitt - Konfiguration Gegensprechanalge}
     \end{minipage}
 \end{figure}
+
 
 
 
