@@ -29,9 +29,39 @@ Keine zusätzlichen Endpoints am Cloud Service nötig. \\
     \end{minipage}
 \end{figure}
 
+\clearpage
 
+\subsection*{Anbindung Sprachsynthese Service}
+
+Die Anbindung des Sprachsynthese Service erfolg zentral über den Cloud Service.
+Dazu wird der Cloud Service um ein modul Speech erweitert.
+Dieses Modul stellt einen Endpoint zur verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
+Einziger Parameter für diese Anfrage ist die technische Identifikation des Benachrichtigungstyps der relevanten Benachrichtigung.
+Das Speech-Modul kann anhand dieser Identifikation den NotificationType beim Configuration-Modul abholen.
+Dem NotificationType kann der Text entonmmen werden, der snytetisiert werden soll.
+Dieser Text kann dann an den Sprachsynthese Service gesendet werden.
+Das Resultat dieser Anfrage wird als Resultat der Abfrage vom Client zurückgegeben.
+
+\lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
+
+Um die Anbindung im Cloud Service vom konkreten Anbieter möglichst unabhängig zu machen, wird die Integration an den Speech Synthese Service über ein Interface abstrahiert.
+Soll ein neuer Sprachsyntese Service angebunden werden, muss lediglich dieses Interface für den neuen Service implementiert werden und alles andere kann unberührt bleiben.
+
+\lstinputlisting[caption=SpeechSynthesisService.java,language=java,label={lst:SpeechSynthesisService.java}]{listings/SpeechSynthesisService.java}
+
+Für dieses Projekt wird AWS Polly verwendet.
+Dementsprechend wird das SprachSyntheseService Interface für AWS Polly implementiert.
+AWS Polly bietet einen Java SDK, welcher die Anbindung ermöglicht.
+Dieser SDK bietet alle Klassen die für die Anbindung an AWS Polly nötig sind.
+Da im Cloud Service Spring Boot verwendet wird, können die für die Verbindung nötigen Klassen mit einer Spring Config erstellt werden
+und dann über Dependency Injection im AwsPollySpeechSynthesis Service verwendet werden.
+
+\lstinputlisting[caption=AwsConfiguration.java,language=java,label={lst:AwsConfiguration.java}]{listings/AwsConfiguration.java}
+
+In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
 
 \clearpage
+
 
 \subsection*{Laufzeitsicht}
 
