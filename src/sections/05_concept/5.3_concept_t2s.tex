@@ -68,12 +68,12 @@ In der Implementation des Services kann nun über den injezierten AmazonPollyCli
 
 \clearpage
 
-
 \subsection*{Laufzeitsicht}
 
-Empfang und Versenden gleich wie bei IP5.
-Benachrichtigung enthält zudem neu Flag ob T2S gebraucht werden soll.
-Wenn ja, wird Vorlesen an T2S Service delegiert.
+Benachrichtigungen für welche Sprachsynthese aktiviert ist, sollen beim Empfang automatisch vorgelesen werden.
+Dazu müssen die Sprachdaten geladen werden, wenn die Benachrichtigung empfangen werden.
+Diese Daten können über den neuen Speech Endpoint des Cloud Services bezogen werden.
+Die Informationen die dazu nötig sind, sind als Metadaten in der empfangenen Benachrichtigung vorhanden.
 
 \begin{figure}[h]
     \centering
@@ -82,5 +82,13 @@ Wenn ja, wird Vorlesen an T2S Service delegiert.
         \caption{Ablauf Benachrichtigung empfangen}
     \end{minipage}
 \end{figure}
+
+Wird eine Benachrichtigung empfangen, wird die Benachrichtigung auf dem Client als Push Notifikation angezeigt und an die Inbox übergeben.
+Anschliessend prüft der Client ob die Sprachdaten für die Empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
+Dies wird gemacht in dem er überprüft ob es im Applikationsverzeichnis bereits eine MP3-Datei für den Empfangenen Benachrichtigungstyp
+(NotificationType) in der Version der Empfangenen Benachrichtigung vorhanden ist.
+Sind die Daten bereits lokal vorhanden, wird keine Abfrage an den Cloud Service gespielt sondern die lokal vorhandene Sprachdatei abgespielt.
+Sind die Daten lokal nicht oder nur in einer anderen Version vorhanden, werden die Daten beim Cloudservice angefragt.
+Sobald diese Daten geladen sind, werden sie in einer MP3 Datei mit Id und Version des Benachrichtigungstyps (NotificationType) gespeichert.
 
 \clearpage
