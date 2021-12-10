@@ -30,7 +30,6 @@
 *.blg
 *-blx.aux
 *-blx.bib
-*.run.xml
 
 ## Build tool auxiliary files:
 *.fdb_latexmk
@@ -287,3 +286,4 @@ TSWLatexianTemp*
 >>>>>>> init from EIT Template
 /IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem.iml
 /praxis-intercom-documentation.iml
+/out/p2p_sprachubertragung_in_praxisrufsystem.run.xml
