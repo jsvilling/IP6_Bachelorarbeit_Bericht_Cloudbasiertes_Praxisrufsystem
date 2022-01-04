@@ -23,9 +23,52 @@ Die Hauptproblemstellung dieser Arbeit ist die sichere und effiziente Übertragu
 Dabei soll es möglich sein, dass die App einen Unicast, Broadcast und Mutlicast Übertragung der Daten ermöglicht.
 Über eine offene Systemarchitektur müssen die Kommunikationsbuttons in der App frei konfiguriert und parametrisiert werden können."\footnote{Ausgangslage, Ziele und Problemstellung im Originaltext der Aufgabenstellung}\cite{aufgabenstellung}
 
-%TODO: Mention IP5 als Basis
-%TODO: Gefahren
-%TODO: Geplanter Projektablauf
-%TODO: Aufbau Bericht
+Mit dem Projekt IP5 Cloudbasiertes Praxisrufsystem\cite{ip5} wurde bereits eine mobile Applikation für Praxisruf umgesetzt.
+Mit dieser Applikation können bereits heute Benachrichtungen über Praxisruf versendet und empfangen werden.
+Um die Wartbarkeit und Hardware- sowie Betriebssystemkomaptibilität zu gewährleisten wurde im Fazit des Vorgängerprojekts empfohlen, die Applikation neu als native Applikation für iOS und Android zu schreiben.\cite{ip5}
+Dieses Projekt beinhaltet damit die Migration des bestehenden Mobile Clients in eine native iOS Applikation sowie die Erweiterung um Sprachbezogene Funktionen.
+
+Bei Projektstart bestehen zwei primäre Gefahren.
+Die erste Gefahr besteht in der unerfahrenheit der Projektteilnehmer mit Mobileentwicklung und inbesondere im Bezug Sprachkommunikation.
+Das Projektteam hat lediglich aus dem Vorgängerprojekt\{ip5} Erfahrungen mit mobiler Entwicklung.
+Dies beinhaltet aber keine native iOS Entwicklung, wie sie für dieses Projekt notwendig ist.
+Weiter besteht keinerlei Erahrung mit der Verarbeitung und Übertragung von Sprachdaten und Telefonie.
+Die Gefahr für das Projekt besteht hier darin, dass die Evaluation und Umsetzung länger als erwartet gehen können oder das Konzepte nicht wie erwartet umgesetzt werden können.
+Dieses Risiko kann durch Recherche und Proof Of Concepts minimiert werden.
+Die zweite Gefahr besteht in der pandemischen Situation bei Projektstart im Herbst 2021.
+Es ist damit zu rechnen, dass viele Meetings nicht persönlich stattfinden können.
+Die Organisation und Kommunikation des Projektes wird auf die Einschränkungen der aktuellen Lage angepasst und von Anfang primär über digitale Werkzeuge organisiert.
+Präsentationen, Demonstrationen und Tests mit dem Kunden werden, wenn möglich vor Ort abgehalten.
+Ist dies nicht möglich werden auch Sie über Microsoft Teams abgehalten.
+Weiter ist es möglich, dass Projektteilnehmende Krankheitshalber ausfallen und sich das Projekt deshalb verzögert.
+Sollte dies der Fall werden müssen Umfang und Prioritäten im Projekt neu evaluiert und gegebenenfalls angepasst werden.
+
+Die Umsetzung des Projekts erfolgt in vier Phasen.
+Zu Beginn werden die grundlegenden Anforderungen und der Umfang des zu entwickelnden Produkts definiert und festgehalten.
+Diese Anforderungen werden in Form von Meilensteinen erfasst und priorisiert.
+In der zweiten Phase werden Technologien evaluiert und ausgewählt, um die Anforderungen an das System umzusetzen.
+Es werden die Konzepte erstellt, wie das System umgesetzt wird.
+Die Konzepte müssen dabei nicht abschliessend definiert sein.
+Es müssen aber Grundabläufe und Schlüsselentscheideungen definiert werden.
+Wo möglich werden einfache Proof Of Concepts erstellt, um die gewählten Technologien und Konzepte zu validieren.
+In der dritten Phase werden die Anforderungen schliesslich umgesetzt.
+Für die Umsetzung wird zuerst ein nativer Mobile Client aufgesetzt und die Funktionalität des bestehenden Mobile Clients übernommen.
+Anschliessend wird die Sprachsynthese implementiert, da diese eng mit der bestehenden Funktionalität verknüpft ist.
+Als drittes wird schliesslich die Funktion der Gegensprechanlage umgesetzt.
+Zum Schluss der dritten Phase ist Zeit eingeplant um die Applikation eingehend zu testen, fehler zu beheben und andere Optimierungen vorzunehmen.
+Es werden Tests zusammen mit dem Kunden durchgeführt.
+Dieser kann Feedback geben und Erweiterungs- und Änderungswünsche angeben.
+Diese werdend gemeinsam priorisiert und soweit wie möglich in das Produkt miteingearbeitet.
+Der Projektbericht wird während des gesamten Projektes geschrieben.
+Die vierte Phase zum Schluss des Projektes ist zur vervollständigung und Korrektur des Projektberichtes reserviert.
+
+Im nachfolgenden Hauptteil werden die erarbeiteten Konzepte und Resultate vorgestellt.
+Zuerst werden Vorgehensweise, Projektplan und die Organisation für das Projekt.
+Anschliessend werden die Anforderungen vorgestellt, welche für Praxisruf umgesetzt werden.
+Es wird darauf beschrieben, welche Technologien für die Umsetzung verwendet wurden und begründet, wieso diese Technologien gewählt wurden.
+Das Kapitel Konzept beschreibt das detaillierte technische Konzept für Funktionsweise und Architektur von Praxisruf.
+Darauf wird das umgesetzte System und Herausforderungen während der Umsetzung vorgestellt.
+Am Ende der Arbeit stehen ein Fazit und Schlusswort mit Empfehlungen für das weitere
+Vorgehen.
 
 \clearpage
