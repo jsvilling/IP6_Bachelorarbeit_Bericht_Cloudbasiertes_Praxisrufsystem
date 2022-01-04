@@ -54,25 +54,29 @@ UIKit Funktionen können allerdings nahtlos mit SwiftUI integriert werden.\cite{
 Die Firebase Cloud Messaging Library für iOS ermöglicht es also, Benachrichtigungen von Praxisruf sowohl mit UIKit als auch mit SwiftUI umzusetzten.
 
 
-\subsubsection*{Unterstützung Hintergrundtasks}
+\subsubsection*{Benachrichtigungen prüfen}
 
-Erinnerungen können mit Boardmitteln aus den Libraries die Apple zur Verfügung stellt umgesetzt werden.
-Einerseits können mit Timer regelmässig wiederholbare Tasks erfasst werden, die ausgeführt werden, wenn die App geladen ist.\cite{ios_timer}
-Weiter können über die Klasse BGTaskScheduler Tasks erfasst werden, die im Hintergrund ausgeführt werden.\cite{ios_bgtaskscheduler}
+Der Mobile Client soll den Benutzer regelmässig erinnern, wenn es ungelesene empfangene Benachrichtigungen gibt.
+Dazu muss regelmässig geprüft werden, ob es solche Benachrichtigungen gibt und gegebenenfalls ein Erinnerungston abgespielt werden.
+Die standard iOS Libraries von Apple bieten Mittel, mit welchen regelmässige Aufgaben angestossen werden können.
+Einerseits können über ''Timer'' in Regelmässigen abständen Events veröffentlicht werden.
+Auf einer SwiftUI View kann ein beliebiger Listener registriert werden, der beim Empfang eines Events des Timers aufgerufen wird.
+Dies bringt die Einschränkung mit sich, dass die Prüfung nur ausgeführt ist, wenn die App im Vordergrund läuft und die View geladen wurde.\cite{ios_timer}
+Da der bestehende Mobile Client dieselbe Einschränkung hat, könnte mit einem Timer trotzdem genau dasselbe Verahlten wie im bestehenden Client umgesetzt werden.
+Apple bietet allerdings auch Mittel, um Aufgaben im Hintergrund zu verarbeiten.
+Über die Klasse BGTaskScheduler können Aufgaben erfasst werden, die im Hintergrund ausgeführt werden.\cite{ios_bgtaskscheduler}
+
+Die Umsetzung von der Erinnerungsfunktion kann also ohne zusätzliche Frameworks umgesetzt werden.
+Es besteht zudem die Möglichkeit den Umfang des bestehenden Clients zu erweitern und die Prüfungen auch im Hintergrund laufen zu lassen.
 
 \subsubsection*{Entscheid}
 
 Der native iOS Mobile Client für Praxisruf wird mit Swift und SwiftUI umgesetzt.
-Als Zielplatform wird IOS15 verwendet, damit möglichst alle Funktionen aus SwiftUI zur Verfügung stehen.
-SwiftUI ist der neue Standard oder zumindest die Richtung in die Apple pushed.
-SwiftUI ist leichtgewichtiger und flexibler als UIKit.
-Es bietet ausgezeichnete Integration mit der Entwicklungsumgebung XCode und Entwicklungstools zur Umsetzung
-von Benutzeroberflächen mit nativem Look und Feel.
-Es ist davon auszugehen, dass die Entwicklung dadurch schneller und der resultierende Code schlanker und wartbarer ist.
-
-SwiftUI ist neuer als UIKit und hat dementsprechend noch nicht denselben Umfang.
-SwiftUI ist aber mit UIKit kompatibel.
-Das heisst für Funktionen, die nur mit UIKIt umgesetzt werden können, kann UIKit verwendet werden.
-Diese Teile der Applikation können in Zukunft, wenn diese Funktionen mit SwiftUI umgesetzt werden migriert werden.
+Der deklarative Syntax, ermöglicht es einfacher übersichtliche und lesbare Komponenten zu implementieren.
+Ausgezeichnete Integration in die XCode Entwicklungsumgebung und die zur Verfügung gestellten Standard Komponenten reduzieren den Entwicklungsaufwand weiter.
+Die Neuheit von SwiftUI bedeutet, dass möglicherweise gewisse Funktionen noch nicht mit purem SwiftUI umgesetzt werden können.
+Um diese Wahrscheinlichkeit zu minimieren, wird iOS15 als Zielplattform gewählt.
+Mit der Verwendung der neusten iOS Version als Zielplattform kann auch die neuste Version von SwiftUI und damit alle zur Verfügung stehenden Funktionen aus SwiftUI verwendet werden.
+Sollten trotzdem Funktionen benötigt werden, die SwiftUI nicht unterstützt, können diese dank der nahtlosen Integration mit UIKit implementiert und in Zukunft migriert werden.
 
 \clearpage
