@@ -4,6 +4,23 @@ Praxisruf soll um die Funktion einer Gegensprechanlage erweitert werden.
 Um dies zu ermöglichen, muss das System Sprachübertragung zwischen Mobile Clients in Echtzeit unterstützten.
 In diesem Kapitel werden die Technologien evaluiert, mit denen dies Umgesetzt werden kann.
 
+\subsubsection{Amazon Chime}
+
+Eine Möglichkeit um Sprachverbindungen in Praxisruf zu implementieren, ist die Integration einer bestehenden Business Kommunikationslösung, wie Webex oder Microsoft Teams.
+Amazon Webservices bietet für diesen Zweck ''Amazon Chime'' an.
+Amazon Chime ist ein Kommunkations Service welcher Funktionen für Meetings, Chats und Geschäftsanrufe ermöglicht.\cite{aws_chime}
+Mit dem Amazon Chime SDK für iOS, ist es möglich Sprach- und Videoanrufe bis hin zu Screensharing in native iOS Applikationen zu integrieren.\cite{aws_chime_sdk}
+
+Die Integration eines solchen Dienstes hat den Vorteil, dass die Telefonie in einen etablierten Provider ausgelagert werden kann.
+Durch Verträge mit dem Provider können Verfügbarkeitsgarantien und Supportleistungen vereinbart werden.
+Dies erhöht die Stabilität des Systems und ermöglicht effizienteres Reagieren im Fehlerfall.
+Weiter fallen für Praxisruf selbst wenig bis keine Aufwände für den Betrieb der nötigen Telefonieinfrastruktur.
+Die Kosten, welche durch die Anbindung eines Providers anfallen, sind damit schlimmstenfalls gerechtfertigt und bestennfalls die günstigere Option, als die Infrastruktur selbst zu betreiben.
+
+Die Funktionen für Chats, Videounterhaltungen, Meetings und Bildschirmübertragung sind für den Anwendungsfall ''Gegensprechanlage in einem Praxisrufsystem'' nicht relevant.
+Bei der Verwendung von Amazon Chime würde also nur ein kleines Subset der Möglichkeiten die der Service bietet verwendet.
+Der grosse Nachteil daran ist, dass damit eine starke Bindung an den Amazon Chime SDK und die Abläufe, die Amazon Chime zum Verbindungsaufbau vorsieht.
+
 \subsubsection{WebRTC}
 
 ''Mit WebRTC können Sie Ihrer Anwendung Echtzeit-Kommunikationsfunktionen hinzufügen, die auf einem offenen Standard basieren.
@@ -41,24 +58,12 @@ Nachteile: \\
 Kompliziertere Einbindung auf Client Seite.
 
 
-\subsubsection{Meeting Solution}
-
-AWS Chime, Teams oder Ähnliches als Basis \\
-Nicht wirklich p2p? \\
-Starke Vendor Bindung \\
-
-
-
-\subsubsection*{Core Telephony}
-
-https://developer.apple.com/documentation/coretelephony
-
-Not feasible \\
-Nicht was wir brauchen, da nur vordefinierte calls zwischen clients gemäss konfiguration möglich sein sollen \\
-Es ist nicht gefordert und nicht gewünscht dass "irgendjemand" per telefonnummer, den client erreichen kann. \\
-
-
 \subsubsection{Entscheidung}
+
+
+Für die Gegensprechanlage muss Praxisruf es ermöglichen über einen vorkonfigurierten Button, Sprachverbindungen zwischen Clients aufzubauen.
+Zu welchen Clients Sprachverbindungen aufgebaut werden, ist fest pro Button durch einen Administrator konfiguriert.
+Praxisruf muss damit nur die Anforderung erfüllen, vordefinierte 1:1 oder 1:m Sprachverbindungen aufzubauen, sodass Praxismitarbeitende kurze Gespräche führen können.
 
 WebRTC self hosted. \\
 
