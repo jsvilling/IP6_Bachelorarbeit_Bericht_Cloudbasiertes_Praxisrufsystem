@@ -19,58 +19,49 @@ Die Kosten, welche durch die Anbindung eines Providers anfallen, sind damit schl
 
 Die Funktionen für Chats, Videounterhaltungen, Meetings und Bildschirmübertragung sind für den Anwendungsfall ''Gegensprechanlage in einem Praxisrufsystem'' nicht relevant.
 Bei der Verwendung von Amazon Chime würde also nur ein kleines Subset der Möglichkeiten die der Service bietet verwendet.
-Der grosse Nachteil daran ist, dass damit eine starke Bindung an den Amazon Chime SDK und die Abläufe, die Amazon Chime zum Verbindungsaufbau vorsieht.
+Der Nachteil daran ist, dass damit eine starke Bindung an den Amazon Chime SDK und die Abläufe, die Amazon Chime zum Verbindungsaufbau vorsieht.
 
 \subsubsection{WebRTC}
 
-''Mit WebRTC können Sie Ihrer Anwendung Echtzeit-Kommunikationsfunktionen hinzufügen, die auf einem offenen Standard basieren.
-Es unterstützt Video-, Sprach- und generische Daten, die zwischen Peers gesendet werden, sodass Entwickler leistungsstarke Sprach- und Videokommunikationslösungen erstellen können.
-Die Technologie ist in allen modernen Browsern sowie auf nativen Clients für alle wichtigen Plattformen verfügbar.
+WebRTC steht für Web Real-Time Communication.
+Es ist ein Open Source Projekt, welches Echtzeitkommunikation für mobile Applikationen und Browser Applikationen ermöglicht.
+Es unterstützt Video-, Sprach- und generische Daten, die zwischen Peers gesendet werden.
 Die Technologien hinter WebRTC sind als offener Webstandard implementiert und in allen gängigen Browsern als reguläre JavaScript-APIs verfügbar.
-Für native Clients wie Android- und iOS-Anwendungen steht eine Bibliothek mit derselben Funktionalität zur Verfügung.''\cite{webrtc}
+Für native Clients wie Android- und iOS-Anwendungen steht eine Bibliothek mit derselben Funktionalität zur Verfügung.\cite{webrtc}
+WebRTC baut zur Kommunikation direkte Peer To Peer Verbindungen zwischen den Kommunikationspartnern auf.
+Um dies zu ermöglichen ist eine Signaling Instanz notwendig, welche Informationen die zum Verbindungsaufbau notwendig sind zwischen den Partnern vermittelt.
+WebRTC spezifiziert nicht, wie diese Signaling Instanz aussehen muss.
+Neben dieser Signaling Instanz ist keine Infrastruktur notwendig, um Daten auszutauschen.
+Sämtliche Sprachdaten werden direkt über die Peer To Peer Verbindungen zwischen Clients ausgetauscht.
 
+Dies hat den Vorteil, dass die Infrastruktur schlank gehalten werden kann.
+Zudem kann der Signaling Service auf die eigenen Bedürfnisse zugeschnitten werden.
+Die Kanäle über die Signale ausgetauscht werden, können frei gewählt werden.
+Das Signaling im Kontext von Praxisruf kann damit im Cloud Service implementiert werden.
+Für die Benachrichtigung bei verpassten Anrufen können eigene Meachanismen eingebunden werden.
+Im Fall von Praxisruf, kann dafür der Notification Teil des Cloud Services verwendet werden.
+Diese Flexibilität bedeutet auch, dass der Signaling Service weitgehend unabhängig von der spezifischen Technologie implementiert werden kann.
 
-Varianten \\
-Externer Anbieter (twilio) \\
+Die Verwendung von WebRTC hat den Nachteil, dass kein fachlicher Support bei Verbindungsproblemen zur Verfügung steht.
+Dies wird dadurch relativiert, dass der eigene Signaling Service sehr einfach gehalten werden kann.
+Es wird weiter dadurch relativiert, dass der eigene Signaling Service ebenfalls bei einem Cloud Provider betrieben wird.
+Dafür können wiederum Supportvereinbarungen getroffen werden.
 
-Vorteile: \\
-
-Einfachere Integration auf Client Seite durch Vendor SDK \\
-Auf Cloud Service Seite nur Configuration Domain betroffen, keine andere Erweiterung nötig \\
-Alles andere kann auf Client Seite erledigt werden.
-
-
-Nachteile: \\
-Kompliziertere Integration mit Client -> Client muss korrekte Verbindungen anhand Button Konfiguration aufmachen \\
-Verantwortung des Clients wächst. Aktuell hat er nur Verantwortung zum Empfangen, die Arbeit wird immer von andern gemacht \\
-
-
-Self Hosted (WebRtc Server als Teil von cloud service implementieren) \\
-
-Vorteile: \\
-
-Vermittlung und Signaling kann vom Cloud Service übernommen werden. \\
-Grössere Flexibilität, da Vermittlung in Cloud Serivce \\
-Evtl. Synergie mit Rules Engine in Configuration Domain \\
-
-Nachteile: \\
-
-Kompliziertere Einbindung auf Client Seite.
-
+Die Verwendung von Peer To Peer Verbindungen ist effizient für Verbindungen bei 1:1 Unterhaltungen.
+Für 1:m Verbindungen müssen aber tatsächlich m Verbindungen aufgebaut werden.
+Bei grossen Gruppen, ist diese Art des Verbindungsaufbaus ineffizient.
+Grundsätzlich wäre es möglich, die Kommunikation über einen zentralen Peer zu bündeln.\cite{webrtc_mesh}
+Um dies zu ermöglichen ist aber wieder Infrastruktur nötig, über welche Sprachdaten übertragen werden können.
 
 \subsubsection{Entscheidung}
 
+Die Funktion Gegensprechanlage wir mit WebRTC umgesetzt.
+Dazu wird der Cloud Service um ein Modul erweitert, welches Signaling Informationen vermittelt.
+Im Mobile Client wird die WebRTC iOS Library integriert, um Peer To Peer Sprachverbindungen aufzubauen.
 
-Für die Gegensprechanlage muss Praxisruf es ermöglichen über einen vorkonfigurierten Button, Sprachverbindungen zwischen Clients aufzubauen.
-Zu welchen Clients Sprachverbindungen aufgebaut werden, ist fest pro Button durch einen Administrator konfiguriert.
-Praxisruf muss damit nur die Anforderung erfüllen, vordefinierte 1:1 oder 1:m Sprachverbindungen aufzubauen, sodass Praxismitarbeitende kurze Gespräche führen können.
-
-WebRTC self hosted. \\
-
-Synergie Rules Engine \\
-Dispatching in Verantwortung Cloud Service \\
-SDK gut genug \\
-Nicht vendor abhängig \\
-
+Durch die Verwendung von WebRTC, können Sprachverbindungen aufgebaut werden, ohne einen neuen externen Service zu integrieren.
+Weiter kann der Infrastruktur zur Signalvermittlung unabhängig von der gewählten Technologie umgesetzt werden.
+Die Verfügbaren Libraries für iOs, Android und Javscript bedeuten, dass künftige Web- und Android Clients leicht in das System integriert werden können.
+Support für die Verfügbarkeit des Signaling Services wird über die Verfügbarkeit des Cloud Providers sichergestellt.
 
 \clearpage
