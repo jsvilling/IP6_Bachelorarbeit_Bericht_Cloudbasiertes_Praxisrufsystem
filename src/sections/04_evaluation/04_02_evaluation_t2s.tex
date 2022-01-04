@@ -8,14 +8,7 @@ Diese Integration kann mit den Standardbibliotheken für iOS oder durch die Anbi
 Die Anbindung eines externen Provider kann entweder direkt im Mobile Client implementiert werden.
 Alternativ das Backend von Praxisruf\footnote{Cloud Service} an den Provider angebunden werden und dem Mobile Client eine Schnittstelle bieten, um diese Daten abzufragen.
 
-\subsubsection*{Externer Provider}
-
-Vom Auftraggeber ist explizit gewünscht, dass Infrastruktur und Services wo möglich über Amazon Webservices bestellt werden.\footnote{Siehe Kapitel 3 - F19}
-Mit dem Service ''Polly'' bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann.\cite{aws_polly}
-Amazon Webservices stellt dazu Libraries für iOS\cite{aws_polly_ios} als auch für Java zur Verfügung\cite{aws_polly_java}.
-Polly kann damit sowohl direkt in den nativen Mobile Client als auch in den Cloud Service integriert werden.
-
-\subsubsection*{Nativ in Mobile Client}
+\subsubsection*{Apple Speech Synthesis}
 
 Die Standardbibliothek von für iOS unterstützt das Konvertieren von Text zu Sprache.\cite{ios_speech_synthesis}
 Sprachsynthese könnte dadurch ohne die Anbindung eines externen Providers umgesetzt werden.
@@ -25,7 +18,12 @@ Sollte die Funktion in künftigen Versionen nicht mehr unterstützt werden, müs
 Weiter bringt diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
 Letztlich hat diese Variante den Nachteil, dass dieselbe Funktionaltät für einen Android Client komplett neu entwickelt werden müsste.
 
-\subsubsection*{Externer Provider in Mobile Client}
+\subsubsection*{Polly (Amazon Webservices)}
+
+Vom Auftraggeber ist explizit gewünscht, dass Infrastruktur und Services wo möglich über Amazon Webservices bestellt werden.\footnote{Siehe Kapitel 3 - F19}
+Mit dem Service ''Polly'' bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann.\cite{aws_polly}
+Amazon Webservices stellt dazu Libraries für iOS\cite{aws_polly_ios} als auch für Java zur Verfügung\cite{aws_polly_java}.
+Polly kann damit sowohl direkt in den nativen Mobile Client als auch in den Cloud Service integriert werden.
 
 Polly von AWS Webservices bietet eine Library für die Intagration in iOS. \cite{aws_polly_ios}
 Mit dieser Library ist es möglich, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren.
@@ -35,11 +33,7 @@ Sie wird allerdings durch eine starke bindung zu Amazon Webservices ersetzt.
 Ein Wechsel des Providers bleibt auch in dieser Variante aufwändig.
 Weiter bringt auch diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
 
-\clearpage
-
-\subsubsection*{Externer Provider über Cloud Service}
-
-Als Dritte Variante ist es möglich, die Anbindung des Sprachsyntheseproviders im Cloud Service vorzunehmen.
+Alternativ ist es möglich, die Anbindung des Sprachsyntheseproviders im Cloud Service vorzunehmen.
 Dies hat einerseits den Vorteil, dass alle Clients eine einheitliche Schnittstelle haben können.
 Sowohl iOS als auch Android und WebClients können die Audiodaten über genau dieselbe Schnittstelle beziehen.
 Dies ermöglicht es auch den Provider in Zukunft auszutauschen ohne in den Clients etwas verändern zu müssen.
