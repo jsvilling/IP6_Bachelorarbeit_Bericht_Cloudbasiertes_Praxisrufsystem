@@ -18,6 +18,8 @@
       <bib-run-config>[BibTeX.bib]</bib-run-config>
       <makeindex-run-config>[]</makeindex-run-config>
     </texify>
-    <method v="2" />
+    <method v="2">
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="bib" run_configuration_type="BIBTEX_RUN_CONFIGURATION" />
+    </method>
   </configuration>
 </component>

@@ -1,9 +1,9 @@
 
 \subsection{Mobile Client}
 
-Mit dem Projekt ''IP5 Cloudbasiertes Praxisrufsystem''\cite{ip5} wurde bereits eine mobile Applikation für Praxisruf umgesetzt.
-Mit dieser Applikation können bereits heute Benachrichtungen über Praxisruf versendet und empfangen werden.
-Die bestehende Applikation wurde mit Nativescript als Multi-Platform Applikation gebaut.
+Mit dem Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' wurde bereits eine mobile Applikation für Praxisruf umgesetzt.
+Mit dieser Applikation können bereits heute Benachrichtungen über Praxisruf versendet und empfangen werden.\cite{ip5}
+Die bestehende Applikation wurde mit Nativescript\cite{nativescript} als Multi-Platform Applikation gebaut.
 Um die Wartbarkeit und Hardware- sowie Betriebssystemkomaptibilität zu gewährleisten wurde im Fazit des Vorgängerprojekts empfohlen,
 die Applikation neu als native Applikation für iOS und Android zu schreiben.\cite{ip5}
 
@@ -16,51 +16,49 @@ Dadurch wird es möglich, regelmässig ein Signal abzuspielen um die Praxismitar
 
 \subsubsection*{Programmiersprache}
 
-Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift als Standard gesetzt.\cite{ios_swift}
-
+Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift Industriestandard.\cite{ios_swift}
+Der native iOS Client für Praxisruf wird deshalb mit Swift implementiert.
 
 \subsubsection*{Frameworks}
 
 Für die Umsetzung von iOS Applikationen stellt Apple die zwei Frameworks UIKit\cite{ios_uikit} und SwiftUI\cite{ios_swift_ui} zur Verfügung.
 UIKit ist das ältere der beiden Frameworks und ist seit iOS 2.0 verfügbar.
-Dementsprechend ist das Framework ausgereifter und bietet viele Funktionen zur Integration einer Applikation mit iOS.
-Es hat allerdings den Nachteil das es schwerer zu erlernen und langsamer zu schreiben ist. (Citation Needed)
+Dementsprechend ist das Framework ausgereifter und bietet viele Funktionen zur Integration einer Applikation mit iOS.\cite{ios_uikit}
 
-SwiftUI ist deutlich neuer als UIKit und steht seit iOS 13.0 zur Verfügung.
-Es hat eine tiefere Einstiegshürde als UIKit und ist grundsätzlich einfacher zu schreiben und warten (Citation Needed).
-In den Worten von Apple selbst: "SwiftUI helps you build great-looking apps across all Apple platforms with the power of Swift — and as little code as possible."\cite{ios_swift_ui}
+SwiftUI ist deutlich neuer und steht seit iOS 13.0 zur Verfügung.
+Auf der offiziellen Dokumentationsseite zu SwiftUI schreibt Apple "SwiftUI helps you build great-looking apps across all Apple platforms with the power of Swift — and as little code as possible."\cite{ios_swift_ui}
+SwiftUI fokussiert sich auf eine declarative Syntax, welche es leichtgewichtiger als UIKit macht.
+Es bietet zudem ausgezeichnete Integration des Entwicklungsworkflows in die XCode Entwicklungsumgebung und viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten.
+Dadurch wird es einfacher eine Benutzeroberfläche mit dem nativem Look und Feel einer nativen iOS Applikation umzusetzten.
 
-SwiftUI bietet zudem ausgezeichnete Integration des Entwicklungsworkflows in die XCode Entwicklungsumgebung.
-Es bietet schnelle live previews der Komponenten die geschrieben werden.
-Dies vereinfacht Design und Umsetzung der Ansichten.
+Da SwiftUI deutlich neuer ist als UIKit, ist es möglich das es noch nicht alle Funktionen und Betriebssystem Integrationen unterstützt die in UIKIt möglich sind.
+Dieses Problem wird dadurch aufgehoben, dass UIKit Funktionen nahtlos in SwiftUI integriert werden können.\cite{ios_swift_ui_uikit}
+Es ist also grundsätzlich möglich, alles was mit UIKit umgesetzt werden kann auch mit SwiftUI umuzusetzen.
 
 \clearpage
 
+\subsubsection*{Unterstützung Benachrichtigungen}
 
-\subsubsection*{Unterstützung Features}
+Um Notifikationen über Praxisruf versenden und Empfangen zu können, muss Firebase Cloud Messaging in die Applikation integriert werden können. 
+Firebase stellt für die Integration in iOS eine native Library zur Verfügung.\cite{firebase_github_ios} 
+Die Integration von Firebase Cloud Messaging kann über Funktionen dieser Library implementiert werden.
+Dies beinhaltet die Registrierung bei Firebase Cloud Messaging sowie das Empfangen der Benachrichtigungen über Firebase. \cite{firebase_ios}
+Damit Push-Benachrichtigungen über das Betriebssystem angezeigt werden können, müssen die Empfangen Benachrichtigungen an das Betriebssystem übergeben werden.
+Mit AppDelegates ist es möglich sich in den Lifecycle des Betriebssystems einzuhängen\cite{ios_app_delegate}.
+Dadurch ist es auch möglich, Vorder- und Hintergrundbenachrichtigungen über das Benachrichtigungszenter von iOS anzuzeigen\cite{firebase_ios}.
 
-Die Ansichten aus dem bestehenden Mobile Client können mit SwiftUI und UIKit umgesetzt werden.
-SwiftUI bietet weiter viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten,
-die es einfacher machen eine Benutzeroberfläche zu erstellen die den Look und Feel einer nativen iOS Applikation hat.
+Die Firebase Cloud Messaging Library kann sowohl mit SwiftUI als auch mit UIKit verwendet werden.
+AppDelegates sind ein Konzept welches aus UIKit stammt\cite{ios_app_delegate}.
+SwiftUI Applikationen können ohne AppDelegates implementiert werden.
+UIKit Funktionen können allerdings nahtlos mit SwiftUI integriert werden.\cite{ios_swift_ui_uikit}
+Die Firebase Cloud Messaging Library für iOS ermöglicht es also, Benachrichtigungen von Praxisruf sowohl mit UIKit als auch mit SwiftUI umzusetzten.
 
-Die funktionalen Anforderungen zum Versenden und Empfangen von Benachrichtigungen sowie
-dem Abspielen von regelmässigen Erinnerungstönen können unabhängig vom gewählten UI Framework umgesetzt werden.
 
-Für die Integration von Firebase Cloud Messaging stellt Firebase eine iOS Library zur Verfügung.\cite{firebase_github_ios}
-Die Registrierung bei Messaging Service\footnote{Vgl. IP5 Kapitel X} sowie das Versenden der Benachrichtigung kann direkt in über Services,
-welche die Library zur Verfügung stellt gemacht werden.
-Das Empfangen von Benachrichtigungen, benötigt Integration mit dem iOS Betriebssystem (citation needed).
-Mit sogenannten AppDelegates\cite{ios_app_delegate} ist es möglich sich in den Lifecycle des Betriebssystems einzuhängen
-und auf entsprechende Events zu hören.
-Um Hintergrundbenachrichtigungen empfangen zu können, muss die Methode ``HERE_GOES_THE_METHOD`` von UIApplicationDelegate verwendet werden.
-AppDelegates sind ein Konzept welches aus UIKit stammt.
-SwiftUI verwendet grundsätzlich keine AppDelegates. (Citation Needed)
-Es ist allerdings möglich, AppDelegates auch mit SwiftUI zu verwenden.
-Dazu müssen diese explizit eingebunden werden. (Citation Needed.)
+\subsubsection*{Unterstützung Hintergrundtasks}
 
 Erinnerungen können mit Boardmitteln aus den Libraries die Apple zur Verfügung stellt umgesetzt werden.
-Einerseits können mit Timer\cite{ios_timer} regelmässig wiederholbare Tasks erfasst werden, die ausgeführt werden, wenn die App geladen ist.
-Weiter können über die Klasse BGTaskScheduler\cite{ios_bgtaskscheduler} Tasks erfasst werden, die im Hintergrund ausgeführt werden.
+Einerseits können mit Timer regelmässig wiederholbare Tasks erfasst werden, die ausgeführt werden, wenn die App geladen ist.\cite{ios_timer}
+Weiter können über die Klasse BGTaskScheduler Tasks erfasst werden, die im Hintergrund ausgeführt werden.\cite{ios_bgtaskscheduler}
 
 \subsubsection*{Entscheid}
 
