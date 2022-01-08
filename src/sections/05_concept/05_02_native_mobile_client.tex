@@ -87,20 +87,50 @@ Ausgehende Anrufe können auch getätigt werden, wenn diese Option aktiviert ist
 
 
 \subsubsection*{Anbindung Cloudservice}
-Anbindung an REST Schnittstellen ist mit SwiftUI natürlich Möglich.
+
+Anbindung nötig für Configuration, Notification, Speech Synth und Signaling.
+Configuration, Notification und Speech Synth Anbindung findet über REST/HTTP statt.
+Signaling findet über Websocket Anbindung statt.
+Das wird im Signaling Kapitel beschrieben.
+
+Basisklasse bietet URLSession Klasse für Rest Requests.
+Keine hüschen Http Client.
+Deshalb machen wir selber einen.
 Ein zentraler API Service wird erstellt.
-Pro Domain die angesprochen wird, wird eine Extension erstellt.
-Der Api Service macht den Rest call, setzt authentication.
-Es muss für jeden Api Call ein Callback mitgegeben werden, dass bei completion ausgeführt wird.
-Dabei muss dieses Callback den Erfolgs und den Fehlerfall behandeln. \\
+Bietet Methoden generische Methoden für GET, POST, PUT und DELETE an.
+Beinhaltet Basisurl für Praxisurf API.
+Parameter subUrl für spezifischen Ressourcen Pfad.
+Parameter completion ist ein Callback für Result<T, PraxisrufApi>.
+Result ist Klasse Basislibrary mit Typ für erfolgs und Fehlerfall.
+Type für erfolgsfall ist generisch und wird vom Aufrufer mitgegeben.
+Typ für Fehlerfall ist immer PraxisrufApi.
+Post und Put sollen zusätzlichen Parameter für RequestBody beinhalten.
+API Service erstellt request aus URL, Methode und Body.
+API Service setzt Authentication Header mit Bearer Token.
+Das Token liest er dazu aus dem KeyStore.
+Ist kein Token vorhanden, wird completion.fehlerfall mit noCredentials aufgerufen.
+Andernfalls wird der Request abgesetzt.
+Im Erfolgsfall wird der Body der Response nach T geparsed und completion.erfolg aufgerufen.
+Im Fehlerfall wird completion.error aufgerufen.
+Pro Domäne die angesprochen wird, wird eine Extionsionklasse erstellt.
+Diese bietet Methoden mit sprechenden Namen für die angesprochene Funktionalität.
+Die Methoden darin rufen die get, post, put und delete Methoden des API Service mit den entsprechenden Parametern auf.
+
+Mit dieser Lösung steht ein Service zur verfügung, über welchen REST Calls einfach gemacht werden können.
+Dank der generischen Methoden im Basis Service können neue Calls einfach hinzugefügt werden, ohne das Boilerplate Code wiederholt werden muss.
+Durch die completion Methoden kann zudem jeder Call den Bedürfnissen des Aufrufers entsprechend abgehandelt werden.
+Die Extension Klassen mit domänenspezifischen, sprechenden Methoden machen die verfügbaren Aufrufe übersichtlich.
+Die API wird immer einheitlich über den generischen Service angesprochen.
+Die Integration in den rest der Applikation über sprechende Namen führt dabei zu lesbarem und übersichtlicherem Code.
+
+
 
 Integration in die Benutzeroberfläche funktionert über einen zwischengeschalteten Service (ViewModel?).
 Dieses verwendet @ObservableObject um die View über den SwiftUI Lifecycle zu aktualisieren. \\
-
 Sämtliche Calls und Abläufe können mit diesen Mitteln analog zu IP5 umgesetzt werden.
 
 
-\subsubsection*{Anbindung Firebase}
+\subsubsection*{Anbindung Messaging Service}
 
 Die Anbindung von Firebase ist nicht rein mit SwiftUI möglich.
 Wir benötigen die Lifecycle Integration zu iOS, die mit den AppDelegates von UIKit möglich ist.
@@ -109,6 +139,15 @@ Die Anbindung an Firebase Messaging wird dementsprechend mit AppDelegates gelös
 Die Anbindung erfolgt damit wie in der offiziellen Dokumentation vorgesehen.
 Damit die Abhängigkeit zu AppDelegates minimiert ist, sollen innerhalb der AppDelegates nur minimale Logik ausgeführt werden.
 Die echte Logik wird an unabhängige Services delegiert.
+
+
+\subsubsection*{Anbindung Singaling}
+
+Lorem Ipsum\\
+
+\subsubsection*{Integration WebRTC}
+
+Lorem Ipsum\\
 
 
 \subsubsection*{Scheduled Reminder für Inbox}
