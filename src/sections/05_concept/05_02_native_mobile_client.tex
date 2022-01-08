@@ -4,7 +4,7 @@ Mit IP5 wurde bereits ein Client umgesetzt.
 Dieser muss für IP6 migiert werden.
 Hier wird beschrieben, wie die bestehenden Anforderungen mit dem nativen client umgesetzt werden können.
 
-\subsubsection*{Benutzeroberfläche}
+\subsubsection{Benutzeroberfläche}
 
 Die Ansichten zur Anmeldung und Zimmerauswahl werden analog zum bestehenden Mobile Client umgesetzt.
 Die Login Seite beinhaltet einen kurzen Willkommenstext und ein Logo für Praxisruf.
@@ -86,24 +86,28 @@ Ausgehende Anrufe können auch getätigt werden, wenn diese Option aktiviert ist
 \end{figure}
 
 
-\subsubsection*{Anbindung Cloudservice}
+\subsubsection{Anbindung Cloudservice}
 
-Anbindung nötig für Configuration, Notification, Speech Synth und Signaling.
-Configuration, Notification und Speech Synth Anbindung findet über REST/HTTP statt.
-Signaling findet über Websocket Anbindung statt.
-Das wird im Signaling Kapitel beschrieben.
+Der Mobile Client muss an die API des Cloudservices angebunden werden.
+Es wird eine Anbindung an die Domäne Configuration zur Anmeldung und Auswahl des gewünschten Zimmers, an die Domäne Notification zum Versenden von Benachrichtigungen und an die Domäne Speech Synthesis für den Bezug von Sprachdaten benötigt.
+Die Schnittstellen dieser Domänen stehen als REST Endpoints zur verfügung.
+In diesem Unterkapitel wird beschrieben, wie REST Aufrufe im nativen iOS Client integriert werden sollen.\footnote{Die Anbindung der Domäne Signaling findet nicht über REST statt und ist im Kapitel 5.2.4 beschrieben.}
 
-Basisklasse bietet URLSession Klasse für Rest Requests.
-Keine hüschen Http Client.
-Deshalb machen wir selber einen.
-Ein zentraler API Service wird erstellt.
-Bietet Methoden generische Methoden für GET, POST, PUT und DELETE an.
+Die Basisbibliothek für iOS Entwicklung bietet die Klasse URLSession, über welche Netzwerkaufrufe getätigt werden können.
+Über URLSession.shared steht zudem eine Standard Instanz zur Verfügung, über welche Anfragen erstellt werden können.\cite{ios_urlsession}
+Die Klasse UrlRequest ermöglicht es, Http-Request für eine URL mit Header und Body zu erstellen.\cite{ios_urlrequest}
+Um die Integration dieser Klassen in den Mobile Client zu vereinfach, wird ein zentraler Service mit dem Namen PraxisrufApi erstellt.
+Dieser kapselt das Erstellen, Befüllen und Absetzten der nötigen UrlRequest Instanzen und bietet öffentliche für die Http Verben Get, Post, Put und Delete an.
+
+
+
+
 Beinhaltet Basisurl für Praxisurf API.
 Parameter subUrl für spezifischen Ressourcen Pfad.
 Parameter completion ist ein Callback für Result<T, PraxisrufApi>.
 Result ist Klasse Basislibrary mit Typ für erfolgs und Fehlerfall.
 Type für erfolgsfall ist generisch und wird vom Aufrufer mitgegeben.
-Typ für Fehlerfall ist immer PraxisrufApi.
+Typ für Fehlerfall ist immer PraxisrufApi.g
 Post und Put sollen zusätzlichen Parameter für RequestBody beinhalten.
 API Service erstellt request aus URL, Methode und Body.
 API Service setzt Authentication Header mit Bearer Token.
@@ -123,14 +127,12 @@ Die Extension Klassen mit domänenspezifischen, sprechenden Methoden machen die 
 Die API wird immer einheitlich über den generischen Service angesprochen.
 Die Integration in den rest der Applikation über sprechende Namen führt dabei zu lesbarem und übersichtlicherem Code.
 
-
-
 Integration in die Benutzeroberfläche funktionert über einen zwischengeschalteten Service (ViewModel?).
 Dieses verwendet @ObservableObject um die View über den SwiftUI Lifecycle zu aktualisieren. \\
 Sämtliche Calls und Abläufe können mit diesen Mitteln analog zu IP5 umgesetzt werden.
 
 
-\subsubsection*{Anbindung Messaging Service}
+\subsubsection{Anbindung Messaging Service}
 
 Die Anbindung von Firebase ist nicht rein mit SwiftUI möglich.
 Wir benötigen die Lifecycle Integration zu iOS, die mit den AppDelegates von UIKit möglich ist.
@@ -141,11 +143,11 @@ Damit die Abhängigkeit zu AppDelegates minimiert ist, sollen innerhalb der AppD
 Die echte Logik wird an unabhängige Services delegiert.
 
 
-\subsubsection*{Anbindung Singaling}
+\subsubsection{Anbindung Singaling}
 
 Lorem Ipsum\\
 
-\subsubsection*{Integration WebRTC}
+\subsubsection{Integration WebRTC}
 
 Lorem Ipsum\\
 
