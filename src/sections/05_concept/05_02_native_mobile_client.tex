@@ -1,0 +1,117 @@
+\subsection{Nativer Mobile Client}
+
+Mit IP5 wurde bereits ein Client umgesetzt.
+Dieser muss für IP6 migiert werden.
+Hier wird beschrieben, wie die bestehenden Anforderungen mit dem nativen client umgesetzt werden können.
+
+\subsubsection*{Benutzeroberfläche}
+
+Die Ansichten zur Anmeldung und Zimmerauswahl werden analog zum bestehenden Mobile Client umgesetzt.
+Die Login Seite beinhaltet einen kurzen Willkommenstext und ein Logo für Praxisruf.
+Darunter findet sich ein einfaches Formular zur Eingabe von Benutzername und Passwort.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup_login}
+        \caption{Mockup Login}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup_clientselect}
+        \caption{Mockup Zimmerwahl}
+    \end{minipage}\label{fig:Mockups-Login-ClientSelection}
+\end{figure}
+
+Die Zimmerauswahl besteht aus einem Seitentitel und einem Panel indem das gewünschte Zimmer ausgewählt werden kann.
+In der Auswahl sind alle Zimmer zu sehen, welche dem Benutzer zur Verfügung stehen.
+In der Kopfzeile sind die Schaltflächen ''Zurück'' und ''Fertig'' zu sehen.
+Die Schaltfläche ''Zurück'', bricht die Anledung ab und führt zurück auf die Login Ansicht.
+Die Schaltfläche ''Fertig'' bestätigt die Auswahl und leitet zur Hauptansicht weiter.
+Wird bestätigt, ohne dass ein Zimmer angewählt ist, wird dem Benutzer eine Fehlermeldung angezeigt und nicht zur Hauptansicht weitergeleitet.
+
+\clearpage
+
+In der Hauptansicht gliedert sich in die Bereiche Home, Inbox und Einstellungen.
+Zwischen den drei Bereichen kann über eine Leiste am unteren Ende des Bildschirms navigiert werden.
+Die Ansicht Home zeigt dem Benutzer die Buttons, über welche er Meldungen versenden und Anrufe in der Gegensprechanlage starten kann.
+Wird ein Anruf gestartet, wird die Ansicht für aktive Anrufe angezeigt.
+Diese zeigt dem Benutzer den Titel des gestarteten Anrufs, sowie eine Liste aller Teilnehmer zusammen mit dem Verbindungsstatus jedes Teilnehmers.
+Der Titel des Anrufes entspricht dem Anzeigetext des entsprechenden Buttons für ausgehende Anrufe und dem Namen des Anrufers für empfangene Anrufe.
+Neben den Anrufinformationen zeigt die Ansicht für aktive Anrufe drei Buttons.
+Über diese können Microfon und Lautsprecher des eigenen Gerätes stummgeschaltet werden.
+Weiter kann über der Anruf über den dritten Button beendet werden.
+Nach einem beendeten Anruf, wird zurück auf die Hauptansicht weitergeleitet.
+Für den Anrufern ist das immer der Home Bereich.
+Für den Empfänger entspricht es dem Bereich, der vor dem Empfang des Anrufes angezeigt wurde.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup_intercom}
+        \caption{Mockup Home}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup_call}
+        \caption{Mockup Aktiver Anruf}
+    \end{minipage}\label{fig:Mockups-Home-ActiveCall}
+\end{figure}
+
+Der Bereich Inbox zeigt eine Liste der empfangenen Meldungen sowie der empfangenen und verpassten Anrufe.
+Für Meldungen wird der Titel der Benachrichtigung gefolgt vom Namen des Versenders in Klammern sowie der Haupttext der Meldung angezeigt.
+Für Anrufe wird der Name des Anrufers und ein Text der besagt ob es sich um einen empfangenen, verpassten oder abgelehnten Anruf handelt angezeigt.
+Einträge für Meldungen sowie verpasste und abgelehnte Anrufe müssen durch antippen quittiert werden.
+Solange unquittierte Meldungen oder Anrufe in der Inbox sind ertönt, wird im Abstand von 60 Sekunden eine Benachrichtigung angezeigt, die den Benutzer erinnert, die Inbox zu quittieren.
+Der Bereich Settings zeigt den Namen des aktuellen Benutzers und ausgewählten Zimmers.
+Über die Schaltfläche Abmelden, kann sich der Benutzer aus der Applikation abmelden.
+Die Schaltfläche Benachrichtigungen vorlesen ist standardmässig aktiviert.
+Wird die Option deaktiviert, werden Benachrichtigungen nie vorgelesen.
+Die Schaltfläche Anruge empfangen ist ebenfalls standardmässig aktiviert.
+Wird diese Option deaktiviert, werden alle empfangenen Anrufe automatisch abgelehnt und stattdessen eine Benachrichtigung angezeigt.
+Ausgehende Anrufe können auch getätigt werden, wenn diese Option aktiviert ist.
+
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup_inbox}
+        \caption{Mockup Inbox}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup_settings}
+        \caption{Mockup Einstellungen}
+    \end{minipage}\label{fig:Mockups-Inbox-Settings}
+\end{figure}
+
+
+\subsubsection*{Anbindung Cloudservice}
+Anbindung an REST Schnittstellen ist mit SwiftUI natürlich Möglich.
+Ein zentraler API Service wird erstellt.
+Pro Domain die angesprochen wird, wird eine Extension erstellt.
+Der Api Service macht den Rest call, setzt authentication.
+Es muss für jeden Api Call ein Callback mitgegeben werden, dass bei completion ausgeführt wird.
+Dabei muss dieses Callback den Erfolgs und den Fehlerfall behandeln. \\
+
+Integration in die Benutzeroberfläche funktionert über einen zwischengeschalteten Service (ViewModel?).
+Dieses verwendet @ObservableObject um die View über den SwiftUI Lifecycle zu aktualisieren. \\
+
+Sämtliche Calls und Abläufe können mit diesen Mitteln analog zu IP5 umgesetzt werden.
+
+
+\subsubsection*{Anbindung Firebase}
+
+Die Anbindung von Firebase ist nicht rein mit SwiftUI möglich.
+Wir benötigen die Lifecycle Integration zu iOS, die mit den AppDelegates von UIKit möglich ist.
+Auch mit SwiftUI können AppDelegates verwendet werden.
+Die Anbindung an Firebase Messaging wird dementsprechend mit AppDelegates gelöst.
+Die Anbindung erfolgt damit wie in der offiziellen Dokumentation vorgesehen.
+Damit die Abhängigkeit zu AppDelegates minimiert ist, sollen innerhalb der AppDelegates nur minimale Logik ausgeführt werden.
+Die echte Logik wird an unabhängige Services delegiert.
+
+
+\subsubsection*{Scheduled Reminder für Inbox}
+IOS Development unterstützt scheduled tasks.
+
+\clearpage
