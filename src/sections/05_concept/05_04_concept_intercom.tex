@@ -41,7 +41,7 @@ Erweiterung Admin UI für Konfiguration CallType \\
 Praxisruf wird um die Funktion einer Gegensprechanlage erweitert.
 Dabei soll von einem Administrator zentral konfiguriert werden können, zwischen welchen Clients Sprachverbindungen
 aufgebaut werden können.
-Damit dies möglich ist, sind Änderungen an der Configuration Domain des Cloud Service von Praxisruf notwendig.
+Damit dies möglich ist, sind Änderungen an der Configuration Domain des Cloudservice von Praxisruf notwendig.
 
 Praxisruf bietet bereits heute die Möglichkeit Buttons zu konfigurieren, über welche Benachrichtigungen versendet werden können.
 Diese Buttons werden mit der Entität NotificationType konfiguriert, welche wiederum einer ClientConfiguration zugeordnet werden können.
@@ -81,15 +81,15 @@ Dieses muss an den Empfänger übermittelt werden.
 Dieser antwortet schliesslich mit einer Answer, welche an den Sender übermittelt werden ist.
 Bevor die Verbindung aufgebaut ist, kennen die beiden Clients sich gegenseitig noch nicht.
 Es braucht deshalb eine Instanz, welche beide Seiten kennt und die Übermittlung der Daten übernehmen kann.
-Bei Praxisruf fällt diese Aufgabe dem Cloud Service zu.
-Um dies zu ermöglichen wird Cloud Service umeine Schnittstelle erweitert, die es ermöglicht langlebige Verbindungen
+Bei Praxisruf fällt diese Aufgabe dem Cloudservice zu.
+Um dies zu ermöglichen wird Cloudservice umeine Schnittstelle erweitert, die es ermöglicht langlebige Verbindungen
 zu öffnen und registrieren.
 Sobald ein Client sich angemeldet hat, baut er eine Verbindung zum CloudService auf.
 Beim Verbindungsaufbau gibt der Client seine technische Identifikation mit.
-Der Cloud Service kann damit intern eine der verfügbaren Verbindungen und den dazugehörigen Identifikatoren führen.
+Der Cloudservice kann damit intern eine der verfügbaren Verbindungen und den dazugehörigen Identifikatoren führen.
 Diese Liste kann beim Verbindungsaufbau verwendet werden, um die Offers und Answers an die jeweiligen Clients zu übermitteln.
 
-Dieses Konzept wird im intercom Modul des Cloud Service umgesetzt.
+Dieses Konzept wird im intercom Modul des Cloudservice umgesetzt.
 Um die Funktionalität zu ermöglichen werden zwei Komponenten benötigt.
 Diese kapseln die Funktionalität die unabhängig von der Technologie zum Verbindungsaufbau notwendig ist.
 Um sicherzustellen, dass diese Unabhägigkeit bleibt, werden hier die Interfaces für diese beiden Komponenten spezifiziert.
@@ -131,20 +131,20 @@ Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung
 
 Wenn der Praxismitarbeitende im Mobile Client einen Button der Gegensprechanlage tippt, soll eine Sprachverbindung zu anderen Clients aufgebaut werden.
 Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client nicht, zu welchen Clients diese Verbindung aufgebaut werden soll.
-Als erstes muss deshalb beim Cloud Service angefragt werden, welche Clients mit dem betätigten Button angesprochen werden sollen.
-Der Cloud Service bietet dazu einen Endpoint an über den die technischen Identifikatoren die in der CallGroup des verwendeten Buttons hinterlegt sind geladen werden.
+Als erstes muss deshalb beim Cloudservice angefragt werden, welche Clients mit dem betätigten Button angesprochen werden sollen.
+Der Cloudservice bietet dazu einen Endpoint an über den die technischen Identifikatoren die in der CallGroup des verwendeten Buttons hinterlegt sind geladen werden.
 
 Der Mobile Client kennt nun die technischen Identifikatoren der Clients, zu denen eine Verbindung aufgebaut werden soll.
-Um die Peer To Peer Verbindung zu diesen Clients aufzubauen, müssen nun weitere Nachrichten mit dem Cloud Service ausgetauscht werden.
-Alle verfügbaren Clients haben sich bei der Anmeldung mit dem Cloud Service verbunden.
-Der Cloud Service führt eine Liste über die verfügbaren Verbindungen und die dazugehörigen technischen Identifikatoren.
+Um die Peer To Peer Verbindung zu diesen Clients aufzubauen, müssen nun weitere Nachrichten mit dem Cloudservice ausgetauscht werden.
+Alle verfügbaren Clients haben sich bei der Anmeldung mit dem Cloudservice verbunden.
+Der Cloudservice führt eine Liste über die verfügbaren Verbindungen und die dazugehörigen technischen Identifikatoren.
 Über diese Verbindungen werden nun die Nachrichten ausgetauscht die zum aufbauen der WebRTC Verbindung benötigt werden.
 Der Austausch dieser Nachrichten folgt dem Interactive Connection Establishment Protokoll (ICE).
 Der Client initialisiert für jede der erhaltenen client Ids einen Rtc Connection.
 Dies dient als Endpunkt der Connection auf seiner Seite.
-Anschliessend Sendet der Client ein Anfrage an den Cloud Service.
+Anschliessend Sendet der Client ein Anfrage an den Cloudservice.
 Dieses Anfrage beinhaltet das ICE Offer und die Client Ids des von Ausgangs- und Ziel-Client.
-Der Cloud Service findet die Verbindung des Zieles anhand der Client Id und leitet das ICE Offer und Ausgangs Client Id über die registrierte Verbindung an den Empfänger weiter.
+Der Cloudservice findet die Verbindung des Zieles anhand der Client Id und leitet das ICE Offer und Ausgangs Client Id über die registrierte Verbindung an den Empfänger weiter.
 Wenn der Empfänger das ICE Offer erhält, initialisiert er auf seiner Seite die Rtc Connection und sendet eine Anfrage mit ICE Antwort und originaler Ausgangs Client Id an den Server zurück.
 Dieser leitet die Anfrage dann analog dem ICE Offer an die Verbindung des ausgehenden Clients weiter.
 Sobald dieser die Antwort erhält, ist die Rtc Connection bestätigt und die Sprachverbindung ist initialisiert.

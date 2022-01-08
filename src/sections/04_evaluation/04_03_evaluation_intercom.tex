@@ -37,9 +37,9 @@ Sämtliche Sprachdaten werden direkt über die Peer To Peer Verbindungen zwische
 Dies hat den Vorteil, dass die Infrastruktur schlank gehalten werden kann.
 Zudem kann der Signaling Service auf die eigenen Bedürfnisse zugeschnitten werden.
 Die Kanäle über die Signale ausgetauscht werden, können frei gewählt werden.
-Das Signaling im Kontext von Praxisruf kann damit im Cloud Service implementiert werden.
+Das Signaling im Kontext von Praxisruf kann damit im Cloudservice implementiert werden.
 Für die Benachrichtigung bei verpassten Anrufen können eigene Meachanismen eingebunden werden.
-Im Fall von Praxisruf, kann dafür der Notification Teil des Cloud Services verwendet werden.
+Im Fall von Praxisruf, kann dafür der Notification Teil des Cloudservices verwendet werden.
 Diese Flexibilität bedeutet auch, dass der Signaling Service weitgehend unabhängig von der spezifischen Technologie implementiert werden kann.
 
 \clearpage
@@ -58,7 +58,7 @@ Um dies zu ermöglichen ist aber wieder Infrastruktur nötig, über welche Sprac
 \subsubsection{Entscheidung}
 
 Die Funktion Gegensprechanlage wir mit WebRTC umgesetzt.
-Dazu wird der Cloud Service um ein Modul erweitert, welches Signaling Informationen vermittelt.
+Dazu wird der Cloudservice um ein Modul erweitert, welches Signaling Informationen vermittelt.
 Im Mobile Client wird die WebRTC iOS Library integriert, um Peer To Peer Sprachverbindungen aufzubauen.
 
 Durch die Verwendung von WebRTC, können Sprachverbindungen aufgebaut werden, ohne einen neuen externen Service zu integrieren.

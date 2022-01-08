@@ -4,7 +4,7 @@
 
 Dieses Kapitel beschreibt die Erweiterungen und Anpassungen an der Systemarchitektur des bestehenden Praxisrufsystems.
 Das System wird um Komponenten zur Signalvermittlung und Sprachsynthese erweitert.
-Weiter wird die interne Struktur des Cloud Services angepasst um die Weiterentwicklung und Betrieb des Systems zu optimieren.
+Weiter wird die interne Struktur des Cloudservices angepasst um die Weiterentwicklung und Betrieb des Systems zu optimieren.
 
 \begin{figure}[h]
     \centering
@@ -22,7 +22,7 @@ Dabei wird für jede Komponente beschrieben, welche Aufgaben ihr zufallen und we
 \textbf{Cloudservice}
 
 Der Cloudservice bildet das zentrale Backend des Praxisruf Systems.
-Der Cloud Service wird in die zwei Domänen Notification und Configuration aufgeteilt.
+Der Cloudservice wird in die zwei Domänen Notification und Configuration aufgeteilt.
 Dabei ist die Domäne Notification für das Versenden von Benachrichtigungen und die Domäne Configuration für die Verwaltung und Auswertung der Konfigurationen verantwortlich.
 Zwischen den beiden Domänen besteht eine gerichtete Abhängigkeit.
 Die Domäne Notification benötigt zum Versenden von Benachrichtigungen Informationen aus der Configuration Domäne.
@@ -38,7 +38,7 @@ Nachdem die Auftrennung in Module statgefunden hat, wird der Cloudservice um zwe
 Das neue Modul Signaling ist für die Signalvermittlung zwischen Mobile Clients verantwortlich.
 Dies ist nötigt um Peer To Peer Sprachverbindungen zwischen Mobile Clients aufzubauen.
 Das Modul Signaling hat eine gerichtete Abhängigkeit zum Module Notification.
-Über das Notification Modul sollen Mobile Clients informiert werden, wenn ein Signal nicht versendet werden konnte, weil sie nicht mit dem Cloud Service verbunden waren.
+Über das Notification Modul sollen Mobile Clients informiert werden, wenn ein Signal nicht versendet werden konnte, weil sie nicht mit dem Cloudservice verbunden waren.
 Das neue Modul Speech Synthesis dient als einheitliche Schnittstelle zu einem externen Seepch Synthesis Service.
 Dadurch kann auch wenn ein Android oder Web Client kommt, dieser genau gleich angebunden werden.
 Garantie, dass die Konfiguration und Funktionsweise dieselbe für alle Clients ist. \\
@@ -73,7 +73,7 @@ Als Messaging Service wird Firebase Cloud Messaging verwendet.\\
 Um Sprach Synthese zu ermöglichen, wird ein externer Service angebunden.
 Dieser übernimmt die Konvertierung von Text aus Benachrichtigungen zu synthetisierter Sprache.
 Die Anbindung an den Speech Synthesis Service wird ausschliesslich im Cloudservice implementiert.
-Sämtliche andere Komponenten die Sprachdaten benötigen, fragen diese beim Cloud Service ab.
+Sämtliche andere Komponenten die Sprachdaten benötigen, fragen diese beim Cloudservice ab.
 Welcher die Abfrage an den Speech Synthesis Service übernimmt und die Resultate dem Anfrager zur Verfügung stellt.
 Als Speech Synthesis Service wird Amazon Polly verwendet.
 
@@ -81,8 +81,8 @@ Als Speech Synthesis Service wird Amazon Polly verwendet.
 
 \subsubsection{Modularisierung CloudService}
 
-Mit dem Projekt IP5 Cloudbasiertes Praxisrufsystem wurde der Cloud Service implementiert.
-Der Cloud Service trennt intern die beiden Domänen Notification und Configuration.
+Mit dem Projekt IP5 Cloudbasiertes Praxisrufsystem wurde der Cloudservice implementiert.
+Der Cloudservice trennt intern die beiden Domänen Notification und Configuration.
 Die Domäne Configuration ist für die Verwaltung und Auswertung der Konfiguration des Systems verantwortlich.
 Die Domäne Notification ist für das Versenden von Benachrichtigungen verantwortlich.
 Für das Versenden von Benachrichtigungen werden in der Notification Domäne Informationen aus der Configuration Domäne benötigt.
@@ -99,7 +99,7 @@ Neu soll es pro Domäne ein Gradle Modul geben, welches sämtliche Domänenobjek
 Dadurch ist garantiert, dass die Domänen sauber voneinander getrennt sind.
 Sämtliche Kommunikation zwischen den Modulen muss über REST-Schnittstellen geschehen.
 
-Um den Betrieb des Cloud Services für dieses Projekt möglichst simpel zu halten, werden die einzelnen Teile immer noch als monolithische Applikation gestartet.
+Um den Betrieb des Cloudservices für dieses Projekt möglichst simpel zu halten, werden die einzelnen Teile immer noch als monolithische Applikation gestartet.
 Dazu wird ein Modul \textbf{App} erstellt, welches alle Domänen Module kapselt und in einer Applikation startet.
 Um die Applikation zukünftig in einzelne Micro Services aufzutrennen, müssen die einzelnen Module um eine Klasse erweitert werden, welche nur dieses Modul als Applikation startet.
 Komponenten, welche in mehr als einer Domäne verwendet werden, werden in ein zusätzliches \textbf{Commons} Modul verlegt.

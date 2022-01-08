@@ -19,7 +19,7 @@ Sowohl das Flag isTextToSpeech als auch das version Property werden neu beim Ver
 Sprachsynthese kann auf Client Seite dekativiert werden.
 Ist es deaktiviert, werden keine Benachrichtigungen vorgelesen.
 Audio Signal, dass Benachrichtung empfangen wurde ertönt aber trotzdem.
-Keine zusätzlichen Endpoints am Cloud Service nötig. \\
+Keine zusätzlichen Endpoints am Cloudservice nötig. \\
 
 \begin{figure}[h]
     \centering
@@ -33,8 +33,8 @@ Keine zusätzlichen Endpoints am Cloud Service nötig. \\
 
 \subsection*{Anbindung Sprachsynthese Service}
 
-Die Anbindung des Sprachsynthese Service erfolg zentral über den Cloud Service.
-Dazu wird der Cloud Service um ein modul Speech erweitert.
+Die Anbindung des Sprachsynthese Service erfolg zentral über den Cloudservice.
+Dazu wird der Cloudservice um ein modul Speech erweitert.
 Dieses Modul stellt einen Endpoint zur verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
 Einziger Parameter für diese Anfrage ist die technische Identifikation des Benachrichtigungstyps der relevanten Benachrichtigung.
 Das Speech-Modul kann anhand dieser Identifikation den NotificationType beim Configuration-Modul abholen.
@@ -48,7 +48,7 @@ Auf Client seite kann dieser Endpunkt nun als Download angesprochen werden.
 
 \lstinputlisting[caption=PraxisrufApi+Speech.swift,language=swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
 
-Um die Anbindung im Cloud Service vom konkreten Anbieter möglichst unabhängig zu machen, wird die Integration an den Speech Synthese Service über ein Interface abstrahiert.
+Um die Anbindung im Cloudservice vom konkreten Anbieter möglichst unabhängig zu machen, wird die Integration an den Speech Synthese Service über ein Interface abstrahiert.
 Soll ein neuer Sprachsyntese Service angebunden werden, muss lediglich dieses Interface für den neuen Service implementiert werden und alles andere kann unberührt bleiben.
 
 \clearpage
@@ -59,7 +59,7 @@ Für dieses Projekt wird AWS Polly verwendet.
 Dementsprechend wird das SprachSyntheseService Interface für AWS Polly implementiert.
 AWS Polly bietet einen Java SDK, welcher die Anbindung ermöglicht.
 Dieser SDK bietet alle Klassen die für die Anbindung an AWS Polly nötig sind.
-Da im Cloud Service Spring Boot verwendet wird, können die für die Verbindung nötigen Klassen mit einer Spring Config erstellt werden
+Da im Cloudservice Spring Boot verwendet wird, können die für die Verbindung nötigen Klassen mit einer Spring Config erstellt werden
 und dann über Dependency Injection im AwsPollySpeechSynthesis Service verwendet werden.
 
 \lstinputlisting[caption=AwsConfiguration.java,language=java,label={lst:AwsConfiguration.java}]{listings/AwsConfiguration.java}
@@ -72,7 +72,7 @@ In der Implementation des Services kann nun über den injezierten AmazonPollyCli
 
 Benachrichtigungen für welche Sprachsynthese aktiviert ist, sollen beim Empfang automatisch vorgelesen werden.
 Dazu müssen die Sprachdaten geladen werden, wenn die Benachrichtigung empfangen werden.
-Diese Daten können über den neuen Speech Endpoint des Cloud Services bezogen werden.
+Diese Daten können über den neuen Speech Endpoint des Cloudservices bezogen werden.
 Die Informationen die dazu nötig sind, sind als Metadaten in der empfangenen Benachrichtigung vorhanden.
 
 \begin{figure}[h]
@@ -87,7 +87,7 @@ Wird eine Benachrichtigung empfangen, wird die Benachrichtigung auf dem Client a
 Anschliessend prüft der Client ob die Sprachdaten für die Empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
 Dies wird gemacht in dem er überprüft ob es im Applikationsverzeichnis bereits eine MP3-Datei für den Empfangenen Benachrichtigungstyp
 (NotificationType) in der Version der Empfangenen Benachrichtigung vorhanden ist.
-Sind die Daten bereits lokal vorhanden, wird keine Abfrage an den Cloud Service gespielt sondern die lokal vorhandene Sprachdatei abgespielt.
+Sind die Daten bereits lokal vorhanden, wird keine Abfrage an den Cloudservice gespielt sondern die lokal vorhandene Sprachdatei abgespielt.
 Sind die Daten lokal nicht oder nur in einer anderen Version vorhanden, werden die Daten beim Cloudservice angefragt.
 Sobald diese Daten geladen sind, werden sie in einer MP3 Datei mit Id und Version des Benachrichtigungstyps (NotificationType) gespeichert.
 

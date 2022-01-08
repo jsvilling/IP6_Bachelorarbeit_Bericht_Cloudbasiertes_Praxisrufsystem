@@ -6,7 +6,7 @@ Diese Sprachdatei muss Audio beinhalten, welches vom Mobile Client abgespielt we
 
 Diese Integration kann mit den Standardbibliotheken für iOS oder durch die Anbindung eines externen Providers umgesetzt werden.
 Die Anbindung eines externen Provider kann entweder direkt im Mobile Client implementiert werden.
-Alternativ das Backend von Praxisruf\footnote{Cloud Service} an den Provider angebunden werden und dem Mobile Client eine Schnittstelle bieten, um diese Daten abzufragen.
+Alternativ das Backend von Praxisruf\footnote{Cloudservice} an den Provider angebunden werden und dem Mobile Client eine Schnittstelle bieten, um diese Daten abzufragen.
 
 \subsubsection*{Apple Speech Synthesis}
 
@@ -23,7 +23,7 @@ Letztlich hat diese Variante den Nachteil, dass dieselbe Funktionaltät für ein
 Vom Auftraggeber ist explizit gewünscht, dass Infrastruktur und Services wo möglich über Amazon Webservices bestellt werden.\footnote{Siehe Kapitel 3 - F19}
 Mit dem Service ''Polly'' bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann.\cite{aws_polly}
 Amazon Webservices stellt dazu Libraries für iOS\cite{aws_polly_ios} als auch für Java zur Verfügung\cite{aws_polly_java}.
-Polly kann damit sowohl direkt in den nativen Mobile Client als auch in den Cloud Service integriert werden.
+Polly kann damit sowohl direkt in den nativen Mobile Client als auch in den Cloudservice integriert werden.
 
 Polly von AWS Webservices bietet eine Library für die Intagration in iOS. \cite{aws_polly_ios}
 Mit dieser Library ist es möglich, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren.
@@ -35,14 +35,14 @@ Weiter bringt auch diese Variante den Nachteil, dass der Mobile Client komplexer
 
 \clearpage
 
-Alternativ ist es möglich, die Anbindung des Sprachsyntheseproviders im Cloud Service vorzunehmen.
+Alternativ ist es möglich, die Anbindung des Sprachsyntheseproviders im Cloudservice vorzunehmen.
 Dies hat einerseits den Vorteil, dass alle Clients eine einheitliche Schnittstelle haben können.
 Sowohl iOS als auch Android und WebClients können die Audiodaten über genau dieselbe Schnittstelle beziehen.
 Dies ermöglicht es auch den Provider in Zukunft auszutauschen ohne in den Clients etwas verändern zu müssen.
 Die Option hat zusaätzlich den Vorteil, dass Optimierungen, die nicht Client spezifisch sind getroffen werden können.
 So wäre es möglich einen externen File Storage anzubinden auf, welchem Audiodaten gespeichert werden.
 Dadurch müsste der Sprachsynthese Provider weniger oft angesprochen werden.
-Die Variante hat den Nachteil, dass der Cloud Service komplexer wird.
+Die Variante hat den Nachteil, dass der Cloudservice komplexer wird.
 Durch die Integration von Sprachsynthese muss aber mindestens eine Komponente im System ausgebaut werden.
 Wie stark die Komplexität des System wächsts, kann jedoch minimiert werden, indem die neue Funktionalität gekapselt wird.
 Sie kann so umgesetzt werden, dass sie unabhängig von restlichen System bleibt und alle nötigen Daten über die Schnittstelle der anderen Module bezieht.\footnote{Siehe Kapitel 5.1}
@@ -50,7 +50,7 @@ Sie kann so umgesetzt werden, dass sie unabhängig von restlichen System bleibt 
 \subsubsection*{Entscheidung}
 
 Die Sprachsynthese wird durch die Anbindung des externen Providers AWS Polly umgesetzt.
-Der Cloud Service übernimmt die Kommunikation mit AWS Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
+Der Cloudservice übernimmt die Kommunikation mit AWS Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
 
 Durch diesen Ansatz kann die Abhängigkeit zu einem spezifischen Provider minimiert werden und die Anbindung für alle Client Plattformen gleich gelöst werden.
 Dies macht diese Variante zukunftssicher und einfacher betreibbar.
