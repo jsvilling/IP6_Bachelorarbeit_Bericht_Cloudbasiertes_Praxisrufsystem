@@ -228,18 +228,44 @@ Stattdessen definiert der CallClient ein Delegate Protocol, welches die notwendi
 
 \lstinputlisting[caption=CallClientDelegate.swift,language=java,label={lst:CallClientDelegate.swift}]{listings/CallClientDelegate.swift}
 
-Es wird eine Klass CalService erstellt.
-Der CallService instanziert den CallClient sowie den Signaling Client.
-Er implementiert die beiden Delegate Protocols und registriert sich als Delegate bei den beiden Services.
-Beim Empfangen von Benachrichtigungen können Signale so vom Signaling Client über den Call Service an den Client gelangen.
-Beim Versenden von Benachrichtigungen können Signale von Call Client über den Call Service an den Signaling Client versendet werden.
-Neben den Funktionen zur Integration von Call Client und Signaling Client, bietet führt der CallService die States die in der Benutzeroberfläche angezeigt werden.
-Dies beinhaltet den Status und Teilnehmer des aktiven Anrufes sowie Status von Lautsprecher und Microphon.
-Der Service wird in der View Komponente für Anrufe verwendet.
-Die View kann über den Service die Sprachverbindung stummschalten oder beenden.
+Um Anrufe in der Applikation verwenden zu können müssen CallClient und PraxisrufApi+Signaling in die Benutzeroberfläche integriert werden.
+Beide Applikationen definieren ein Delegate Protocol, welches die Funktionen spezifiziert, über welche die Komponenten eingebunden werden können.
+Es wird eine weitere Serviceklasse mit dem Namen CallService implementiert, welche beide Delegate Protocols implementiert.
+Dieser Service instanziert CallClient und PraxisrufApi+Signaling und registriert sich anschliessend als Delegate bei beiden Instanzen.
+Der CallService selbst wird in der View verwendet.
+Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und SignalingClient.
 
+Wenn der Benutzer einen Anruf startet, wird die View für aktive Anrufe geladen.
+Diese initialisiert den Anruf über den CallService.
+Der CallService ruft dazu als erstes den CallClient auf.
+Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt ein Signel, um den Empfänger zu informieren.
+Dieses Signal gibt er an den CallService weiter.
+Der CallService leitet das Signal an den SignalingClient weiter, welcher das Versenden an den Cloud Service übernimmt.
 
-\\
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Caller_Signaling.drawio}
+        \caption{MobileClient - Anruf Starten Signal}
+    \end{minipage}
+\end{figure}
+
+Das versendete Signal wird über das Signaling Modul des Cloud Service an den Empfänger übermittelt.
+Dieser empfängt das Signal über den SingalingClient.
+Der SignalingClient gibt das Signal über onSignalReceived an den CallService weiter.
+Der CallService aktiviert die Ansicht für aktive Anrufe und leitet das Signal an den CallClient weiter.
+Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt eine Signal zur Bestätigung.
+Dieses Signal wird wiederun über den CallService zum SignalingClient weiter zum Cloud Service versendet.
+Auf Starterseite, kann diese Bestätigung weiterverarbeitet werden.
+Welche Signale versendet werden und wie diese verarbeitet werden müssen, wird in Kapitel 5.4 detailliert beschreiben.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Receiver_Signaling.drawio}
+        \caption{Mobile Client Anruf Empfangen Signal}
+    \end{minipage}
+\end{figure}
 
 
 \subsubsection{Scheduled Reminder für Inbox}
