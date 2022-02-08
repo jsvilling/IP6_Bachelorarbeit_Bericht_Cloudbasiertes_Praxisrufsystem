@@ -140,10 +140,30 @@ Die View, welche einen Integration Service verwendet, kann Bindings auf diese @P
 
 \subsubsection{Anbindung Messaging Service}
 
-Die Anbindung von Firebase ist nicht rein mit SwiftUI möglich.
-Wir benötigen die Lifecycle Integration zu iOS, die mit den AppDelegates von UIKit möglich ist.
-Auch mit SwiftUI können AppDelegates verwendet werden.
-Die Anbindung an Firebase Messaging wird dementsprechend mit AppDelegates gelöst.
+Als Messaging Service wird Firebase Cloud Messaging verwendet.
+Firebase bietet eine native library mit welcher Firebase Cloud Messaging in iOS Clients integriert werden kann.
+Diese Integration kann allerdings nicht mit dem Mitteln von SwiftUI implementiert werden.
+Dies liegt daran, dass für das Empfangen von Benachrichtigungen und das Anzeigen von Push Benachrichtigungen Integration mit dem Betriebsystem notwendig ist.
+Diese Integration kann bis heute nur über AppDelegates aus der UIKit Welt umgesetzt werden.
+SwiftUI Applikationen können oft ohne AppDelegates implementiert werden.
+Sobald aber Integration mit dem Betriebsystem notwendig ist, müssen AppDelegates verwendet werden.
+Dazu können AppDelegates bei der Initialisierung der Applikation registriert werden.
+
+Zur Anbindung von Firebase Cloud Messaging an den Mobile Client wird dementsprechend ein AppDelegate implementiert.
+In diesem AppDelegate müssen vier Funktionen implementiert werden:
+
+\begin{enumerate}
+    \item Beim Start der Applikation muss sich der Mobile Client beim Messaging Service registrieren.
+    \item Das Token, welches den Client beim Messaging Service identifiziert wird regelmässig erneuert. Der App Delegate muss darauf reagieren und das erneuerte Token an die Applikation übergeben.
+    \item Benachrichtigungen die im Vordergrund empfangen werden, müssen als Push Benachrichtigugn angezeigt werden und an die Applikation übergeben werden.
+    \item Benachrichtigungen die im Hintergrund empfangen werden, müssen angezeigt werden.
+    \item Sobald die Applikation wieder in den Vordergrund tritt, müssen im Hintergrund empfangene Benachrichtigungen der Applikation übergeben werden.
+    \item Wenn er Client sich abmeldet muss die Registrierung beim Messaging Service entfernt werden. Dies geschieht ebenfalls im AppDelegate.
+\end{enumerate}
+
+
+
+
 Die Anbindung erfolgt damit wie in der offiziellen Dokumentation vorgesehen.
 Damit die Abhängigkeit zu AppDelegates minimiert ist, sollen innerhalb der AppDelegates nur minimale Logik ausgeführt werden.
 Die echte Logik wird an unabhängige Services delegiert.
