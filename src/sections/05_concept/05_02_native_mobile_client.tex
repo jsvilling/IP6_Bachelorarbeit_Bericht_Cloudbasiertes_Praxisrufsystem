@@ -174,7 +174,6 @@ Die Informationen aus der Empfangenen Benachrichtigung müssen anschliessend an 
 Der AppDelegate muss weiter Benachrichtigungen im Hintergrund empfangen und als Push Benachrichtigung anzeigen können.
 Sobald die Applikation wieder in den Vordergrund tritt, müssen die Daten dieser Benachrichtigung an die Applikation zur weitern Verarbeitung übergeben werden.
 
-
 \subsubsection{Anbindung Singaling}
 
 Für den Aufbau von Sprachverbindungen zwischen Mobile Clients müssen mehrere Signalmeldungen ausgetauscht werden.
@@ -210,12 +209,40 @@ Die Methoden onSignalReceived resp. onErrorReceived werden aufgerufen wenn ein S
 Im Fehlerfall soll wenn nötig eine Fehlermeldung angezeigt werden und die Verbindung repariert werden.
 Wenn eine Signalmeldung empfangen wurde, muss diese an die Applikation zu Verarbeitung weitergereicht werden.
 
-\subsubsection{Integration WebRTC}
+\subsubsection{Integration Sprachverbindung}
 
-Lorem Ipsum\\
+Neben austausch von Signalen muss auch die Sprachverbindung selbst verwaltet werden.
+Die Details der Sprachverbindung sind vendor spezifisch.
+Es wird deshalb eine eigene Klasse CallClient erstellt.
+Diese ist für das Verwalten von Verbindungen verantwortlich.
+Bei eingehenden Verbindungen muss sie signale empfangen, die Verbindung erstellen.
+Wenn nötig Antowrt Signale erstellen und zurückgeben.
+Bei ausgehenden Verbindungen muss sie Verbindung initialisieren.
+Es muss Signal erstellt und versendet werden.
+Weiter müssen Methoden angeboten werden um die Unterhaltung oder das Microphon zu muten.
+Und um die Verbindung zu schliessen.
+Und um den bei Änderung des internen Status, das UI entsprechend zu aktualisieren.
+
+Um die Integration der Sprachverbindung möglichst unabhängig und auswechselbar zu machen, wird der CalLClient nicht direkt in der View verwendet.
+Stattdessen definiert der CallClient ein Delegate Protocol, welches die notwendigen Callbacks definiert.
+
+\lstinputlisting[caption=CallClientDelegate.swift,language=java,label={lst:CallClientDelegate.swift}]{listings/CallClientDelegate.swift}
+
+Es wird eine Klass CalService erstellt.
+Der CallService instanziert den CallClient sowie den Signaling Client.
+Er implementiert die beiden Delegate Protocols und registriert sich als Delegate bei den beiden Services.
+Beim Empfangen von Benachrichtigungen können Signale so vom Signaling Client über den Call Service an den Client gelangen.
+Beim Versenden von Benachrichtigungen können Signale von Call Client über den Call Service an den Signaling Client versendet werden.
+Neben den Funktionen zur Integration von Call Client und Signaling Client, bietet führt der CallService die States die in der Benutzeroberfläche angezeigt werden.
+Dies beinhaltet den Status und Teilnehmer des aktiven Anrufes sowie Status von Lautsprecher und Microphon.
+Der Service wird in der View Komponente für Anrufe verwendet.
+Die View kann über den Service die Sprachverbindung stummschalten oder beenden.
 
 
-\subsubsectio{Scheduled Reminder für Inbox}
+\\
+
+
+\subsubsection{Scheduled Reminder für Inbox}
 IOS Development unterstützt scheduled tasks.
 
 \clearpage
