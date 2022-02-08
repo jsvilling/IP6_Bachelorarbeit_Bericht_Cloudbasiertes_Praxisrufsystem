@@ -269,6 +269,35 @@ Welche Signale versendet werden und wie diese verarbeitet werden müssen, wird i
 
 
 \subsubsection{Scheduled Reminder für Inbox}
-IOS Development unterstützt scheduled tasks.
+
+Der bestehende Mobile Client prüft in regelmässigen Abständen, ob ungelesene Benachrichtigungen in der Inbox vorhanden sind.
+Wenn ungelesene Benachrichtigungen gefunden werden, wird ein Benachrichtigungston abgespielt um den Praxismitarbeiter darauf aufmerksam zu machen.
+Diese Prüfung findet bisher nur statt, wenn die Applikation in Vordergrund aktiv ist und nicht, wenn sie minimiert ist.
+Für den nativen Mobile Client soll die Funktion analog umgesetzt werden.
+Um dies zu ermöglichen sind zwei Komponenten möglich.
+Erstens, wird InboxService erstellt welcher eine Liste der aktuellen Benachrichtigungen führt.
+Zweitens, benötigt es eine Komponente, welche diesen InboxService regelmässig überprüft und bei Bedarf den Erinnerungston abspielt.
+Die Standardbibliothek für iOS bietet eine Timer Klasse.
+Über diese ist es möglich auf einer View in regelmässigen Abständen Events auszulösen.\cite{ios_timer}
+Ein solcher Timer wird auf der Hauptansicht für angemeldete Benutzer registriert.
+Der Timer löst alle 60 Sekunden die Prüfung des InboxReminderService aus.
+
+Die Prüfung von Benachrichtigungen im Hintergrund, wird im Rahmen dieses Projektes nicht umgesetzt.
+Für künftige Erweiterungen ist es möglich diese Funktion zu implementieren.
+Um dies zu ermöglichen, müssen Benachrichtigungen als erstes nicht nur in Momory gehalten, sondern auf dem Gerät persistiert werden.
+So stehen die Daten auch zur Verfügung, wenn die Applikation nicht gestartet ist.
+Weiter muss ein  mit Hintergrundtask\cite{ios_bgtaskscheduler} implementiert und registriert werden, welcher die persistierten Daten lädt und die darauf die Prüfung des InboxReminderService ausführt.
+
+\subsubsection{Security}
+
+Keycloak integration für dieses Projekt out of scope.
+Authentifizierung und Authorisierung deshalb nur analog alter client.
+Für Websocket integration wie alter client.
+Basic auth bei start.
+Credentiels werden in keystore.
+Bearer token in ios keystore.
+In Api Service geladen und header gesetzt.
+Regelmässiger token refresh mit basic auth credentials.
+Mit Integration von keycloak muss sauberer token refresh mit refresh token implementiert werden.
 
 \clearpage
