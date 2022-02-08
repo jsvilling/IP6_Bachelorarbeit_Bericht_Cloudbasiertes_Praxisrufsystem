@@ -127,10 +127,16 @@ Die Extension Klassen mit domänenspezifischen, sprechenden Methoden machen die 
 Die API wird immer einheitlich über den generischen Service angesprochen.
 Die Integration in den rest der Applikation über sprechende Namen führt dabei zu lesbarem und übersichtlicherem Code.
 
-Integration in die Benutzeroberfläche funktionert über einen zwischengeschalteten Service (ViewModel?).
-Dieses verwendet @ObservableObject um die View über den SwiftUI Lifecycle zu aktualisieren. \\
-Sämtliche Calls und Abläufe können mit diesen Mitteln analog zu IP5 umgesetzt werden.
+Der Service zur API Integration wird nicht direkt in den View Komponenten verwendet.
+Es wird pro Domäne ein weiterer Service geschrieben, welche den Aufruf des API Services kapselt.
+Dieser Service bietet Methoden, über welche der API Service angesprochen werden kann.
+Die Methoden des Integration Services nehmen die Informationen, welche aus der Benutzeroberfläche Stammen als Parameter entgegen.
+Alle weiteren Informationen welche für den API Aufruf nötig sind, werden im Integration Service geladen.
+Dies beinhaltet Credentials, welche aus dem KeyStore geladen werden sowie die Daten der aktuell aktiven Client Configuration, welche aus den UserDefaults geladen werden.
 
+Die Integration Services werden als ObservableObjects implementiert.
+Die Resultate der API Calls werden im Service als Instanzvariable mit @Published gesetzt.
+Die View, welche einen Integration Service verwendet, kann Bindings auf diese @Published Resultate setzten.
 
 \subsubsection{Anbindung Messaging Service}
 
@@ -152,7 +158,7 @@ Lorem Ipsum\\
 Lorem Ipsum\\
 
 
-\subsubsection*{Scheduled Reminder für Inbox}
+\subsubsectio{Scheduled Reminder für Inbox}
 IOS Development unterstützt scheduled tasks.
 
 \clearpage
