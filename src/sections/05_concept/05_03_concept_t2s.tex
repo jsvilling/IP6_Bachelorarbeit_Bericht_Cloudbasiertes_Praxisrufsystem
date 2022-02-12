@@ -1,25 +1,23 @@
 \subsection{Sprachsynthese}
 
-\subsubsection*{Benutzeroberfläche}
+Dieses Kapitel beschreibt die Integration der Sprachsynthese in das Praxisrufsystem.
+Der Fokus liegt dabei auf den Abläufen zum Empfangen von Benachrichtigungen und dem Abrufen von Sprachdaten.
+Die Integration von notwendigen Schnittstellen im Mobile Client wird im Kapitel 5.2 beschrieben.
 
-Erweiterung Inbox um T2S Icon. \\
-Erweiterung Admin UI um Checkbox. \\
-Zusätzlich Configuration Page mit preferences. \\
+\subsubsection{Konfiguration}
 
-\subsubsection*{Konfiguration}
+Nach Use Case U03\footnote{Siehe Kapitel 3} muss der Praxismitarbeitende alle Sprachbenachrichtigungen stummschalten können.
+Dazu wird der Mobile Client um eine Settings Ansicht erweitert.
+Auf dieser Ansicht, kann der Benutzer auswählen, ob Benachrichtigungen vorgelesen werden sollen.
+Ist die Option deaktiviert, werden Benachrichtigungen nie vorgelesen.
 
-Erweiterung NotificationType um ein boolean Flag für isTextToSpeech.
-Wenn Aktiviert, wird Benachrichtigung bei Empfang vorgelesen.
-
-Weiter wird auf dem NotificationType ein Feld version hinzugefügt.
-Damit soll die aktuelle Version des NotificationType verfolgt werden.
-Wird eine Änderung am NotificationType persisteirt, wird die Version entsprechend angepasst.
-Sowohl das Flag isTextToSpeech als auch das version Property werden neu beim Versenden von Benachrichtigungen mitgegeben.
-
-Sprachsynthese kann auf Client Seite dekativiert werden.
-Ist es deaktiviert, werden keine Benachrichtigungen vorgelesen.
-Audio Signal, dass Benachrichtung empfangen wurde ertönt aber trotzdem.
-Keine zusätzlichen Endpoints am Cloudservice nötig. \\
+Benachrichtigungen für Praxisruf können über das Admin UI konfiguriert werden.
+Es kann pro Benachrichtigung Titel, Inhalt, Anzeigetext für Benachrichtigungsbuttons und eine Beschreibung erfasst werden.
+Diese Konfiguration wird über die Entität NotificationType verwaltet.
+Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Sprachsynthese relevant ist.
+Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen isTextToSpeech erweitert.
+Dieses Flag wird beim Versenden einer Benachrichtigung mitgesendet und kann vom Empfänger überprüft werden.
+Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Benachrichtigungen, welche dieses Flag auf TRUE gesetzt haben vorgelesen.
 
 \begin{figure}[h]
     \centering
@@ -29,29 +27,20 @@ Keine zusätzlichen Endpoints am Cloudservice nötig. \\
     \end{minipage}
 \end{figure}
 
+Neben dem Feld isTextToSpeech, wird die NotificationType Entity um ein weiteres Feld version erweitert.
+Dieses Version Feld beinhaltet eine Ganzzahl welche mit jeder Änderung inkrementiert wird.
+Das Version Feld wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet und kann auf Client Seite zur Implementierung eines Caches verwendet werden.
+
+
 \clearpage
 
-\subsection*{Anbindung Sprachsynthese Service}
+\subsubsection{Integration Cloud Service }
 
 Die Anbindung des Sprachsynthese Service erfolg zentral über den Cloudservice.
-Dazu wird der Cloudservice um ein modul Speech erweitert.
-Dieses Modul stellt einen Endpoint zur verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
-Einziger Parameter für diese Anfrage ist die technische Identifikation des Benachrichtigungstyps der relevanten Benachrichtigung.
-Das Speech-Modul kann anhand dieser Identifikation den NotificationType beim Configuration-Modul abholen.
-Dem NotificationType kann der Text entonmmen werden, der snytetisiert werden soll.
-Dieser Text kann dann an den Sprachsynthese Service gesendet werden.
-Das Resultat dieser Anfrage wird als Resultat der Abfrage vom Client zurückgegeben.
-
-\lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
-
-Auf Client seite kann dieser Endpunkt nun als Download angesprochen werden.
-
-\lstinputlisting[caption=PraxisrufApi+Speech.swift,language=swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
-
-Um die Anbindung im Cloudservice vom konkreten Anbieter möglichst unabhängig zu machen, wird die Integration an den Speech Synthese Service über ein Interface abstrahiert.
-Soll ein neuer Sprachsyntese Service angebunden werden, muss lediglich dieses Interface für den neuen Service implementiert werden und alles andere kann unberührt bleiben.
-
-\clearpage
+Dazu wird der Cloudservice um ein Modul Speech erweitert.
+Das Speech-Modul soll gleich wie die Module Configuration und Notification keine direkten Abhängigkeiten auf andere Cloud Service Module haben.
+Sämtliche notwendige Kommunikation zwischen den Modulen findet über Rest-Schnittstellen statt.
+Diese Unabhängigkeit ermöglicht es, das Modul zukünftig aus dem Cloud Service auszubauen und als eigenständigen Micro-Service zu betreiben.
 
 \lstinputlisting[caption=SpeechSynthesisService.java,language=java,label={lst:SpeechSynthesisService.java}]{listings/SpeechSynthesisService.java}
 
@@ -65,6 +54,34 @@ und dann über Dependency Injection im AwsPollySpeechSynthesis Service verwendet
 \lstinputlisting[caption=AwsConfiguration.java,language=java,label={lst:AwsConfiguration.java}]{listings/AwsConfiguration.java}
 
 In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
+
+\clearpage
+
+\subsubsection{Schnittstelle Cloud Service}
+
+Das Speech-Modul stellt einen Endpoint zur Verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
+Der Endpoint bietet dabei nicht die möglichkeit generische Daten in Sprachdaten zu verwandeln.
+Stattdessen erlaubt er es Sprachdaten für die aktuelste Version von bekannten Benachrichtigungstypen zu beziehen.
+Der einzige Parameter für diese Anfragen ist die technische Identifikation des Benachrichtigungstyps (NotificationType) der relevanten Benachrichtigung.
+Anhand dieses Identifikators können die Informationen des Benachrichtigugnstyps über die REST-Schnittstelle des Configuration-Modul angefragt werden.
+Dadurch können Änderungen an einem Benachrichtigungstyp direkt angewendet werden, ohne dass die Informationen auf dem Mobile Client aktualisiert werden müssen.
+Die geladenen Daten können dann verwendet werden um eine Anfrage an den Sprachsynthese Provier zu senden.
+Die vom Provider gelieferten Sprachdaten können anschliessend als Resultat an den Client zurügegeben werden.
+
+Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
+Die Sprachdaten werden dabei als Binärdaten mit Media Type "audio/mp3" im Body der Response zurückgegeben.
+Auf Client Seite, kann dieser Endpunkt so als Download angesprechen werden.
+
+\lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
+
+Auf Client seite kann dieser Endpunkt nun als Download angesprochen werden.
+
+\subsubsection{Integration Mobile Client }
+
+\lstinputlisting[caption=PraxisrufApi+Speech.swift,language=swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
+
+Um die Anbindung im Cloudservice vom konkreten Anbieter möglichst unabhängig zu machen, wird die Integration an den Speech Synthese Service über ein Interface abstrahiert.
+Soll ein neuer Sprachsyntese Service angebunden werden, muss lediglich dieses Interface für den neuen Service implementiert werden und alles andere kann unberührt bleiben.
 
 \clearpage
 
