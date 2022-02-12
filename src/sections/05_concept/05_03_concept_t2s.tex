@@ -11,14 +11,6 @@ Dazu wird der Mobile Client um eine Settings Ansicht erweitert.
 Auf dieser Ansicht, kann der Benutzer auswählen, ob Benachrichtigungen vorgelesen werden sollen.
 Ist die Option deaktiviert, werden Benachrichtigungen nie vorgelesen.
 
-Benachrichtigungen für Praxisruf können über das Admin UI konfiguriert werden.
-Es kann pro Benachrichtigung Titel, Inhalt, Anzeigetext für Benachrichtigungsbuttons und eine Beschreibung erfasst werden.
-Diese Konfiguration wird über die Entität NotificationType verwaltet.
-Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Sprachsynthese relevant ist.
-Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen isTextToSpeech erweitert.
-Dieses Flag wird beim Versenden einer Benachrichtigung mitgesendet und kann vom Empfänger überprüft werden.
-Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Benachrichtigungen, welche dieses Flag auf TRUE gesetzt haben vorgelesen.
-
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.75\textwidth}
@@ -27,6 +19,14 @@ Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Be
     \end{minipage}
 \end{figure}
 
+Benachrichtigungen für Praxisruf können über das Admin UI konfiguriert werden.
+Es kann pro Benachrichtigung Titel, Inhalt, Anzeigetext für Benachrichtigungsbuttons und eine Beschreibung erfasst werden.
+Diese Konfiguration wird über die Entität NotificationType verwaltet.
+Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Sprachsynthese relevant ist.
+Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen isTextToSpeech erweitert.
+Dieses Flag wird beim Versenden einer Benachrichtigung mitgesendet und kann vom Empfänger überprüft werden.
+Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Benachrichtigungen, welche dieses Flag auf TRUE gesetzt haben vorgelesen.
+
 Neben dem Feld isTextToSpeech, wird die NotificationType Entity um ein weiteres Feld version erweitert.
 Dieses Version Feld beinhaltet eine Ganzzahl welche mit jeder Änderung inkrementiert wird.
 Das Version Feld wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet und kann auf Client Seite zur Implementierung eines Caches verwendet werden.
@@ -34,28 +34,57 @@ Das Version Feld wird ebenfalls beim Versenden von Benachrichtigungen mitgesende
 
 \clearpage
 
-\subsubsection{Integration Cloud Service }
+\subsubsection{Integration Sprachsynthese Provider}
 
-Die Anbindung des Sprachsynthese Service erfolg zentral über den Cloudservice.
-Dazu wird der Cloudservice um ein Modul Speech erweitert.
-Das Speech-Modul soll gleich wie die Module Configuration und Notification keine direkten Abhängigkeiten auf andere Cloud Service Module haben.
+Die Anbindung des Sprachsynthese Providers erfolgt zentral im Cloudservice.
+Mobile Clients sprechen den Sprachsynthese Provider nie direkt an.
+Sie kommunizieren stattdessen mit dem Cloudservice, welcher Anfragen an den Sprachsynthese Provider ausführt und die Resultate an den Mobile Client weiterleitet.
+Dazu wird der Cloudservice um ein Modul mit dem Namen Speech Synthesis erweitert.
+Das Speech-Modul darf gleich wie die Module Configuration und Notification keine direkten Abhängigkeiten auf andere Cloud Service Module haben.
 Sämtliche notwendige Kommunikation zwischen den Modulen findet über Rest-Schnittstellen statt.
-Diese Unabhängigkeit ermöglicht es, das Modul zukünftig aus dem Cloud Service auszubauen und als eigenständigen Micro-Service zu betreiben.
+Diese Unabhängigkeit ermöglicht es, das Modul in Zukunft einfach aus dem Cloudservice auszubauen und als eigenständigen Micro-Service zu betreiben.
+
+Wie in Kapitel 4.2 beschrieben, wird AWS Polly als Sprachsynthese Provider für dieses Projekt verwendet.
+Demenstprechend, muss die Anbindung im Cludservice für AWS Polly implementiert werden.
+Die Abhängigkeit an einen spezifischen Provider soll dabei soweit wie möglich minimiert werden.
+So kann bei Bedarf einfacher auf einen anderen Provicer gewechselt werden.
+Um dies zu ermöglichen wird das Interface SpeechSynthesisService definiert.
+Dieses gibt eine einzelne Methode vor, welche eine InputStreamResource zurückgibt und eine Universal Unique Id als Parameter entgegennimmt.
+Der Parameter entsprocht dabei der technischen Identifikation des zu synthetisierenden Benachrichtigungstypes.
+Die InputStreamResource muss die snythetisierten Sprachdaten enthalten.
 
 \lstinputlisting[caption=SpeechSynthesisService.java,language=java,label={lst:SpeechSynthesisService.java}]{listings/SpeechSynthesisService.java}
 
-Für dieses Projekt wird AWS Polly verwendet.
-Dementsprechend wird das SprachSyntheseService Interface für AWS Polly implementiert.
+Dieses Interface kann als Abhängigkeit im Endpunkt, mit welchem Mobile Clients kommunizieren verwendet werden.
+Um einen spezifischen Sprachsynthese Provider zu unterstützen, reicht es aus, dieses Interface zu implementieren und eine entsprechende Instanz zur Verfügung zu stellen.
+
+Für dieses Projekt bedeutet dies, dass ein SprachSyntheseProviderService für AWS Polly implementiert werden.
 AWS Polly bietet einen Java SDK, welcher die Anbindung ermöglicht.
-Dieser SDK bietet alle Klassen die für die Anbindung an AWS Polly nötig sind.
-Da im Cloudservice Spring Boot verwendet wird, können die für die Verbindung nötigen Klassen mit einer Spring Config erstellt werden
-und dann über Dependency Injection im AwsPollySpeechSynthesis Service verwendet werden.
+Dieser SDK bietet alle Klassen die für die Anbindung an AWS Polly nötig sind und wird in der Implementierung des SprachSyntheseProviderService verwendet, um den Service anzubinden.
+
+Konkret benötigt es für die Anbindung von AWS Polly drei Komponenten.
+Als Erstes muss ein AWSStaticCredentialsProvider zu Verfügung gestellt werden.
+Dieser liefert die Credentials, welche das System berechtigen, Anfragen an AWS Polly zu senden.
+Als zweites muss eine Voice konfiguriert werden.
+Diese definiert Sprache und Stimme, welche für die Synthetisierung der Sprachdaten verwendet wird.
+Letztlich muss ein AmazonPollyClient konfiguriert werden.
+Dieser Client wird verwendet, um Anfragen an AWS Polly zu senden.
+Er verwendet den zuvor konfigurierten CredentialsProvider, um die Anfrage mit den entsprechenden Credentials zu ergänzen
+und die konfigurierte, Voice um die Daten entsprechend zu synthetisieren.
+
+Da im Cloudservice Spring Boot verwendet wird, können diese Komponenten in einer Spring Konfigurationsklasse konfiguriert und instanziert werden.
+Im konkreten Service können diese dann als Abhängigkeiten angegeben werden und stehen über die Spring Dependency Injection zur Verfügung.
+Die Properties welche für die Konfiguration notwendig sind, werden aus dem application.yml für das aktuell aktive Profil geladen.
+Sprache und Region werden sich im Rahmen dieses Projektes nie ändern und beinhalten keine sensitiven Informationen.
+Sie werden deshalb direkt im application.yml definiert und mit dem Quellcode des Projektes verwaltet.
+Als Credentials für die Anbindung dienen die zwei Schlüssel AccessKey und SecretKey.\footnote{quote here}
+Diese werden nicht direkt im application.yml abgelegt.
+Für sämtliche Credentiels wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebunsvariablen lädt.
+Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden und können einfach ausgetauscht werden.
 
 \lstinputlisting[caption=AwsConfiguration.java,language=java,label={lst:AwsConfiguration.java}]{listings/AwsConfiguration.java}
 
 In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
-
-\clearpage
 
 \subsubsection{Schnittstelle Cloud Service}
 
@@ -69,21 +98,38 @@ Die geladenen Daten können dann verwendet werden um eine Anfrage an den Sprachs
 Die vom Provider gelieferten Sprachdaten können anschliessend als Resultat an den Client zurügegeben werden.
 
 Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
-Die Sprachdaten werden dabei als Binärdaten mit Media Type "audio/mp3" im Body der Response zurückgegeben.
+Die Sprachdaten werden dabei als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
 Auf Client Seite, kann dieser Endpunkt so als Download angesprechen werden.
 
 \lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
 
-Auf Client seite kann dieser Endpunkt nun als Download angesprochen werden.
-
 \subsubsection{Integration Mobile Client }
 
-\lstinputlisting[caption=PraxisrufApi+Speech.swift,language=swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
+Für die Integration des SpeechSynthesis Endpunkts aus dem CloudService muss die in Kapitel 5.2 beschriebene Klasse PraxisrufApi erweitert werden.
+Neben dem Abfragen von JSON Daten über HTTP Schnittstellen, muss diese für die Sprachsynthese auch das herunterladen von Dateien unterstützten.
+Dies kann URLSession aus der iOS Standardbibliothek bietet dafür mit URLSession.downloadTask die Möglichkeit Inhalte von einer URL herunterzuladen.\cite{ios_downloadtask}
+Der Service PraxisrufApi wird dementsprechend um eine Methode download ergänzt.
+Diese ist dafür verantwortlich, eine Anfrage für den Download mit Credentials aus dem iOS Keystore zu ergänzen und die Abfrage zu versenden
+und die Resultate oder Fehler an den mitgegebenen CompletionHandler zu übergeben.\footnote{Vgl. Kapitel 5.2}
+Heruntergaladene Dateien werden vom PraxisrufApi in einem temporären Verzeichnis gespeichert.
+Das Resultat im Erfolgsfall ist deshalb nicht die heruntergeladene Datei selbst, sondern eine URL welche auf die Datei im temporären Verzeichnis zeigt.
 
-Um die Anbindung im Cloudservice vom konkreten Anbieter möglichst unabhängig zu machen, wird die Integration an den Speech Synthese Service über ein Interface abstrahiert.
-Soll ein neuer Sprachsyntese Service angebunden werden, muss lediglich dieses Interface für den neuen Service implementiert werden und alles andere kann unberührt bleiben.
+\lstinputlisting[caption=PraxisrufApi+Download.swift,language=Swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
+
+PraxisrufApi wird nicht direkt in der View verwendet.
+Es gibt einen Service.
+Dieser verwendet PraxisrufApi.download um Datei herunterzuladen.
+Im Erfolgsfall kopiert er die Datei aus temp Verzeichnis in ein permanentes.
+Datei wird dabei mit technische Identification des Benachrichtigungstyps und Version benannt.
+Anschliessend wird die Datei abgespielt.
+Durch benamselung ist ein simples Cache möglich.
+Empfangene Benachrichtigungen beinhalten version und technische id.
+Vor dem Senden des Requests and Cloudservice prüfen, ob Datei für Id und Version schon da.
+Wenn ja, nicht von Cloud Service laden sondern direekt abspielen.
+
 
 \clearpage
+
 
 \subsection*{Laufzeitsicht}
 
