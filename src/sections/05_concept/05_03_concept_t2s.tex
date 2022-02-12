@@ -137,10 +137,21 @@ Durch die beschriebene Implementierung des Chaches ist sichergestellt, das auch 
 \clearpage
 \subsubsection{Laufzeitsicht}
 
-Benachrichtigungen für welche Sprachsynthese aktiviert ist, sollen beim Empfang automatisch vorgelesen werden.
-Dazu müssen die Sprachdaten geladen werden, wenn die Benachrichtigung empfangen werden.
-Diese Daten können über den neuen Speech Endpoint des Cloudservices bezogen werden.
-Die Informationen die dazu nötig sind, sind als Metadaten in der empfangenen Benachrichtigung vorhanden.
+Um eine Benachrichtigung zu versenden, sendet ein Mobile Client eine Anfrage an den Cloudservice.
+Dieser lädt die gespeicherte Konfiguration und findet alle für die gewünschte Benachrichtigung relevanten Empfänger.
+Anschlissend erstellt er für jeden Empfänger eine Benachrichtigung und versendet diese über den Messagingservice.\cite{ip5}\footnote{Vereinfachter Ablauf}
+Der Messagingservice stellt die Benachrichtigungen an die jeweiligen Empfänger zu.
+Im Folgenden wird der Ablauf vom Empfang der Benachrichtigung im Mobile Client bis hin zur Ausgabe der Sprachsynthese beschrieben.
+
+Benachrichtigungen werden im Mobile Client durch den AppDelegate empfangen.
+Dieser beinhaltet die Anbindung an den Messaging Service und kann dementsprechend Benachrichtigungen vom Messaging Service entgegennehmen.
+Die Empfangene Benachrichtigung entspricht dem Format das der Messaging Service definiert.
+Im AppDelegate werden die Informationen aus diesem Format herausgelesen und in das interne Model der Mobile Client Applikation überführt.
+Anschliessend wird die Benachrichtigung an den CompletionHandler von iOS übergeben.
+Dadurch wird der Benachrichtigungston abgespielt und die Benachrichtigung als Push Benachrichtigung angezeigt.
+Daraufhin wird die Benachrichtigung im internen Model einem NotificationService übergeben.
+Dieser fügt die empfangene Benachrichtigung in die Inbox ein.
+Ab diesem Moment ist die Benachrichtigung in der Inbox des Mobile Clients ersichtlich.
 
 \begin{figure}[h]
     \centering
@@ -150,12 +161,17 @@ Die Informationen die dazu nötig sind, sind als Metadaten in der empfangenen Be
     \end{minipage}
 \end{figure}
 
-Wird eine Benachrichtigung empfangen, wird die Benachrichtigung auf dem Client als Push Notifikation angezeigt und an die Inbox übergeben.
-Anschliessend prüft der Client ob die Sprachdaten für die Empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
-Dies wird gemacht in dem er überprüft ob es im Applikationsverzeichnis bereits eine MP3-Datei für den Empfangenen Benachrichtigungstyp
-(NotificationType) in der Version der Empfangenen Benachrichtigung vorhanden ist.
-Sind die Daten bereits lokal vorhanden, wird keine Abfrage an den Cloudservice gespielt sondern die lokal vorhandene Sprachdatei abgespielt.
-Sind die Daten lokal nicht oder nur in einer anderen Version vorhanden, werden die Daten beim Cloudservice angefragt.
-Sobald diese Daten geladen sind, werden sie in einer MP3 Datei mit Id und Version des Benachrichtigungstyps (NotificationType) gespeichert.
+
+Anschliessend prüft, der NotificationService, ob Sprachsynthese lokal aktiviert ist.
+Ist diese deaktiviert, endet die Verarbeitung.
+Ist die Sprachsynthese lokal aktiviert, wird die Benachrichtigung an den SpeechSynthesisService übergeben.
+Der SpeechSynthesisService prüft als erstes, ob die Sprachdaten für die empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
+Dies wird gemacht in dem er überprüft, ob im Applikationsverzeichnis bereits eine MP3-Datei für den Empfangenen Benachrichtigungstyp (NotificationType) in der Version der Empfangenen Benachrichtigung vorhanden ist.
+Ist dies der Fall, werden die Inhalte dieser Datei abgespielt und es wird keine Anfrage an den Cloudservice versendet.
+Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden, wird eine Anfrage an den CloudService gesendet.
+Der CloudService findet die Inhalte der relevanten Benachrichtigung in der Konfiguration und sendet eine Anfrage an den Sprachsynthese Provider.
+Anschliessend leitet er die Resultate des Providers an den Client weiter.
+Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version des Benachrichtigungstyps (NotificationType).
+Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
 
 \clearpage
