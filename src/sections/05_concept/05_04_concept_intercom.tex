@@ -1,6 +1,4 @@
-\subsection{Sprachübertragung}
-
-\subsubsection*{Übersicht}
+\subsection{Gegensprechanlage}
 
 Mit dem Einbau von synchroner Sprachübertragung wird Praxisruf um die Funktion einer Gegensprechanalge erweitert.
 Um Sprachverbindungen zu anderen Zimmern aufbauen zu können, wird die Ansicht der Mobilen Applikation um einen
@@ -16,27 +14,8 @@ Die Verbindungen werden dabei vom Client selbst initialisiert.
 Damit dies möglich ist, benötigt es einen Signaling Server, welcher die einzelnen verfügbaren Clients kennt und
 den Austausch der Daten die zum Verbindungsaufbau notwendig sind koordiniert.
 
-\subsubsection*{Benutzeroberfläche}
-
-\subsubsection{User Interface}
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/homescreen-mockup}
-        \caption{Mockup Home}
-    \end{minipage}
-    \hfill
-    \begin{minipage}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/mockups/mockup-inbox}
-        \caption{Mockup Inbox}
-    \end{minipage}\label{fig:HomeScreen-And-Inbox-Mock}
-\end{figure}
-
-Active Call Screen \\
-Erweiterung Admin UI für Konfiguration CallType \\
-
 \clearpage
-\subsubsection*{Konfiguration}
+\subsubsection{Konfiguration}
 
 Praxisruf wird um die Funktion einer Gegensprechanlage erweitert.
 Dabei soll von einem Administrator zentral konfiguriert werden können, zwischen welchen Clients Sprachverbindungen
@@ -69,11 +48,8 @@ Zudem wird das Admin UI um Ansichten erweitert, um diese Entitäten anzuzeigen, 
     \end{minipage}
 \end{figure}
 
-
-
-
 \clearpage
-\subsubsection*{Verfügbarkeit und Registrierung}
+\subsubsection{Verfügbarkeit und Registrierung}
 
 Um Sprachverbindungen zwischen Clients aufzubauen, müssen diese Nachrichten austauschen können.
 Die Verbindung wird durch den Sender mit einem Offer initialisiert.
@@ -118,8 +94,7 @@ Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung
 
 
 \clearpage
-
-\subsubsection*{Verbindungsaufbau}
+\subsubsection{Verbindungsaufbau}
 
 \begin{figure}[h]
     \centering
@@ -150,15 +125,13 @@ Dieser leitet die Anfrage dann analog dem ICE Offer an die Verbindung des ausgeh
 Sobald dieser die Antwort erhält, ist die Rtc Connection bestätigt und die Sprachverbindung ist initialisiert.
 
 \clearpage
-
-
-\subsubsection*{Unterhaltung}
+\subsubsection{Unterhaltung}
 
 Mute Button
 End Call Button
 
 
-\subsubsection*{Verbindungsende}
+\subsubsection{Verbindungsende}
 
 Caller nimmt Finger vom Button.
 Receiver hat button zum abbrechen.
