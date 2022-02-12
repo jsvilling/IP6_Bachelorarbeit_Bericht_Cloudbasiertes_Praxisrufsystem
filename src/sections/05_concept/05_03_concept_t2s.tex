@@ -33,7 +33,6 @@ Das Version Feld wird ebenfalls beim Versenden von Benachrichtigungen mitgesende
 
 
 \clearpage
-
 \subsubsection{Integration Sprachsynthese Provider}
 
 Die Anbindung des Sprachsynthese Providers erfolgt zentral im Cloudservice.
@@ -86,6 +85,7 @@ Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden und kön
 
 In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
 
+\clearpage
 \subsubsection{Schnittstelle Cloud Service}
 
 Das Speech-Modul stellt einen Endpoint zur Verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
@@ -103,6 +103,7 @@ Auf Client Seite, kann dieser Endpunkt so als Download angesprechen werden.
 
 \lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
 
+\clearpage
 \subsubsection{Integration Mobile Client }
 
 Für die Integration des SpeechSynthesis Endpunkts aus dem CloudService muss die in Kapitel 5.2 beschriebene Klasse PraxisrufApi erweitert werden.
@@ -116,22 +117,25 @@ Das Resultat im Erfolgsfall ist deshalb nicht die heruntergeladene Datei selbst,
 
 \lstinputlisting[caption=PraxisrufApi+Download.swift,language=Swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
 
-PraxisrufApi wird nicht direkt in der View verwendet.
-Es gibt einen Service.
-Dieser verwendet PraxisrufApi.download um Datei herunterzuladen.
-Im Erfolgsfall kopiert er die Datei aus temp Verzeichnis in ein permanentes.
-Datei wird dabei mit technische Identification des Benachrichtigungstyps und Version benannt.
-Anschliessend wird die Datei abgespielt.
-Durch benamselung ist ein simples Cache möglich.
-Empfangene Benachrichtigungen beinhalten version und technische id.
-Vor dem Senden des Requests and Cloudservice prüfen, ob Datei für Id und Version schon da.
-Wenn ja, nicht von Cloud Service laden sondern direekt abspielen.
-
+Die Sprachsynthese für Benachrichtigungen, soll automatisch ausgeführt werden sobald eine relevante Benachrichtigung empfangen wurde.
+Die Benachrichtigung wird im AppDelegate empfangen, aufbereitet und an die Applikation übergeben.
+Die aufberetieten Daten beinhalten, die Information, ob die Benachrichtigung für die Sprachsynthese relevant ist.
+Dies kann dem isTextToSpeech Flags in der Benachrichtigung entnommen werden.
+Für die Verarbeitung der Sprachdaten, wird ein eigener Service erstellt.
+Dieser SpeechSynthesisService verwendet die Downloadfunktion aus der PraxisrufApi Basisklasse, um Sprachdaten vom Cloudservice abzufragen.
+Wurden die Daten erfolgreich geladen, kopiert er die heruntergeladenen Daten aus dem temporären Downloadverzeichnis in ein permanentes Verzeichnis.
+Die Datei wird dabei unter dem Namen ''ID NotificationType''.''version'' gespeichert.
+Anschliessend werden die Inhalte der Datei als Audio wiedergegeben.
+Die Namenskonvention für die gespeicherten Dateien, erlaubt es ein einfaches Cache zu implementieren.
+Bevor der SpeechSynthesisService eine Anfrage an den Cloudservice absetzt, prüft er, ob bereits eine Datei mit dem entsprechenden Namen vorhanden ist.
+Ist dies der Fall, wird keine Anfrage versendet und die Datei wird direkt abgespielt.
+Die Id des NotificationTypes im Dateinamen sorgt dafür, dass pro Benachrichtigungstyp nur einmal Sprachdaten abgefragt werden müssen.
+Die Version des NotificationTypes im Dateinamen sorgt dafür, dass die Daten bei einer Änderung am Benachrichtigungstyp neu geladen werden.
+Da der Inhalt einer Benachrichtigung im Cloudservice abgefüllt wird, bedeuet dies das Benachrichtigungen immer in der neusten Version angezeigt werden.
+Durch die beschriebene Implementierung des Chaches ist sichergestellt, das auch immer diese Version für die Sprachsynthese verwendet wird.
 
 \clearpage
-
-
-\subsection*{Laufzeitsicht}
+\subsubsection{Laufzeitsicht}
 
 Benachrichtigungen für welche Sprachsynthese aktiviert ist, sollen beim Empfang automatisch vorgelesen werden.
 Dazu müssen die Sprachdaten geladen werden, wenn die Benachrichtigung empfangen werden.
