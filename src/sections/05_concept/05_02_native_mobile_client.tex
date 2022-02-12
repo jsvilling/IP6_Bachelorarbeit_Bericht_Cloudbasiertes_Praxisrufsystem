@@ -290,14 +290,19 @@ Weiter muss ein  mit Hintergrundtask\cite{ios_bgtaskscheduler} implementiert und
 
 \subsubsection{Security}
 
-Keycloak integration für dieses Projekt out of scope.
-Authentifizierung und Authorisierung deshalb nur analog alter client.
-Für Websocket integration wie alter client.
-Basic auth bei start.
-Credentiels werden in keystore.
-Bearer token in ios keystore.
-In Api Service geladen und header gesetzt.
-Regelmässiger token refresh mit basic auth credentials.
-Mit Integration von keycloak muss sauberer token refresh mit refresh token implementiert werden.
+Um die sichere Übertragung von Daten zu gewährleisten, werden alle Daten zwischen den Services über verschlüsselte Verbindungen ausgetauscht.
+HTTP Anfragen an de CloudService erfolgen ausschliesslich über HTTPS.
+Der Aufrufer für alle Abfragen muss mit einem entsprechenden JWT Token authentifiziert sein.
+Der Austausch von Daten über Websockets erfolgt ausschliesslich über Secure WebSockets (WSS).
+Für den Aufbau von Websocketverbindungen, muss der Benutzer ebenfalls authentifiziert sein.
+Dazu muss der Http-Handshake Request um die Websocketverbindung zu öffnen mit einem entpsrechend gültigem JWT Token authentifiziert werden.
+
+Langfristig sollen Authentifizierung und Authorisierung in Praxisruf mit OAuth und OpenId-Connect umgesetzt werden.
+Diese Integration wurde mit dem Projekt IP5 Cloudbasiertes Praxisrufsystem noch nicht umgesetzt und fällt für dieses Projekt out of Scope.
+Die Authentifizierung des Mobile Clients wird im neuen nativen Client analog zum bestehenden Shared-Platform-Client umgesetzt.
+Um den Mobile Client zu verwenden, wird der Benutzer über Basic Authentication authentifiziert.
+Er erhält als Antwort auf diese Registrierung ein JWT Token welches ihn für alle weiteren Anfragen an den Cloud Service berechtigt.
+Sowohl die Credentials für die Basic Authentication als auch das JWT Token werden im Keystore von iOS gespeichert.
+Das JWT Token wird regelmässig erneuert, indem die Basic Authentication mit den gespeicherten Credentials wiederholt wird.
 
 \clearpage
