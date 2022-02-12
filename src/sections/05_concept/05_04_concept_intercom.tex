@@ -1,55 +1,42 @@
 \subsection{Gegensprechanlage}
 
 Mit dem Einbau von synchroner Sprachübertragung wird Praxisruf um die Funktion einer Gegensprechanalge erweitert.
-Um Sprachverbindungen zu anderen Zimmern aufbauen zu können, wird die Ansicht der Mobilen Applikation um einen
-Bereich für die Gegensprechanalge erweitert.
-In diesem Bereich sind analog zum Bereich um Benachrichtigungen zu versenden Buttons vorhanden, über welche eine
-Sprachverbindung aufgebaut werden kann.
-Welche Buttons in einem Client zu Verfügung stehen muss vom Praxismitarbeitenden über das Admin UI konfiguriert werden.
-Die Konfiguration eines Buttons beinhaltet den Text der auf Clientseite angezeigt wird, sowie eine Liste zu welchen
-Clients Sprachverbindungen aufgebaut werden sollen.
+Die gewählte Technologie WebRTC erlaubt es Peer to Peer Sprachverbindungen zwischen Clients aufzubauen.
+Dieses Kapitel beschreibt wie das Praxisrufsystem erweitert wird, um eine konfigurierbare Gegensprechanlage mit WebRTC zu integrieren.
 
-Mit der gewählten Technologie WebRTC werden die Sprachverbindungen zwischen Clients Peer to Peer aufgebaut.
-Die Verbindungen werden dabei vom Client selbst initialisiert.
-Damit dies möglich ist, benötigt es einen Signaling Server, welcher die einzelnen verfügbaren Clients kennt und
-den Austausch der Daten die zum Verbindungsaufbau notwendig sind koordiniert.
-
-\clearpage
 \subsubsection{Konfiguration}
 
 Praxisruf wird um die Funktion einer Gegensprechanlage erweitert.
-Dabei soll von einem Administrator zentral konfiguriert werden können, zwischen welchen Clients Sprachverbindungen
-aufgebaut werden können.
+Dabei soll von einem Administrator zentral konfiguriert werden können, zwischen welchen Clients Sprachverbindungen aufgebaut werden können.
 Damit dies möglich ist, sind Änderungen an der Configuration Domain des Cloudservice von Praxisruf notwendig.
 
 Praxisruf bietet bereits heute die Möglichkeit Buttons zu konfigurieren, über welche Benachrichtigungen versendet werden können.
 Diese Buttons werden mit der Entität NotificationType konfiguriert, welche wiederum einer ClientConfiguration zugeordnet werden können.
 Diese ClientConfiguration wird bei der Anmeldung auf dem Mobile Client geladen und verwendet um die nötigen Buttons darzustellen.
 Analog dazu wird für den Aufbau von Sprachverbindungen eine Entität CallType erstellt.
-Diese kann mehreren ClientConfigurations zugeordnet werden.
-Ein CallType beinhaltet den Text, welcher auf dem zugehörigen Button auf Clientseite angezeigt wird und eine Liste von
-Clients, welche als Ziel der Sprachverbindung verwendet werden.
-Es ist möglich, dass dieselbe Gruppe an Zielen auf verschiedenen Clients verschieden heissen soll.
-Um dies einfach zu ermöglichen, werden die Ziele der Unterhaltung in eine eigene Entität CallGroup ausgelagert.
-So kann pro Client ein CallType definiert werden der einen eigenen Anzeigtext definiert.
-Die CallGroup muss aber nur einmal erstellt werden und kann auf mehreren CallTypes verwendet werden.
-Die ClientConfiguration die bei der Anmeldung vom Mobile Client geladen wird, wird um diese CallTypes erweitert.
-Dabei werden für jeden CallType aber nur der technische Identifikator und der Anzeigename mitgegeben.
-Zu welchen Zielen Verbindungen aufgebaut werden sollen, wird bei jedem Verbindungsabbau erneut beim CloudService angefragt.
-Dies ermögicht es, dass Änderungen an der Konfiguration sofort angewendet werden, ohne dass die ganze Konfiguration neu geladen werden muss.
-Für die beiden neuen Entitäten werden Endpoints für CRUD Operationen analog zu den anderen Konfigurationsentitäten hinzugefügt.
-Zudem wird das Admin UI um Ansichten erweitert, um diese Entitäten anzuzeigen, bearbeiten und löschen.
+Ein CallType beinhaltet den Text, welcher auf dem zugehörigen Button auf Clientseite angezeigt wird und eine Liste von Clients, welche als Ziel der Sprachverbindung verwendet werden.
+
+Die Konfiguration eines Clients wird durch die bestehende Entität ClientConfiguration abgebildet.
+Diese Konfiguration wird um eine Liste von CallTypes erweitert.
+So kann für jeden Client definiert werden, welche Sprachverbindungen aufgebaut werden können.
 
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_intercom_v01.drawio}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_intercom_v02.drawio}
         \caption{ERD Ausschnitt - Konfiguration Gegensprechanalge}
     \end{minipage}
 \end{figure}
 
+Das Admin UI wird mit Ansichten erweitert, um CallTypes zu erstellen, anzeigen, bearbeiten und löschen.
+Gleichzeitig wird der Cloudservice um Rest Endpunkte für das Lesen, Erstellen, Aktualisieren und Löschen von CallTypes erweitert.
+
+Die Ansichten für ClientConfigurations im Admin UI werden so erweitert, dass CallTypes darauf angezeigt, hinzugefügt und entferntw erden können.
+Die bestehenden Endpunkte für ClientConfiguration werden entsprechend erweitert.
+
 \clearpage
-\subsubsection{Verfügbarkeit und Registrierung}
+
+\subsubsection{Signaling Server}
 
 Um Sprachverbindungen zwischen Clients aufzubauen, müssen diese Nachrichten austauschen können.
 Die Verbindung wird durch den Sender mit einem Offer initialisiert.
@@ -74,12 +61,14 @@ Diese Funktionalität wird mit der Komponente ClientConnector umgesetzt.
 
 \lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ClientConnector.java}
 
-
 \clearpage
 Weiter braucht es eine Komponente, welche Buch führt über bekannte Verbindungen.
 Diese muss Verbindungen anhand einer id registrieren und Verbindungen wieder entfernen können.
 
 \lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ConnectionRegistry.java}
+
+\clearpage
+\subsubsection{Anmeldung und Registrierung}
 
 Der Ablauf von Anmeldung und Registrierung funktioniert damit grundsätzlich wie bisher.
 Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung zum Intercom Modul ergänzt.
@@ -125,15 +114,22 @@ Dieser leitet die Anfrage dann analog dem ICE Offer an die Verbindung des ausgeh
 Sobald dieser die Antwort erhält, ist die Rtc Connection bestätigt und die Sprachverbindung ist initialisiert.
 
 \clearpage
+\subsubsection{Verpasste und vergangene Anrufe}
+
+Verpasste geben Push Benachrichtigung
+Verpasste müssen quittiert werden.
+Vergangene erscheinen in Inbox.
+Vergangene müssen nicht quittiert werden.
+
 \subsubsection{Unterhaltung}
 
 Mute Button
+Audio Off Button
 End Call Button
 
 
 \subsubsection{Verbindungsende}
 
-Caller nimmt Finger vom Button.
-Receiver hat button zum abbrechen.
+Button antippen
 
 \clearpage
