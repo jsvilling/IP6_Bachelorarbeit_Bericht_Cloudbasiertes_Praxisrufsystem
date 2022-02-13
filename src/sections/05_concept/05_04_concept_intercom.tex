@@ -6,9 +6,10 @@ Dieses Kapitel beschreibt wie das Praxisrufsystem erweitert wird, um eine konfig
 
 \subsubsection{Konfiguration}
 
-Praxisruf wird um die Funktion einer Gegensprechanlage erweitert.
-Dabei soll von einem Administrator zentral konfiguriert werden können, zwischen welchen Clients Sprachverbindungen aufgebaut werden können.
-Damit dies möglich ist, sind Änderungen an der Configuration Domain des Cloudservice von Praxisruf notwendig.
+Die Gegensprechanalge wird in den nativen Mobile Client integriert.
+Praxismitarbeitende können über Buttons Sprachverbindungen zu anderen Clients aufbauen.\footnote{Vlg. Kapitel 4.2.x}
+Welche Buttons und damit welche Sprachverbindungen zur Verfügung stehen, kann vom Administrator über das Admin UI konfiguriert werden.
+Damit dies möglich ist, sind Änderungen an der Configuration Domain des Cloudservice von Praxisruf sowie am Admin UI notwendig.
 
 Praxisruf bietet bereits heute die Möglichkeit Buttons zu konfigurieren, über welche Benachrichtigungen versendet werden können.
 Diese Buttons werden mit der Entität NotificationType konfiguriert, welche wiederum einer ClientConfiguration zugeordnet werden können.
@@ -38,34 +39,81 @@ Die bestehenden Endpunkte für ClientConfiguration werden entsprechend erweitert
 
 \subsubsection{Signaling Server}
 
-Um Sprachverbindungen zwischen Clients aufzubauen, müssen diese Nachrichten austauschen können.
-Die Verbindung wird durch den Sender mit einem Offer initialisiert.
-Dieses muss an den Empfänger übermittelt werden.
-Dieser antwortet schliesslich mit einer Answer, welche an den Sender übermittelt werden ist.
+Mit WebRTC werden Peer To Peer Sprachverbindungen aufgebaut.\footnote{citation}
 Bevor die Verbindung aufgebaut ist, kennen die beiden Clients sich gegenseitig noch nicht.
-Es braucht deshalb eine Instanz, welche beide Seiten kennt und die Übermittlung der Daten übernehmen kann.
-Bei Praxisruf fällt diese Aufgabe dem Cloudservice zu.
-Um dies zu ermöglichen wird Cloudservice umeine Schnittstelle erweitert, die es ermöglicht langlebige Verbindungen
-zu öffnen und registrieren.
-Sobald ein Client sich angemeldet hat, baut er eine Verbindung zum CloudService auf.
-Beim Verbindungsaufbau gibt der Client seine technische Identifikation mit.
-Der Cloudservice kann damit intern eine der verfügbaren Verbindungen und den dazugehörigen Identifikatoren führen.
-Diese Liste kann beim Verbindungsaufbau verwendet werden, um die Offers und Answers an die jeweiligen Clients zu übermitteln.
+Die beteiligten Clients müssen Signale austauschen können um sich auf die Details der Verbindung zu einigen.
+Es braucht deshalb eine Instanz, welche beide Seiten kennt und Vermittlung von Signalmeldungen übernimmt.
+In Praxisruf übernimmt der Cloudservice die Funktion, Benachrichtigungen zu vermitteln.
 
-Dieses Konzept wird im intercom Modul des Cloudservice umgesetzt.
-Um die Funktionalität zu ermöglichen werden zwei Komponenten benötigt.
-Diese kapseln die Funktionalität die unabhängig von der Technologie zum Verbindungsaufbau notwendig ist.
-Um sicherzustellen, dass diese Unabhägigkeit bleibt, werden hier die Interfaces für diese beiden Komponenten spezifiziert.
-Es braucht erstens eine Komponente, welche Verbindungen etabliert und Nachrichten über diese Verbindungen senden kann.
-Diese Funktionalität wird mit der Komponente ClientConnector umgesetzt.
+Prinzipiell ist es möglich, den Signalaustausch in dieses Modul zu integrieren.
+Dieser Ansatz hat aber zwei grosse Probleme.
+Erstens ist die Grösse von Medlungen, welche über den gewählten Messaging Service (Firebase Cloud Messaging) ausgetauscht werden können beschränkt.
+Meldungen zum Aufbau von WebRTC Verbindungen können diese Grösse überschreiten.\footnote{cite}
+Zweitens geschieht das Versenden von Benachrichtigungen über einen asynchronen Mechanismus.
+Die Signale für Sprachverbindungen sollen aber synchron ausgetauscht werden.
+Es soll unmittelbar beim Versuch des Verbindungsaufbau klar sein, ob die Verbindung etabliert werden kann oder nicht.
+
+Mit diesem Projekt wird der Cloudservice deshalb um ein weiteres Modul ''Signaling'' erweitert, welches den austausch von Signalen zwischen Clients ermöglicht.
+Gleich wie das Modul für Sprachsynthese wird er unabhängig von den anderen Domänenmodulen im Cloudservice implementiert.
+Alle Informationen, welche aus anderen Domänen benötigt werden, werden über Rest-Schnittstellen bezogen.
+Das Modul Signaling übernimmt drittens Aufgaben.
+Erstens muss es den Clients die Möglichkeit bieten, sich für Sprachverbindungen zu registrieren und diese Registrierungen verwalten.
+Zweitens muss es Signalmeldungen empfangen und an die relevanten Empfänger zustellen.
+Drittens muss es wann immer möglich Clients über nicht zustellbare Signale benachrichtigen.
+Diese drei Funktionen müssen unabhängig von der gewählten Technologie für den Signalaustausch unterstützt werden.
+Es wird ein entsprechendes Interface spezifiziert\footnote{Siehe Listing 6}.
+Dieses definiert die Methoden afterConnectionEstablished und afterConnectionClosed.
+Die beiden Methoden werden aufgerufen, wenn eine Verbindung geöffnet resp. geschlossen wurde.
+Geöffnete Verbindungen werden in Memory geführt.
+Dabei wird jede Verbindung durch eine UUID identifiziert.
+Diese UUID entspricht der technischen Identifikation des entsprechenden Mobile Clients und muss, wenn sich der Mobile Client für eine Verbindung registriert mitgesendet werden.
+Ein Mobile Client ist für den Signalaustausch verfügbar, wenn das Signaling Modul eine Verbindung mit seiner technischen Id kennt.
+Sobald eine Verbindung geschlossen wurde, wird sie aus der Liste der in Memory Verbindungen wieder gelöscht.
+Der entsprechende Mobile Client steht damit nicht mehr für den Signalaustausch zu Verfügung.
+
+Für das Zustellen von Signalen wird die Methode sendMessage definiert.
+Jede Message beinhaltet eine Payload und die Identifikation des Empfängers.
+Der Signaling Service durchsucht die bekannten Verbindungen und findet die Verbindung für die Identifikation des Empfängers.
+Anschliessend sendet er das Signal über die Verbindung dieses Empfängers.
+
+Für die Verwaltung von bestehenden Verbindungen wird die Komponente ConnectionRegistry implementiert.
+Diese muss Verbindungen anhand einer id registrieren und Verbindungen wieder entfernen können.
+Weiter müssen Verbindungen anhand ihrer id gefunden werden können.
+Die ConnectionRegistry wird als Wrapper um eine Java HashMap implementiert.
+Durch die Verwendung der Map über einen Wrapper bleibt die Implementation aber unabhängig davon und kann leicht ausgetauscht werden. \footnote{Siehe Listing 7}
+
+\clearpage
+
+TODO: Replace with class diagram
 
 \lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ClientConnector.java}
 
-\clearpage
-Weiter braucht es eine Komponente, welche Buch führt über bekannte Verbindungen.
-Diese muss Verbindungen anhand einer id registrieren und Verbindungen wieder entfernen können.
-
 \lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ConnectionRegistry.java}
+
+\clearpage
+
+Die Schnittestelle des Signaling Servers nach aussen wird mit Websockets umgesetzt.
+Wie die restlichen Module des Cloudservices wird auch der Singaling Server als Spring Boot Modul umgesetzt.
+Mit dem Projekt Spring-Boot-Starter-Websocket, können Websocketanbindungen in einer Spring Boot Applikation umgesetzt werden.\footnote{cite}
+Es wird ein WebsocketHandler implementiert, welcher unter dem Pfad ''server-url/signaling'' erreichbar ist.
+Die Implementation der Websocketschnittstelle implementiert das oben beschriebene ClientConnector Interface mit der entsprechenden Funktion.
+
+Etablierte Verbindungen müssen eindeutig einem Client zugeordnet werden können.
+Diese Client Identifikation wird als Query Parameter bei Verbindungsaufbau mitgegeben und im WebsocketHandler ausgelesen.
+Anschliessend wird die WebsocketSession zusammen mit der Client Identifikation in der ConnectionRegistry gespeichert.
+Wird die WebsocketSession geschlossen, wird sie durch den WebsocketHandler wieder von aus der ConnectionRegistry entfernt.
+
+Der Zugriff auf den Signaling Service darf nur für Berechtigte möglich sein.
+Um dies sicherzustellen, wird der Verbindungsaufbau nur erlaubt, wenn die Anfrage dazu authentisiert ist.
+Für die Authentisierung wird derselbe Meachnismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
+Über die SecurityConfig des Cloudservices wird die Authentification aller Http Requests überprüft.
+Diese Konfiguratio sorgt dafür, das unauthentifizierte Http Requests eine entsprechende Response erhalten.
+Sie verhindert allerdings nicht, dass eine Websocketverbindung aufgebaut wurde, obwohl der Request nicht authentifiziert werden konnte.
+Um dies zu verhindern, muss der Http Request für den Aufbau einer Websocketverbindung notwendig sind abgefangen werden und geprüft werden, ob der Request authentifiziert wurde.\cite{cite}
+Spring bietet dazu die Klasse HttpSessionHandshakeInterceptor.
+Mit der Methode beforeHandshake kann der Request vor dem Verbindungsaufbau abgefangen werden und die Authentisierung überprüft werden.
+Ist diese gültig, wird die Verbindung aufgebaut.
+Andernfalls wird der Verbindungsaufbau abgebrochen und eine Reponse mit HttpStatue ''unauthorized'' zurückgesendet.
 
 \clearpage
 

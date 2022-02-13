@@ -1,6 +1,5 @@
 /**
  * Contracts for clients to register an intercom connection in Praxisruf
- *
  * Once a connection is established it can be used, to negotiate messages between
  * registered clients. This enables signaling server functionality for when
  * establishing Peer To Peer Connections between clients.
@@ -25,8 +24,6 @@ public interface ClientConnector<T, M> {
     /**
      * Is called after a connection has been closed. The closed connection is
      * removed from the ConnectionRegistry.
-     *
-     * @param connection
      */
     void afterConnectionClosed(T connection);
 }
