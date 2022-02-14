@@ -54,9 +54,9 @@ Die InputStreamResource muss die snythetisierten Sprachdaten enthalten.
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_SpeechSynth_Interface_V01}
-        \caption{Klassendiagramm SpeechSynthesisService}
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Speech_Synth_Full_V01}
+        \caption{Klassendiagramm Modul SpeechSynthesis}
     \end{minipage}
 \end{figure}
 
@@ -91,17 +91,14 @@ Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden und kön
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.8\textwidth}
+    \begin{minipage}[b]{0.7\textwidth}
         \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V01}
         \caption{Klassendiagramm SpeechSynthesisService}
     \end{minipage}
 \end{figure}
 
-%\lstinputlisting[caption=AwsConfiguration.java,language=java,label={lst:AwsConfiguration.java}]{listings/AwsConfiguration.java}
-
 In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
 
-\clearpage
 \subsubsection{Schnittstelle Cloud Service}
 
 Das Speech-Modul stellt einen Endpoint zur Verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
@@ -112,21 +109,9 @@ Anhand dieses Identifikators können die Informationen des Benachrichtigugnstyps
 Dadurch können Änderungen an einem Benachrichtigungstyp direkt angewendet werden, ohne dass die Informationen auf dem Mobile Client aktualisiert werden müssen.
 Die geladenen Daten können dann verwendet werden um eine Anfrage an den Sprachsynthese Provier zu senden.
 Die vom Provider gelieferten Sprachdaten können anschliessend als Resultat an den Client zurügegeben werden.
-
 Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
 Die Sprachdaten werden dabei als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
 Auf Client Seite, kann dieser Endpunkt so als Download angesprechen werden.
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_SpeechSynthController_V01}
-        \caption{Klassendiagramm SpeechSynthesisController}
-    \end{minipage}
-\end{figure}
-
-
-%\lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
 
 \clearpage
 \subsubsection{Anbindung Mobile Client}
