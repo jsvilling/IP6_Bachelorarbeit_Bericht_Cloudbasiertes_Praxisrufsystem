@@ -55,12 +55,10 @@ Die InputStreamResource muss die snythetisierten Sprachdaten enthalten.
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Speech_Synth_Full_V01}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V02}
         \caption{Klassendiagramm Modul SpeechSynthesis}
     \end{minipage}
 \end{figure}
-
-%\lstinputlisting[caption=SpeechSynthesisService.java,language=java,label={lst:SpeechSynthesisService.java}]{listings/SpeechSynthesisService.java}
 
 Dieses Interface kann als Abhängigkeit im Endpunkt, mit welchem Mobile Clients kommunizieren verwendet werden.
 Um einen spezifischen Sprachsynthese Provider zu unterstützen, reicht es aus, dieses Interface zu implementieren und eine entsprechende Instanz zur Verfügung zu stellen.
@@ -88,15 +86,6 @@ Als Credentials für die Anbindung dienen die zwei Schlüssel AccessKey und Secr
 Diese werden nicht direkt im application.yml abgelegt.
 Für sämtliche Credentiels wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebunsvariablen lädt.
 Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden und können einfach ausgetauscht werden.
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V01}
-        \caption{Klassendiagramm SpeechSynthesisService}
-    \end{minipage}
-\end{figure}
-
 In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
 
 \subsubsection{Schnittstelle Cloud Service}
