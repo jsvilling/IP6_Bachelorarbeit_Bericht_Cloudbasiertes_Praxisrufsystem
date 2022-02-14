@@ -84,13 +84,16 @@ Durch die Verwendung der Map über einen Wrapper bleibt die Implementation aber 
 
 \clearpage
 
-TODO: Replace with class diagram
+%\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ClientConnector.java}
+%\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ConnectionRegistry.java}
 
-\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ClientConnector.java}
-
-\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ConnectionRegistry.java}
-
-\clearpage
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Intercom_Full_V01}
+        \caption{Klassendiagramm SpeechSynthesisController}
+    \end{minipage}
+\end{figure}
 
 Die Schnittestelle des Signaling Servers nach aussen wird mit Websockets umgesetzt.
 Wie die restlichen Module des Cloudservices wird auch der Singaling Server als Spring Boot Modul umgesetzt.

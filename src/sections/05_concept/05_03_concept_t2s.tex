@@ -129,7 +129,7 @@ Auf Client Seite, kann dieser Endpunkt so als Download angesprechen werden.
 %\lstinputlisting[caption=SpeechSynthesisController.java,language=java,label={lst:SpeechSynthesisController.java}]{listings/SpeechSynthesisController.java}
 
 \clearpage
-\subsubsection{Integration Mobile Client }
+\subsubsection{Anbindung Mobile Client}
 
 Für die Integration des SpeechSynthesis Endpunkts aus dem CloudService muss die in Kapitel 5.2 beschriebene Klasse PraxisrufApi erweitert werden.
 Neben dem Abfragen von JSON Daten über HTTP Schnittstellen, muss diese für die Sprachsynthese auch das herunterladen von Dateien unterstützten.
@@ -139,9 +139,6 @@ Diese ist dafür verantwortlich, eine Anfrage für den Download mit Credentials 
 und die Resultate oder Fehler an den mitgegebenen CompletionHandler zu übergeben.\footnote{Vgl. Kapitel 5.2}
 Heruntergaladene Dateien werden vom PraxisrufApi in einem temporären Verzeichnis gespeichert.
 Das Resultat im Erfolgsfall ist deshalb nicht die heruntergeladene Datei selbst, sondern eine URL welche auf die Datei im temporären Verzeichnis zeigt.
-
-\lstinputlisting[caption=PraxisrufApi+Download.swift,language=Swift,label={lst:PraxisrufApi+Speech.swift}]{listings/PraxisrufApi+Speech.swift}
-
 Die Sprachsynthese für Benachrichtigungen, soll automatisch ausgeführt werden sobald eine relevante Benachrichtigung empfangen wurde.
 Die Benachrichtigung wird im AppDelegate empfangen, aufbereitet und an die Applikation übergeben.
 Die aufberetieten Daten beinhalten, die Information, ob die Benachrichtigung für die Sprachsynthese relevant ist.
