@@ -85,7 +85,6 @@ Ausgehende Anrufe können auch getätigt werden, wenn diese Option aktiviert ist
     \end{minipage}\label{fig:Mockups-Inbox-Settings}
 \end{figure}
 
-
 \subsubsection{Anbindung CloudService}
 
 Der Mobile Client muss an die API des Cloudservices angebunden werden.
@@ -107,7 +106,16 @@ Aus diesen Informationen kann der Http Request gebaut und versendet werden.
 Als letzten Parameter nehmen alle Methoden einen Parameter mit dem Namen completion entgegen.
 Dabei handelt es sich um ein Callback, welches beim Erfolg oder Fehlschlagen der Anfrange an die API ausgeführt wird.
 
-\lstinputlisting[caption=PraxisrufApi.swift,language=java,label={lst:praxisrufapi.swift}]{listings/praxisrufapi.swift}
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_PraxisrufAPI_V01}
+        \caption{Klassendiagramm PraxisrufAPI}
+    \end{minipage}
+\end{figure}
+
+
+%\lstinputlisting[caption=PraxisrufApi.swift,language=java,label={lst:praxisrufapi.swift}]{listings/praxisrufapi.swift}
 
 Als Input Paramter dieses Callbacks wird immer der Typ Result<T, PraxisrufApiError> verwendet.
 Bei Result handelt es sich um einen Wrapper Type der entweder als Erfolg oder Fehler instanziert werden kann.
