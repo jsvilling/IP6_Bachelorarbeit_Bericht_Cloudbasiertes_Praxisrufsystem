@@ -107,7 +107,7 @@ Der Zugriff auf den Signaling Service darf nur für Berechtigte möglich sein.
 Um dies sicherzustellen, wird der Verbindungsaufbau nur erlaubt, wenn die Anfrage dazu authentisiert ist.
 Für die Authentisierung wird derselbe Meachnismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
 Über die SecurityConfig des Cloudservices wird die Authentification aller Http Requests überprüft.
-Diese Konfiguratio sorgt dafür, das unauthentifizierte Http Requests eine entsprechende Response erhalten.
+Diese Konfiguration sorgt dafür, das unauthentifizierte Http Requests eine entsprechende Response erhalten.
 Sie verhindert allerdings nicht, dass eine Websocketverbindung aufgebaut wurde, obwohl der Request nicht authentifiziert werden konnte.
 Um dies zu verhindern, muss der Http Request für den Aufbau einer Websocketverbindung notwendig sind abgefangen werden und geprüft werden, ob der Request authentifiziert wurde.\cite{cite}
 Spring bietet dazu die Klasse HttpSessionHandshakeInterceptor.
@@ -117,10 +117,15 @@ Andernfalls wird der Verbindungsaufbau abgebrochen und eine Reponse mit HttpStat
 
 \clearpage
 
-\subsubsection{Lauzeitsicht - Anmeldung und Registrierung}
+\subsubsection{Anmeldung und Registrierung}
 
-Der Ablauf von Anmeldung und Registrierung funktioniert damit grundsätzlich wie bisher.
-Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung zum Intercom Modul ergänzt.
+Der Ablauf von Anmeldung und Registrierung funktioniert mit dem neuen nativen Mobile Client grundsätzlich gleich wie zuvor.
+Praxismitarbeitende öffnen die Applikation und geben ihr Benutzername und Passwort ein.
+Der Mobile Client verwendet diese um sich über Basic Authentication beim Cloudservice anzumelden.
+Als Antowrt auf die Anmeldung gibt der Cloudservice ein JWT Token zurück.
+Dieses wird für die Authentifizierung aller weiteren Anfragen an den Cloudservice verwendet.
+Nachdem die Anmeldung erfolgt ist, wird eine Liste aller Clientconfigurations die dem aktuellen Benutzer zur Verfügung stehen beim Cloudservice angefragt.
+Der Benutzer wählt die gewünschte Konfiguration aus und bestätigt.
 
 \begin{figure}[h]
     \centering
@@ -130,9 +135,71 @@ Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung
     \end{minipage}
 \end{figure}
 
+Danach wird diese Konfiguration geladen und die Hauptansicht angezeigt.
+Die geladene Konfiguration beinhaltet alle Informationen die nötig sind um Buttons für Benachrichtigungen und Sprachverbindungen anzuzeigen.
+Im Hintergrund muss sich der Mobile Client nun für Benachrichtigungen und Sprachverbindungen registrieren.
+Für Benachrichtigungen registriert er sich zuerst beim Messaging Service.
+Er erhält ein Token, welches den Client beim Messaging Service identifiziert.
+Dieses Token sendet der Mobile Client zusammen mit der gewählten Konfiguration an den Cloudservice.
+Dieser persistiert die Registrierung bei sich und kann sie verwenden um Benachrichtigungen an diesen Client zuzustellen.
+Für Sprachverbindungen muss zudem eine Verbindung zum Signlaing Modul des Cloudservices aufgebaut werden.
+Dazu wird wie in Kapitel 5.4.5 beschrieben eine Websocketverbindung geöffnet.
 
 \clearpage
-\subsubsection{Laufzeitsicht - Verbindungsaufbau}
+\subsubsection{Signalmeldungen}
+
+Dieses Kapitel beschreibt die Signalmeldungen, welche für Sprachverbindungen verwendet werden.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Signal_V01}
+        \caption{Signal (Mobile Client)}
+    \end{minipage}
+\end{figure}
+
+Alle Signalmeldungen beinhalten Identifikation von Sender und Empfänger.
+Diese werden vom Signalingserver verwendet, um die Signale korrekt weiterzuleiten.
+Type, Payload und Description werden im Mobile Client verwendet, um das Signal korrekt zu verarbeiten und Verbindungen aufzubauen.
+Das Flag notificationOnFailedDelivery wird im Cloudservice ausgewertet.
+Wenn ein Signal nicht zugestellt werden kann und dieses Flag TRUE ist, wird der Empfänger mit einer asynchrone Benachrichtigung darüber informiert.
+Dazu wird das bestehende Notification Modul des Cloudservices verwendet.
+Für die Verwaltung von Sprachverbindungen werden insgesamt sechs Typen von Signalmeldungen definiert.
+
+OFFER: Ein Offer wird vom Initiator der Sprachverbindung an die Empfänger gesendet.
+Es beinhaltet die SDP\footnote{Sesseion Description Protocol} Informationen des Initiators.  \\
+
+ANSWER: Eine Answer wird vom Empfänger eines Offers an den Initiator der Sprachverbindung gesendet.
+Es beinhaltet SDP\footnote{Sesseion Description Protocol} Informationen des Empfängers.
+
+ICE CANDIDATE: Ein RTCIceCandidate beschreibt Routing- und Protokollinformationen, die für den Verbindungsaufbau verwendet werden.
+Nach Verarbeitung von OFFER und ANSWER tauschen Initiator und Empfänger solange ICE CANDIATE Signale aus, bis sie sich auf einen Kandidaten geeinigt haben.\\
+
+END: Wird von Empfänger oder Initiator versendet, nachdem die Verbindung durch tippen des Auflegen-Button in der Applikation beendet wurde.
+Empfang dieses Signal führt dazu, dass alle offene Sprachverbindungen beendet werden.\\
+
+UNVAILABLE: Wenn der Signalinvserver ein Signal nicht zustellen kann, wird das Ziel wenn möglich über eine Benachrichtigung informiert.
+Zudem wird ein Unavailable Signal zurück an den Sender gesendet.
+So weiss dieser, dass der gewünschte gesprächspartner nicht verfügbar ist. \\
+
+DECLINE: Praxismitarbeitende haben die Möglichkeit den Empfang von Anrufen zu deaktivieren.
+Wird ein Signal empfangen während Anrufe deaktiviert sind, sender der Mobile Client ein DECLINE Signal zurück. \\
+
+\clearpage
+
+Praxismitarbeitende können Sprachverbindungen zu anderen Clients aufbauen indem sie auf den entsprechenden Button in der Praxisruf App tippen.
+Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client noch nicht, zu welchen Clients diese Verbindung aufgebaut werden soll.
+Als erstes muss deshalb beim Cloudservice angefragt werden, welche Clients mit dem betätigten Button angesprochen werden sollen.
+Der Cloudservice bietet dazu einen Endpoint an über den der vollständige CallType des verwendeten Buttons hinterlegt sind geladen werden können.
+Nachdem diese Informationen geladen sind, können Sprachverbindungen zu allen relevanten Clients aufgebaut werden.
+Dazu müssen mehrere Signalmeldungen ausgetauscht werden.
+Der auslösende Client initialisiert die Peer to Peer Verbindung auf seiner Seite und sendet für jeden Gesprächspartner ein Angebot (OFFER), welches signalisiert, dass er eine Sprachverbindung aufbauen möchte.
+Der Cloudservice findet die Verbindung des relevanten Empfängers und leitet das Signal über diese Verbindung weiter.
+Der Empfänger nimmt das Angebot (OFFER) entgegen, initialisiert die Verbindung auf seiner Seite und sendet eine Antwort (ANSWER).
+Diese wird wiederum über den Cloudservice weitergeleitet.
+Der auslösende Client empfängt die Antwort (ANSWER) und ergänzt die notwendigen Verbindungsinformationen.
+
+Folgende Graphik zeigt den initialen Ablauf des Verbindungsaufbau:
 
 \begin{figure}[h]
     \centering
@@ -142,10 +209,13 @@ Er wird aber um eine zusätzliche Registrierung über eine permanente Verbindung
     \end{minipage}
 \end{figure}
 
-Wenn der Praxismitarbeitende im Mobile Client einen Button der Gegensprechanlage tippt, soll eine Sprachverbindung zu anderen Clients aufgebaut werden.
-Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client nicht, zu welchen Clients diese Verbindung aufgebaut werden soll.
-Als erstes muss deshalb beim Cloudservice angefragt werden, welche Clients mit dem betätigten Button angesprochen werden sollen.
-Der Cloudservice bietet dazu einen Endpoint an über den die technischen Identifikatoren die in der CallGroup des verwendeten Buttons hinterlegt sind geladen werden.
+
+
+
+
+
+
+
 
 Der Mobile Client kennt nun die technischen Identifikatoren der Clients, zu denen eine Verbindung aufgebaut werden soll.
 Um die Peer To Peer Verbindung zu diesen Clients aufzubauen, müssen nun weitere Nachrichten mit dem Cloudservice ausgetauscht werden.
