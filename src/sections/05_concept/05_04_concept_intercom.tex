@@ -192,14 +192,13 @@ Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client noch nicht
 Als erstes muss deshalb beim Cloudservice angefragt werden, welche Clients mit dem betätigten Button angesprochen werden sollen.
 Der Cloudservice bietet dazu einen Endpoint an über den der vollständige CallType des verwendeten Buttons hinterlegt sind geladen werden können.
 Nachdem diese Informationen geladen sind, können Sprachverbindungen zu allen relevanten Clients aufgebaut werden.
-Dazu müssen mehrere Signalmeldungen ausgetauscht werden.
-Der auslösende Client initialisiert die Peer to Peer Verbindung auf seiner Seite und sendet für jeden Gesprächspartner ein Angebot (OFFER), welches signalisiert, dass er eine Sprachverbindung aufbauen möchte.
-Der Cloudservice findet die Verbindung des relevanten Empfängers und leitet das Signal über diese Verbindung weiter.
-Der Empfänger nimmt das Angebot (OFFER) entgegen, initialisiert die Verbindung auf seiner Seite und sendet eine Antwort (ANSWER).
-Diese wird wiederum über den Cloudservice weitergeleitet.
-Der auslösende Client empfängt die Antwort (ANSWER) und ergänzt die notwendigen Verbindungsinformationen.
-
-Folgende Graphik zeigt den initialen Ablauf des Verbindungsaufbau:
+Dazu müssen Offer, Answer und Ice Candidate Signale ausgetauscht werden.
+Der auslösende Client initialisiert die Peer to Peer Verbindung auf seiner Seite und sendet für jeden Gesprächspartner ein Offer.
+Der Cloudservice findet die Verbindung der relevanten Empfänger und leitet die Signale über die jeweilige Verbindung weiter.
+Die Verbindung auf Empfängerseite wird nach Eingang des Offers initialisiert.
+Danach wird eine Answer zurück an den Initiator gesendet, welche über den Signalingserver zugestellt wird,
+Der Initiator empfängt die Antwort Signale und ergänzt die notwendigen Verbindungsinformationen.
+Folgende Graphik visualisiert diesen Ablauf:
 
 \begin{figure}[h]
     \centering
@@ -209,31 +208,13 @@ Folgende Graphik zeigt den initialen Ablauf des Verbindungsaufbau:
     \end{minipage}
 \end{figure}
 
-
-
-
-
-
-
-
-
-Der Mobile Client kennt nun die technischen Identifikatoren der Clients, zu denen eine Verbindung aufgebaut werden soll.
-Um die Peer To Peer Verbindung zu diesen Clients aufzubauen, müssen nun weitere Nachrichten mit dem Cloudservice ausgetauscht werden.
-Alle verfügbaren Clients haben sich bei der Anmeldung mit dem Cloudservice verbunden.
-Der Cloudservice führt eine Liste über die verfügbaren Verbindungen und die dazugehörigen technischen Identifikatoren.
-Über diese Verbindungen werden nun die Nachrichten ausgetauscht die zum aufbauen der WebRTC Verbindung benötigt werden.
-Der Austausch dieser Nachrichten folgt dem Interactive Connection Establishment Protokoll (ICE).
-Der Client initialisiert für jede der erhaltenen client Ids einen Rtc Connection.
-Dies dient als Endpunkt der Connection auf seiner Seite.
-Anschliessend Sendet der Client ein Anfrage an den Cloudservice.
-Dieses Anfrage beinhaltet das ICE Offer und die Client Ids des von Ausgangs- und Ziel-Client.
-Der Cloudservice findet die Verbindung des Zieles anhand der Client Id und leitet das ICE Offer und Ausgangs Client Id über die registrierte Verbindung an den Empfänger weiter.
-Wenn der Empfänger das ICE Offer erhält, initialisiert er auf seiner Seite die Rtc Connection und sendet eine Anfrage mit ICE Antwort und originaler Ausgangs Client Id an den Server zurück.
-Dieser leitet die Anfrage dann analog dem ICE Offer an die Verbindung des ausgehenden Clients weiter.
-Sobald dieser die Antwort erhält, ist die Rtc Connection bestätigt und die Sprachverbindung ist initialisiert.
+Nachdem die Offer und Answer Meldungen ausgetauscht sind, müssen Ice Candidate Meldungen versendet werden.
+So können sich die CLients über Routing- und Protokollinformationen einigen die für die Peer to Peer Verbindung verwendet werden.
+Der Austausch von Ice Meldungen wird in obiger Graphik nicht angezeigt.
+Er verläuft nach demselben Prinzip wie der Austausch von Offer und Answer.
+Sobald sich die Clients auf die Verbindungsinformationen geeinigt haben, besteht die Sprachverbindung.
 
 \clearpage
-
 
 \subsubsection{Anbindung Mobile Client an Singaling Server}
 
@@ -334,28 +315,49 @@ Auf Starterseite, kann diese Bestätigung weiterverarbeitet werden.
 
 \subsubsection{Integration WebRTC in Mobile Client}
 
-Gekapselt im Service CallClient.
-Managed den State von Sprachverbindungen.
+Die Integration von WebRTC in die Praxisruf App wird in einer einzelnen Serviceklasse CallClient gekapselt.
+Diese verwaltet Peer To Peer Verbindungen zu anderen Clients.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.5\textwidth}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Call_Client_V01}
+        \caption{Klassendiagramm CallClient}
+    \end{minipage}
+\end{figure}
+
 Kommuniziert nur über den Delegate mit dem Rest der Applikation.
 Verwendet die Klassen der WebRTC iOS Library um Peer To Peer Verbindungen zu machen.
 Die dazu notwendigen Signale werden über Delegate / Signaling Server ausgetauscht.
 
-\subsubsection{Verpasste und vergangene Anrufe}
+\subsubsection{Verpasste Anrufe}
 
-Verpasste geben Push Benachrichtigung
-Verpasste müssen quittiert werden.
-Vergangene erscheinen in Inbox.
-Vergangene müssen nicht quittiert werden.
+Anrufe über die Gegensprechanlage können nur empfangen werden, solange die Praxisruf App im Vordergrund läuft und beim Signalingserver registriert ist.
+Ist dies nicht der Fall, kann der Signalingserver keine Signale an den jeweiligen Empfänger zustellen.
+Wenn der Singalingserver ein Signal für einen Empfänger erhält, der nicht verbunden ist wird versucht, diese über eine Benachrichtigung zu informieren.
+Benachrichtigungen für verpasste Anrufe, werden gleich wie alle anderen Benachrichtigungen empfangen und in der Inbox angezeigt.
+Für das Versenden der Benachrichtigung für verpasste Anrufe wird das bestehende Notification Modul des Cloudservice verwendet.
+Dieses wird um einen Endpunkt erweitert, der es erlaubt Benachrichtigungen gezielt an einen einzelnen Client zu versenden.
+Der neue Enpunkt nimmt zwei Parameter entgegen:
+Die technische Identifikation des Empfängers und die technische Identifikation des relevanten Benachrichtigungstyps.
+Der relevante Benachrichtigungstyp muss durch den Praxisadministrator im Admin UI erfasst werden.
+Die technische Identifikation dieses Benachrichtigungstyps muss anschliessend in den Umgebungsvariablen des Signalingservices hinterlegt werden.\footnote{Vgl. Installationsanleitung}
+Wenn der Empfänger nicht für Benachrichtigungen registriert ist, kann er nicht über den verpassten Anruf informiert werden.
+Dasselbe gilt, wenn die Benachrichtigung aus technischen Gründen nicht zugestellt werden kann.
+Im Rahmen dieses Projektes wird kein Mechanismus implementiert, um diese fehlgeschlagene Zustellung automatisch zu wiederholen.
 
-\subsubsection{Unterhaltung}
+\subsubsection{Deaktivierte Anrufe}
 
-Mute Button
-Audio Off Button
-End Call Button
+Praxismitarbeitende können das Empfangen von Anrufen lokal deaktivieren.
+Wenn der Empfang von Anrufen deaktiviert ist, werden Offer Signale nicht mit einer Answer sondern mit einem Declined Signal beantwortet.
+Empfängt ein Client ein Declined Signal, erstellt er lokal einen Eintrag in der Inbox und zeigt eine Push Benachrichtigung an um den Benutzer darauf hinzuweisen.
 
 
 \subsubsection{Verbindungsende}
 
-Button antippen
+Praxismitarbeitende können Sprachverbindungen durch einen Button beenden.
+Durch antippen des Auflagen-Buttons wird die bestehende Peer to Peer Verbindung zum Gesprächspartner getrennt.
+Anschliessend wird ein Signal vom Typ End an die Gesprächspartner gesendet.
+Durch Empfang des End-Signals, weiss der Gesprächspartner, dass die Verbindung durch das Gegenüber getrennt wurde und kann die Verbindung seinerseits entfernen.
 
 \clearpage
