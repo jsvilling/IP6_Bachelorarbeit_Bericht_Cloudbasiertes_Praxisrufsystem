@@ -20,51 +20,144 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.xx.2
         \hline
         \textbf{Szenario} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
         \hline
-        S01         & Benachrichtigung versenden - Empfänger konfiguriert   & +\\
+        S01         & Benachrichtigung versenden - Empfänger konfiguriert   & tbd\\
         \hline
-        S02         & Benachrichtigung versenden - kein Empfänger & +\\
+        S02         & Benachrichtigung versenden - kein Empfänger & tbd\\
         \hline
-        S03         & Benachrichtigung empfangen.  & +\\
+        S03         & Benachrichtigung empfangen.  & tbd\\
         \hline
-        S04         & Fehler beim Versenden anzeigen.  & +\\
+        S04         & Fehler beim Versenden anzeigen.  & tbd\\
         \hline
-        S05         & Wiederholen im Fehlerfall bestätigen.  & +\\
+        S05         & Wiederholen im Fehlerfall bestätigen.  & tbd\\
         \hline
-        S06         & Wiederholen im Fehlerfall abbrechen.  & +\\
+        S06         & Wiederholen im Fehlerfall abbrechen.  & tbd\\
         \hline
-        S07         & Audiosignal bei Benachrichtigung.   & +\\
+        S07         & Audiosignal bei Benachrichtigung.   & tbd\\
         \hline
-        S08         & Push Benachrichtigung im Hintergrund.  & +\\
+        S08         & Push Benachrichtigung im Hintergrund.  & tbd\\
         \hline
-        S09         & Erinnerungston für nicht Quittierte Benachrichtigungen.   & +\\
+        S09         & Erinnerungston für nicht Quittierte Benachrichtigungen.   & tbd\\
         \hline
-        S10         & Start Mobile Client - nicht angemeldet   & +\\
+        S10         & Start Mobile Client - nicht angemeldet   & tbd\\
         \hline
-        S11         & Start Mobile Client  - angemeldet & +\\
+        S11         & Start Mobile Client  - angemeldet & tbd\\
         \hline
-        S12         & Anmelden mit korrekten Daten.   & +\\
+        S12         & Anmelden mit korrekten Daten.   & tbd\\
         \hline
-        S13         & Anmeldung mit ungültigen Daten.   & +\\
+        S13         & Anmeldung mit ungültigen Daten.   & tbd\\
         \hline
-        S14         & Konfiguration Wählen   & +\\
+        S14         & Konfiguration Wählen   & tbd\\
         \hline
-        S15         & Abmelden.   & +\\
+        S15         & Abmelden.   & tbd\\
         \hline
-        S16         & Admin UI - Anmeldung mit korrekten Daten   & +\\
+        S16         & Admin UI - Anmeldung mit korrekten Daten   & tbd\\
         \hline
-        S17         & Admin UI - Anmeldung mit ungültigen Daten   & +\\
+        S17         & Admin UI - Anmeldung mit ungültigen Daten   & tbd\\
         \hline
-        S18         & Admin UI - Konfiguration Verwalten   & +\\
+        S18         & Admin UI - Konfiguration Verwalten   & tbd\\
         \hline
-    \end{tabular}\label{tab:testplan}
+    \end{tabular}\label{tab:testplan_migration}
 \end{table}
 \clearpage
 
 \subsubsection{Testplan Sprachsynthese}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|p{11cm}|c|c|}
+        \hline
+        \textbf{Szenario} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
+        \hline
+        S19         & Benachrichtigung vorlesen - Sprachsynthese aktiviert und Benachrichtigung relevant & tbd\\
+        \hline
+        S20         & Benachrichtigung nicht vorlesen - Sprachsynthese aktiviert und Benachrichtigung nicht relevant & tbd\\
+        \hline
+        S21         & Lokale Einstellung - Sprachsynthese deaktiviert und Benachrichtigung relevant  & tbd\\
+        \hline
+        S22         & Lokale Einstellung - Sprachsynthese deaktiviert und Benachrichtigung nicht relevant  & tbd\\
+        \hline
+        S23         & Benachrichtigung verwalten - Relevanz Sprachsynthese kann im Admin UI aktiviert / deaktiviert werden  & tbd\\
+        \hline
+        S24         & Benachrichtigung empfangen - Änderung an Typ in Admin UI wird sofort angewendet   & tbd\\
+        \hline
+    \end{tabular}\label{tab:testplan_sprachsynthese}
+\end{table}
+
 \clearpage
 
 \subsubsection{Testplan Gegensprechanlage}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|p{11cm}|c|c|}
+        \hline
+        \textbf{Szenario} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
+        \hline
+        S25         & Gegensprechanlage Buttons nach Anmeldung anzeigen & tbd\\
+        \hline
+        S26         & Verbindungsaufbau 1:1 - Gegenüber ist Verfügbar & tbd\\
+        \hline
+        S27         & Verbindungsaufbau 1:1 - Gegenüber ist nicht Verfügbar & tbd\\
+        \hline
+        S28         & Verbindungsaufbau 1:1 - Gegenüber hat Gegensprechanlage deaktiviert & tbd\\
+        \hline
+        S29         & Verbindungsaufbau 1:1 - Benachrichtigungston & tbd\\
+        \hline
+        S30         & Verbindungsaufbau 1:1 - Automatische Annahme & tbd\\
+        \hline
+        S31         & Unterhaltung 1:1 - Unterhaltung in Echtzeit möglich & tbd\\
+        \hline
+        S32         & Verbindungsaufbau 1:n - Alle Gegenüber ist Verfügbar & tbd\\
+        \hline
+        S33         & Verbindungsaufbau 1:n - 1 von n Gegenüber ist nicht Verfügbar & tbd\\
+        \hline
+        S34         & Verbindungsaufbau 1:n - 1 von n Gegenüber hat Gegensprechanlage deaktiviert & tbd\\
+        \hline
+        S35         & Verbindungsaufbau 1:n - 1 von n Benachrichtigungston & tbd\\
+        \hline
+        S36         & Verbindungsaufbau 1:n - Automatische Annahme in allen Empfängern & tbd\\
+        \hline
+        S37         & Unterhaltung 1:n - Unterhaltung in Echtzeit möglich & tbd\\
+        \hline
+        S38         & Inbox - Empfangene Unterhaltungen & tbd\\
+        \hline
+        S39         & Inbox - Verpasste Unterhaltungen & tbd\\
+        \hline
+        S40         & Inbox - Abgelehnte Unterhaltungen & tbd\\
+        \hline
+        S41         & Verbindung trennen 1:1 - Durch Empfänger & tbd\\
+        \hline
+        S42         & Verbindung trennen 1:1 - Durch Initiator & tbd\\
+        \hline
+        S43         & Verbindung trennen 1:n - Durch Empfänger & tbd\\
+        \hline
+        S44         & Verbindung trennen 1:n - Durch Initiator & tbd\\
+        \hline
+        S44         & Konfiguration über Admin UI & tbd\\
+        \hline
+    \end{tabular}\label{tab:testplan_gegensprechanlage}
+\end{table}
 \clearpage
 
 \subsubsection{Testplan Performance}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|p{11cm}|c|c|}
+        \hline
+        \textbf{Kriterium} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
+        \hline
+        P01         & Zeit bis Benachrichtigung ankommt im Schnitt < 5s & tbd\\
+        \hline
+        P02         & Vorlesen von Benachrichtigung < 5s nach Benachrichtigungston (ohne Cache) & tbd\\
+        \hline
+        P03         & Vorlesen von Benachrichtigung < 1s nach Benachrichtigungston (mit Cache) & tbd\\
+        \hline
+        P04         & Verbindungsaufbau Sprachverbindung <5 s  & tbd\\
+        \hline
+        P05         & Verzögerung bei Sprachverbindung klein genug für normale Unterhaltungen & tbd\\
+        \hline
+        P06         & Ressourcenverbrauch der Applikation bleibt über Zeit konstant & tbd\\
+        \hline
+    \end{tabular}\label{tab:testplan_performance}
+\end{table}
 \clearpage
