@@ -232,7 +232,13 @@ Der Austausch von Signalmeldungen ist der einzige Anwendungsfall in Praxisruf, d
 Deshalb wird auf eine generische Integration von Verbindungen analog von Http Verbindungen\footnote{Vgl. Kapitel 5.2.2} verzichtet.
 Stattdessen wird eine Extension Klasse PraxisrufApi+Signaling nach folgendem Muster erstellt:
 
-\lstinputlisting[caption=PraxisrufApi+Signaling.swift,language=java,label={lst:PraxisrufApi+Signaling.swift}]{listings/PraxisrufApi+Signaling.swift}
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signaling_Connection}
+        \caption{Klassendiagramm - Signaling Schnittstelle in Mobile Client}
+    \end{minipage}
+\end{figure}
 
 Die Signaling Extension kann immer genau eine offene Verbindung verwalten.
 Diese wird als Instanzvariable innerhalb des Services geführt.
@@ -242,10 +248,7 @@ Eine Verbindung wird dabei immer spezifisch für die aktuell gewählte Client Co
 Weiter werden Methoden angeboten, um Pingsignale zu senden oder die Verbindung zu trennen.
 Zudem bietet die Extension Methoden, um Signalmeldungen über die geöffnete Verbindung zu senden,
 sowie eine Methode um empfangene Signalmeldungen zu verarbeiten.
-
 Für die Integration der Singalingverbindung in den Rest der Applikation, wird das Protokoll PraxisrufApiSignalingDelegate definiert.
-
-\lstinputlisting[caption=PraxisrufApiSignalingDelegate.swift,language=java,label={lst:PraxisrufApiSignalingDelegate.swift}]{listings/PraxisrufApiSignalingDelegate.swift}
 
 Vor dem Versenden einer Signal- oder Pingmeldung wird überprüft, ob eine Verbindung geöffnet und Fehlerfrei ist.
 Ist dies nicht der Fall, wird die Verarbeitung die onConnectionLostMethode des Delegates aufgerufen.
@@ -273,7 +276,13 @@ Und um den bei Änderung des internen Status, das UI entsprechend zu aktualisier
 Um die Integration der Sprachverbindung möglichst unabhängig und auswechselbar zu machen, wird der CalLClient nicht direkt in der View verwendet.
 Stattdessen definiert der CallClient ein Delegate Protocol, welches die notwendigen Callbacks definiert.
 
-\lstinputlisting[caption=CallClientDelegate.swift,language=java,label={lst:CallClientDelegate.swift}]{listings/CallClientDelegate.swift}
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signal_Processing}
+        \caption{Klassendiagramm - Signalingverarbeitung in Mobile Client}
+    \end{minipage}
+\end{figure}
 
 Um Anrufe in der Applikation verwenden zu können müssen CallClient und PraxisrufApi+Signaling in die Benutzeroberfläche integriert werden.
 Beide Applikationen definieren ein Delegate Protocol, welches die Funktionen spezifiziert, über welche die Komponenten eingebunden werden können.
@@ -305,14 +314,6 @@ Der CallService aktiviert die Ansicht für aktive Anrufe und leitet das Signal a
 Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt eine Signal zur Bestätigung.
 Dieses Signal wird wiederun über den CallService zum SignalingClient weiter zum Cloud Service versendet.
 Auf Starterseite, kann diese Bestätigung weiterverarbeitet werden.
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Receiver_Signaling.drawio}
-        \caption{Mobile Client Anruf Empfangen Signal}
-    \end{minipage}
-\end{figure}
 
 \clearpage
 
