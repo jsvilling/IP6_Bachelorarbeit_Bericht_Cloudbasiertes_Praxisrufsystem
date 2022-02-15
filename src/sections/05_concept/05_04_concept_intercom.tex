@@ -322,14 +322,6 @@ Auf Starterseite, kann diese Bestätigung weiterverarbeitet werden.
 Die Integration von WebRTC in die Praxisruf App wird in einer einzelnen Serviceklasse CallClient gekapselt.
 Diese verwaltet Peer To Peer Verbindungen zu anderen Clients.
 
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.5\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Call_Client_V01}
-        \caption{Klassendiagramm CallClient}
-    \end{minipage}
-\end{figure}
-
 Kommuniziert nur über den Delegate mit dem Rest der Applikation.
 Verwendet die Klassen der WebRTC iOS Library um Peer To Peer Verbindungen zu machen.
 Die dazu notwendigen Signale werden über Delegate / Signaling Server ausgetauscht.
