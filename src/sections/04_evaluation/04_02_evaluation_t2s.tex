@@ -8,7 +8,7 @@ Diese Integration kann mit den Standardbibliotheken für iOS oder durch die Anbi
 Die Anbindung eines externen Provider kann entweder direkt im Mobile Client implementiert werden.
 Alternativ das Backend von Praxisruf\footnote{Cloudservice} an den Provider angebunden werden und dem Mobile Client eine Schnittstelle bieten, um diese Daten abzufragen.
 
-\subsubsection*{Apple Speech Synthesis}
+\subsubsection{Apple Speech Synthesis}
 
 Die Standardbibliothek von für iOS unterstützt das Konvertieren von Text zu Sprache.\cite{ios_speech_synthesis}
 Sprachsynthese könnte dadurch ohne die Anbindung eines externen Providers umgesetzt werden.
@@ -18,7 +18,7 @@ Sollte die Funktion in künftigen Versionen nicht mehr unterstützt werden, müs
 Weiter bringt diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
 Letztlich hat diese Variante den Nachteil, dass dieselbe Funktionaltät für einen Android Client komplett neu entwickelt werden müsste.
 
-\subsubsection*{Amazon Polly}
+\subsubsection{Amazon Polly}
 
 Vom Auftraggeber ist explizit gewünscht, dass Infrastruktur und Services wo möglich über Amazon Webservices bestellt werden.\footnote{Siehe Kapitel 3 - F19}
 Mit dem Service ''Polly'' bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann.\cite{aws_polly}
@@ -47,7 +47,7 @@ Durch die Integration von Sprachsynthese muss aber mindestens eine Komponente im
 Wie stark die Komplexität des System wächsts, kann jedoch minimiert werden, indem die neue Funktionalität gekapselt wird.
 Sie kann so umgesetzt werden, dass sie unabhängig von restlichen System bleibt und alle nötigen Daten über die Schnittstelle der anderen Module bezieht.\footnote{Siehe Kapitel 5.1}
 
-\subsubsection*{Entscheidung}
+\subsubsection{Entscheidung}
 
 Die Sprachsynthese wird durch die Anbindung des externen Providers AWS Polly umgesetzt.
 Der Cloudservice übernimmt die Kommunikation mit AWS Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.

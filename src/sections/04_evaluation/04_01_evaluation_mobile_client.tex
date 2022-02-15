@@ -14,12 +14,12 @@ und Push Benachrichtigungen im Vorder- sowie im Hintergrund empfängen können.
 Weiter muss die Technologie es ermöglichen, regelmässige Aufaben auszuführen.
 Dadurch kann überprüft werden, ob der Benutzer ungelesene Benachrichtigungen hat und wenn nötig einen Erinnerung dafür angezeigt werden.
 
-\subsubsection*{Programmiersprache}
+\subsubsection{Programmiersprache}
 
 Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift Industriestandard.\cite{ios_swift}
 Der native iOS Client für Praxisruf wird deshalb mit Swift implementiert.
 
-\subsubsection*{Frameworks}
+\subsubsection{Frameworks}
 
 Für die Umsetzung von iOS Applikationen stellt Apple die zwei Frameworks UIKit\cite{ios_uikit} und SwiftUI\cite{ios_swift_ui} zur Verfügung.
 UIKit ist das ältere der beiden Frameworks und ist seit iOS 2.0 verfügbar.
@@ -37,7 +37,7 @@ Es ist also grundsätzlich möglich, alles was mit UIKit umgesetzt werden kann a
 
 \clearpage
 
-\subsubsection*{Unterstützung Benachrichtigungen}
+\subsubsection{Unterstützung Benachrichtigungen}
 
 Um Notifikationen über Praxisruf versenden und Empfangen zu können, muss Firebase Cloud Messaging in die Applikation integriert werden können. 
 Firebase stellt für die Integration in iOS eine native Library zur Verfügung.\cite{firebase_github_ios} 
@@ -54,7 +54,7 @@ UIKit Funktionen können allerdings nahtlos mit SwiftUI integriert werden.\cite{
 Die Firebase Cloud Messaging Library für iOS ermöglicht es also, Benachrichtigungen von Praxisruf sowohl mit UIKit als auch mit SwiftUI umzusetzten.
 
 
-\subsubsection*{Benachrichtigungen prüfen}
+\subsubsection{Benachrichtigungen prüfen}
 
 Der Mobile Client soll den Benutzer regelmässig erinnern, wenn es ungelesene empfangene Benachrichtigungen gibt.
 Dazu muss regelmässig geprüft werden, ob es solche Benachrichtigungen gibt und gegebenenfalls ein Erinnerungston abgespielt werden.
@@ -69,7 +69,7 @@ Apple bietet allerdings auch Mittel, um Aufgaben im Hintergrund zu verarbeiten.
 Die Umsetzung von der Erinnerungsfunktion kann also ohne zusätzliche Frameworks umgesetzt werden.
 Es besteht zudem die Möglichkeit den Umfang des bestehenden Clients zu erweitern und die Prüfungen auch im Hintergrund laufen zu lassen.
 
-\subsubsection*{Entscheid}
+\subsubsection{Entscheid}
 
 Der native iOS Mobile Client für Praxisruf wird mit Swift und SwiftUI umgesetzt.
 Der deklarative Syntax, ermöglicht es einfacher übersichtliche und lesbare Komponenten zu implementieren.
