@@ -6,6 +6,12 @@ Weiter wurde mit AWS Polly ein Sprachsynthese Provider an das System angebunden.
 Diese Anbindung wird verwendet, um bei Bedarf den Inhalt empfangener Benachrichtigungen automatisch vorlesen zu lassen.
 Letztlich wurde WebRTC verwendet, um eine konfigurierbare Gegensprechanalge zu implementieren.
 
+\subsubsection{Infrastruktur und Systemarchitektur}
+
+Modularisierung Cloudservice.
+AWS Polly.
+Restliche Infrastruktur 1:1 aus IP 5 übernommen.
+
 \clearpage
 
 \subsubsection{Nativer Mobile Client}
@@ -119,3 +125,28 @@ Ist die App minimiert oder beendet, ist der jeweilige Client für Gespräche nic
 Ein nicht verfügbarer Client wird über Hintergrundbenachrichtigungen auf verpasste Anrufe hingewiesen.
 
 \clearpage
+
+\subsubsection{Sprachsynthese}
+
+Kein UI Teil.
+Integration in Mobile Client.
+Cache funktioniert sehr gut.
+Abfragen an Cloudservice funktionieren einwandfrei.
+CloudService um Schnittstelle erweitert.
+Swagger Screenshot.
+Konfigurierbar im Admin UI.
+Admin UI Screenshot.
+Lückenlos umgesetzt.
+Details siehe Konzept 5.
+
+\clearpage
+
+\subsubsection{Gegensprechanlage}
+
+Konfigurierbare Gegensprechanlage mit WebRTC umgesetzt.
+UI Teil in Nativer Mobile Client beschrieben.
+Cloudservice Konfiguration erweitert.
+Mit Admin UI konfigurierbar.
+Admin UI Screenshot.
+Cloudservice um Signaling Schnittstelle mit WebRTC erweitert.
+
