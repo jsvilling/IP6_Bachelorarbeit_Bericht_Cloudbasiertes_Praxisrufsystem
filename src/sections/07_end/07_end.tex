@@ -21,14 +21,28 @@ Empfangene Benachrichtigungen und verpasste Anrufe müssen von Praxismitarbeiten
 Sind unquittierte Elemente in der Inbox, ertönt in regelmässigen Abständen ein Erinnerungston.
 
 Das umgesetzte System deckt die wesentlichen Anforderungen eines cloudbasierten Praxisrufsystems ab.
+Für eine kommerzielle Nutzung des Systems sind aber zusätzliche Erweiterungen notwendig.
+Praxisruf unterstützt in der aktuellen Version die Authentifzierung mittels Json Web Tokens.
+Ausstellung der Tokens wird dabei allerdings durch Praxisruf selbst gemacht.
+Es wird empfohlen vor der kommerziellen Nutzung einen externen Identity Provider anzubinden und Authentifizierung/Authorisierung nach OpenID Connect umzusetzen.
+Weiter ist Praxisruf heute nur beschränkt mandantenfähig.
+Praxismitarbeitende haben nur Zugriff auf Konfigurationen, welche dem verwendeten Benutzer zugewiesen sind.
+Praxisadministratoren können allerdings immer alle bekannten Konfigurationen über das Admin UI verwalten.
+Weiter wird bei der Auswertung der Konfiguration für das Zustellen von Benachrichtigungen und beim der Signalvermittlung für Sprachverbindungen keine Zuordnung an Benutzer oder Mandat geprüft.
+Um Praxisruf produktiv bei mehreren Kunden einzusetzen, muss es Mandantenfähigkeit implementiert werden.
+Letztlich sind heute einfache Mechanismen für das Wiederholen von Benachrichtigungen und Wiederaufbau von verlorenen Verbindungen implementiert.
+Für den produktiven Betrieb können und müssen diese allerdings noch erweitert werden.
+Insbesondere der Wiederaufbau von bestehenden Sprachverbindungen bei Verbindungsverlust ist für eine kommerzielle Nutzung unerlässlich.
 
-Mandatenfähigkeit fehlt.
-OAuth/OpenID Connect fehlt.
-Stabilität und Resilience ist verbesserungswürdig.
-Keine Erfahrung mit Mobile oder iOS.
-Covid sucks.
-Keine Erfahrung mit P2P oder Sprachübertragung.
+Die grösste Gefahr für die produktive Nutzung von Praxisruf ist allerdings, das es bis heute nie in grösserem Umfang produktiv eingesetzt wurde.
+In der aktuellen Form sollte Praxisruf nicht im grossen Stil produktiv eingesetzt werden.
+Es bietet allerdings alle Funktionen, die ein Praxisrufsystem benötigt.
+Dementsprechend ist es möglich, das System in einem Pilotbetrieb einzusetzten.
+So kann Testfeedback von Benutzern eingeholt werden und es können Performance Metriken gesammelt werden.
+Diese können weitere Einblicke darauf geben, welche Teile des Cloudservices separat als skalierbare Microservices deployed werden sollen.
+Wird Praxisruf mit den Erkentnissen aus einem Pilotbetrieb ergänzt und die Funktionen Mandantenfähigkeit und OpenId Connect implementiert, kann es kommerziell und produktiv genutzt werden.
 
-
+Insgesamt bin ich mit den Konzepten und Ergebnissen, die aus dieser Arbeit hervorgegangen sind zufrieden.
+Ich bin überzeugt, dass die erarbeiteten Konzepte und das umgesetzte System eine solide Grundlage für ein kommerziell erfolgreiches cloudbasiertes Praxisrufsystem bilden.
 
 \clearpage
