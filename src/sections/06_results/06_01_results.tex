@@ -164,6 +164,23 @@ Durch diese Einstellungen, werden Sprachverbindungen immer abgelehnt.
 Es wird allerdings eine Benachrichtung angezeigt, welche über den verpassten Anruf informiert.
 
 Sprachverbindungen werden für jeden Gesprächspartner als Peer To Peer Verbindung zwischen Anrufer und Empfänger aufgebaut.
-Dadurch kann der Anrufer mit mehreren Empfängern Gespräche führen.
-Die Empfänger können aber unter einander keine Sprachdaten austauschen.
+Um diesen Verbindungsaufbau zu ermöglichen, müssen Signale zwischen den Beteiligten ausgetauscht werden.
+Dazu wurde der Cloudservice um die Komponente Signaling erweitert.
+Diese ermöglicht es Signale über Websocketverbindungen zu versenden.
+Sie Signaling Komponenten verwaltet alle offenen Verbindungen und vermittelt Signale an die relevanten Empfänger.
+Kann ein Signal nicht zugestellt werden, wird der Empfänger über das Notification Modul mit einer Benachrichtigung informiert.
+
+Die umgesetzte Gegensprechanlage erfüllt alle in Kapitel 3 erarbeiteten Anforderungen.
+Sie hat haber zwei Einschränkungen, welche hier erwähnt sein sollen:
+Die erste Einschränkung betrifft den Betrieb von Mobile Clients.
+Die Qualität der Sprachverbindungen ist ausreichend für eine Gegensprechanlage.
+Grundsätzlich ist es möglich, mehrere Endgeräte im selben Zimmer zu betreiben.
+Dabei ist aber darauf zu achten, dass diese nicht zu nahe beineinander stehen.
+Wird eine Sprachverbindung zwischen zwei Mobile Clients aufgebaut, die unmittelbar nebeneinander stehen kann ein positiver Feedback Loop entstehen, welcher zu einem schrillen Pfeifton führt.
+Praxisruf ist für ein Mobile Client pro Zimmer konzipiert.
+Diese Einschränkung ist für den Praxisbetrieb minimal bis gar nicht relevant.
+Die zweite Einschränkung betrifft den austausch von Sprachdaten. 
+Sprachverbindungen können zwischen zwei oder mehr Empfängern aufgebaut werden.
+Die implementierte Gegensprechanlage hat dabei aber die Einschränkung, dass Verbindungen nur zwischen Anrufer und Empfänger aufgebaut wird.
+Es werden keine Verbindungen zwischen den einzelnen Empfängern aufgebaut.
 Die implementierte Gegensprechanlage unterstützt damit 1:1 und 1:n Verbindungen aber keine n:n Verbindungen.
