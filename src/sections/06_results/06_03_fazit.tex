@@ -1,3 +1,74 @@
 \subsection{Fazit}
 
-Lorem Ipsum
+In diesem Kapitel werden die zentralen Herausforderungen während der Projektarbeit und die Schlussfolgerungen die daraus gezogen werden können beschrieben.
+
+Nativer Mobile Client was herausfordernd.
+Insbesondere Anbindung an Umsysteme und effiziente Integration von WebRTC.
+Mehraufwand für saubere INtegration (praxisrufapi) hat sich gelohnt.
+Hat länger gebraucht, die Anbindung am schluss ist aber recht übersichtlich und gefällt mir.
+
+Fazit: Konzepte Lohnen sich.
+Wirklich.
+Das detaillierte ausarbeiten von Abläufen auf Fachlicher Ebende, für Connection handling und für Rest Calls hat sich gelohnt.
+Ich bin mit der Integration dieser Andbindungen im Mobile Client echt zufrieden.
+
+Implementation an WebRTC war auch eher müsham.
+Es gibt native SDKs.
+Diese haben allerdings keine nennenswerte Entwicklerdokumentation.
+Es finden sich leicht diverse Referenzimplementierungen oder Tutorial Style Github Repositories.
+Dabei handelt es sich aber immer nur um einfache Dinger.
+Die saubere Integration in ein UI mit controls fehlt oft.
+Insbesondere für SwiftUI.
+WebRTC ist aber schlussendlich ein gut verbreiteter Standard.
+Der auch in allen Grossen Browsern unterstützt wird.
+Die Konzepte von WebRTC sind dieselben, unabhängig von der Platform.
+Dementsprechend könnena uch diese Resourcen verwendet werden.
+Verbindungen funktioneren zuverlässung und soweit stabil.
+Ledliglich Problem mit Feedback wenn nahe zusammen.
+Hat den Vorteil, dass simpler eigener Signaling Service verwendet werden kann.
+Keine Providerbindung und maximale Flexibilität.
+Handelt sich aber halt um open source.
+Wer weiss, wann google das fallen lässt oder kompatibilität plötzlich nicht mehr da ist.
+
+Fazit: WebRTC ist voll okay für Praxisrufsystem.
+Für kommerzielle Nutzung sollte aber ein Notfallszenario definiert werden.
+Dies beinhaltet zeitnahe evaluation bei neuen iOS Releases, damit alles kompatibel ist.
+Und ein Szenario wie WebRTC bei Bedarf ersetzt werden kann.
+Szenario war im Rahmen dieses Projekts nicht möglich.
+Integration in Mobile App ist aber so, dass die Andbindung ins UI wiederverwndet werden kann, auch wenn andere Call Technologie verwendet wird.
+Letztlich gibt es mit open source auch sowas wie provider bindung halt anders.
+Darum egal ob provider oder open source: Notfallplan gehört dazu.
+
+Covid war auch eine Challange.
+Im Methoden Teil wurde angedacht, dass scrum mässig zusammengesessen und getestet wird.
+Das hat aus zwei gründen nicht ganz wie erwartet funktioniert.
+Einerseits, ist der Konzept teil zu lang.
+Nicht länger als angedacht, aber halt doch lang.
+Meetings mussten grösstenteils remote statfinden.
+Das hat Demonstartionen und Absprachen deutlich erschwert.
+Anforderungen wurden am Anfang gemacht, das ist auch gut so.
+Persönlichere Meetings hätten aber vlt direkteres Feedback ermöglicht, so dass direkter auf Bedürfnisse hätte eingegangen werden können.
+Letztlich bin ich selbst am Covid erkrankt.
+Genau in der Zeit in der ich vorgenommen hatte, Zeit für das Projekt zu investieren.
+Das hat zu Verzögerungen geführt.
+Insgesamt trotzdem erreicht.
+Aber es könnte besser sein.
+Anforderungen waren als Minimum gedacht, mit raum für mehr.
+
+Fazit: Puffer sind nötig.
+Es wurde Zeit für Polishing eingeplant aber nicht genug.
+Künftig: Puffer explizit als Puffer einbauen und nicht als Zeit in der man erwartet noch mehr machen zu können.
+Mehr Zeit für Testing
+Mehr Zeit für Polishing
+
+Insgesamt bin ich mit dem Resultat dieser Arbeit sehr zufrieden.
+Ich bin sehr zufrieden mit der Systemarchitektur.
+Überzeugt, dass diese verwendet werden kann um ein gutes, kommerzielles Produkt zu erstellen.
+Ich bin weiter zufrieden mit dem Aufbau des Mobile Clients.
+Besonders da es mein erster ist.
+Besonders Anbindung umsysteme und integration in UI.
+Gleichzeitig hätte ich mir gwünscht weiter zu kommen.
+Es wurden gerade die minimalen Anforderungen unmgesetzt, die am Anfang definiert wurden.
+Eigentlich hätte ich mehr gewollt.
+
+Unterm Strich: Ein guter Prototyp der als Basis für eine kommerzialisierung eines Cloudbasierten Praxisrufsystems dienen kann.
