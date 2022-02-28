@@ -1,66 +1,69 @@
 \section{Einleitung}
-"Ärzte und Zahnärzte haben den Anspruch in Ihren Praxen ein Rufsystem einzusetzen.
-Dieses Rufsystem ermöglicht, dass der behandelnde Arzt über einen Knopfdruck Hilfe anfordern oder Behandlungsmaterial bestellen kann.
-Zusätzlich bieten die meisten Rufsysteme die Möglichkeit eine Gegensprechfunktion zu integrieren.
-Ein durchgeführte Marktanalyse hat gezeigt, dass die meisten auf dem Markt kommerziell erhältlichen Rufsysteme auf proprietären Standards beruhen und ein veraltetes Bussystem oder analoge Funktechnologie zur Signalübermittlung einsetzen.
-Weiter können diese Systeme nicht in ein TCP/IP-Netzwerk integriert werden und über eine API extern angesteuert werden.
 
-Im Rahmen dieser Arbeit soll ein Cloudbasiertes Praxisrufsystem entwickelt werden.
-Pro Behandlungszimmer wird ein Android oder IOS basiertes Tablet installiert.
+''Ärzte und Zahnärzte haben den Anspruch in Ihren Praxen ein Rufsystem einzusetzen.
+Dieses Rufsystem ermöglicht, dass der behandelnde Arzt über einen Knopfdruck Hilfe anfordern oder Behandlungsmaterial bestellen kann.''\cite{aufgabenstellung}
+Mit diesem Projekt wurde ein cloudbasiertes Praxisrufsystem konzipiert und umgesetzt.
+Dieses ermöglicht es Praxismitarbeitenden über Benachrichtigungen und Sprachverbindungen zu kommunizieren.
+Dazu wurde eine native iOS Applikation entwickelt, welche als Bedienoberfläche für das System dient.
+Folgende Abbildungen zeigen die Startseite der Applikation (Abbildung 1.1) sowie die Ansicht während eines aktiven Gruppenanrufs (Abbildung 1.2).
 
-Auf diese Tablet kann die zu entwickelnde App installiert und betrieben werden.
-Die App deckt dabei die folgenden Ziele ab:
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{graphics/screenshots/app/home}
+        \caption{Praxisruf Startseite}
+    \end{minipage}
+    \hfill
+    \begin{minipage}[b]{0.4\textwidth}
+        \includegraphics[width=\textwidth]{graphics/screenshots/app/call}
+        \caption{Aktiver Anruf}
+    \end{minipage}
+    \label{fig:MobileClient-ScreensIntroduction}
+\end{figure}
 
-\begin{itemize}
-    \item Evaluation Frameworks für die Übertragung von Sprachinformationen (1:1 und 1:m)
-    \item Erweiterung SW-Architektur für die Übertragung von Sprachdaten
-    \item Definitoin und Implementierung Text-to-Speach Funktion
-    \item Implementierung Sprachübertragung inklusive Gegensprechfunktion
-    \item Durchführung von Funktions- und Performancetests
-\end{itemize}
+Benachrichtigungen und Sprachverbindungen können durch Buttons auf der Startseite der Applikation verwendet werden.
+Empfangene Benachrichtigungen werden als Push-Benachrichtigung angezeigt und in einer Inbox gesammelt.
+Der Inhalt von empfangenen Benachrichtigungen kann zudem automatisch vorgelesen werden.
+Sprachverbindungen können zwischen zwei oder mehr Teilnehmern aufgebaut werden.
+Das System unterstützt sowohl private Gespräche als 1:1 Verbindungen wie auch Gruppenunterhaltungen als 1:N Verbindungen.
+Welche Buttons und damit welche Benachrichtigungen und Sprachverbindungen zur Verfügung stehen, wird durch Praxisadministratoren konfiguriert.
+Die Konfiguration von Buttons für Sprachverbindungen beinhaltet, welche Empfänger für die Verbindung relevant sind.
+Die Konfiguration von Buttons für Benachrichtigungen definiert den Inhalt der Benachrichtigung und  welche Empfänger diese erhalten.
+Für die Verwaltung dieser Konfiguration kann durch eine Weboberfläche vorgenommen werden.
+Abbildung 1.3 zeigt die Übersicht verfügbarer Benachrichtigung in dieser Weboberfläche.
 
-Die Hauptproblemstellung dieser Arbeit ist die sichere und effiziente Übertragung von Sprach- und Textmeldungen zwischen den einzelnen Tablets.
-Dabei soll es möglich sein, dass die App einen Unicast, Broadcast und Mutlicast Übertragung der Daten ermöglicht.
-Über eine offene Systemarchitektur müssen die Kommunikationsbuttons in der App frei konfiguriert und parametrisiert werden können."\footnote{Ausgangslage, Ziele und Problemstellung im Originaltext der Aufgabenstellung}\cite{aufgabenstellung}
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{graphics/screenshots/admin_ui_notification_types}
+        \caption{Praxisruf Startseite}
+    \end{minipage}
+    \label{fig:AdminUI-Introduction}
+\end{figure}
 
-Mit dem Projekt IP5 Cloudbasiertes Praxisrufsystem\cite{ip5} wurde bereits eine mobile Applikation für Praxisruf umgesetzt.
-Mit dieser Applikation können bereits heute Benachrichtungen über Praxisruf versendet und empfangen werden.
-Um die Wartbarkeit und Hardware- sowie Betriebssystemkomaptibilität zu gewährleisten wurde im Fazit des Vorgängerprojekts empfohlen, die Applikation neu als native Applikation für iOS und Android zu schreiben.\cite{ip5}
-Dieses Projekt beinhaltet damit die Migration des bestehenden Mobile Clients in eine native iOS Applikation sowie die Erweiterung um Sprachbezogene Funktionen.
+Dieses Projekt ist das direkte Nachfolgeprojekt der Projektarbeit ''IP5 Cloudbasiertes Praxisrufsystem''.
+Dementsprechend baut die umgesetzte Lösung direkt auf das im Vorgängerprojekt entwickelte System auf.
+Das zuvor umgesetzte System unterstützte bereits das Versenden und Empfangen von Benachrichtigungen.
+Die Synthese von Sprachdaten und der Aufbau von Sprachverbindungen war damit allerdings noch nicht möglicht.
+Mit diesem Projekt wurde das System erweitert um Benachrichtigungen als Sprachdaten synthetisieren und Sprachverbindungen aufbauen zu können.
+Weiter wurde die bestehende mobile Applikation von Grund auf neu als native iOS Applikation entwickelt.
 
-Bei Projektstart bestehen zwei primäre Gefahren.
-Die erste Gefahr besteht in der unerfahrenheit der Projektteilnehmer mit Mobileentwicklung und inbesondere im Bezug Sprachkommunikation.
-Das Projektteam hat lediglich aus dem Vorgängerprojekt\{ip5} Erfahrungen mit mobiler Entwicklung.
-Dies beinhaltet aber keine native iOS Entwicklung, wie sie für dieses Projekt notwendig ist.
-Weiter besteht keinerlei Erahrung mit der Verarbeitung und Übertragung von Sprachdaten und Telefonie.
-Die Gefahr für das Projekt besteht hier darin, dass die Evaluation und Umsetzung länger als erwartet gehen können oder das Konzepte nicht wie erwartet umgesetzt werden können.
-Dieses Risiko kann durch Recherche und Proof Of Concepts minimiert werden.
-Die zweite Gefahr besteht in der pandemischen Situation bei Projektstart im Herbst 2021.
-Es ist damit zu rechnen, dass viele Meetings nicht persönlich stattfinden können.
-Die Organisation und Kommunikation des Projektes wird auf die Einschränkungen der aktuellen Lage angepasst und von Anfang primär über digitale Werkzeuge organisiert.
-Präsentationen, Demonstrationen und Tests mit dem Kunden werden, wenn möglich vor Ort abgehalten.
-Ist dies nicht möglich werden auch Sie über Microsoft Teams abgehalten.
-Weiter ist es möglich, dass Projektteilnehmende Krankheitshalber ausfallen und sich das Projekt deshalb verzögert.
-Sollte dies der Fall werden müssen Umfang und Prioritäten im Projekt neu evaluiert und gegebenenfalls angepasst werden.
+Wie in der Aufgabenstellung beschrieben, hat eine Marktanalyse im Vorfeld dieses Projektes gezeigt, dass bestehende kommerzielle Praxisrufsysteme veraltete Technologien einsetzten.
+Diese Systeme sind aufwändig zu installieren.
+Sie können weiter nicht einfach in ein TCP/IP-Netzwerk eingebunden und über externe APIs angesteuert werden.\cite{aufgabenstellung}
+Das cloudbasierte Praxisrufsystem welches mit diesem Projekt umgesetzt wurde, löst diese Probleme.
+Im Zentrum dieser Lösung steht eine Serverkomponente mit dem Namen Cloudservice.
+Der Cloudservice dient zur Verwaltung der Systemkonfiguration sowie dem Vermitteln von Benachrichtigungen und Sprachverbindungen zwischen Endgeräten.
+Verwaltung von Systemkonfiguration und Versenden von Benachrichtigungen wird durch eine Http REST Schnittstelle ermöglicht.
+Für den Aufbau von Sprachverbindungen kann der Cloudservice Signalmeldungen über Websocketverbindungen austauschen.
+Dies ermöglicht es unter Verwendung dieser Protokolle beliebige Endgeräte an den Cloudservice anzubinden.
 
-Die Umsetzung des Projekts erfolgt in vier Phasen.
-Zu Beginn werden die grundlegenden Anforderungen und der Umfang des zu entwickelnden Produkts definiert und festgehalten.
-Diese Anforderungen werden in Form von Meilensteinen erfasst und priorisiert.
-In der zweiten Phase werden Technologien evaluiert und ausgewählt, um die Anforderungen an das System umzusetzen.
-Es werden die Konzepte erstellt, wie das System umgesetzt wird.
-Die Konzepte müssen dabei nicht abschliessend definiert sein.
-Es müssen aber Grundabläufe und Schlüsselentscheideungen definiert werden.
-Wo möglich werden einfache Proof Of Concepts erstellt, um die gewählten Technologien und Konzepte zu validieren.
-In der dritten Phase werden die Anforderungen schliesslich umgesetzt.
-Für die Umsetzung wird zuerst ein nativer Mobile Client aufgesetzt und die Funktionalität des bestehenden Mobile Clients übernommen.
-Anschliessend wird die Sprachsynthese implementiert, da diese eng mit der bestehenden Funktionalität verknüpft ist.
-Als drittes wird schliesslich die Funktion der Gegensprechanlage umgesetzt.
-Zum Schluss der dritten Phase ist Zeit eingeplant um die Applikation eingehend zu testen, fehler zu beheben und andere Optimierungen vorzunehmen.
-Es werden Tests zusammen mit dem Kunden durchgeführt.
-Dieser kann Feedback geben und Erweiterungs- und Änderungswünsche angeben.
-Diese werdend gemeinsam priorisiert und soweit wie möglich in das Produkt miteingearbeitet.
-Der Projektbericht wird während des gesamten Projektes geschrieben.
-Die vierte Phase zum Schluss des Projektes ist zur vervollständigung und Korrektur des Projektberichtes reserviert.
+Als Endgerät für das umgesetzte System dienen heute iOS Tablets.
+Im Rahmen des Vorgängerprojekts wurde bereits eine mobile Applikation umgesetzt, welche das Versenden und Empfangen von Benachrichtigungen unterstützt.
+Im Fazit des Vorgängerprojekts wurde festgehalten, dass diese Applikation idealerweise neu als native Applikation entiwckelt werden sollte.
+Dadurch könne effizienter Betrieb, Wartung sowie Hardware- und Betriebssystemkomaptibilität langfristig gewährleistet werden.\cite{ip5}
+Im Rahmen dieses Projektes wurde der Mobile Client deshalb von Grund auf neu als native iOS Applikation entwickelt.
+Die umgesetzte Applikation unterstützt dabei den gesamten Funktionsumfang des Vorgängers sowie die neuen Funktionen Sprachsynthese und Gegensprechanlage.
 
 Im nachfolgenden Hauptteil werden die erarbeiteten Konzepte und Resultate vorgestellt.
 Zuerst werden Vorgehensweise, Projektplan und die Organisation für das Projekt.
@@ -68,7 +71,6 @@ Anschliessend werden die Anforderungen vorgestellt, welche für Praxisruf umgese
 Es wird darauf beschrieben, welche Technologien für die Umsetzung verwendet wurden und begründet, wieso diese Technologien gewählt wurden.
 Das Kapitel Konzept beschreibt das detaillierte technische Konzept für Funktionsweise und Architektur von Praxisruf.
 Darauf wird das umgesetzte System und Herausforderungen während der Umsetzung vorgestellt.
-Am Ende der Arbeit stehen ein Fazit und Schlusswort mit Empfehlungen für das weitere
-Vorgehen.
+Am Ende der Arbeit stehen ein Fazit und Schlusswort mit Empfehlungen für das weitere Vorgehen.
 
 \clearpage
