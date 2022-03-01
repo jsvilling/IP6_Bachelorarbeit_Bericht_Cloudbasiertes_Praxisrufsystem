@@ -27,8 +27,7 @@ Im Folgenden werden die Anforderungen pro Stakeholdergruppe tabellarisch aufgeli
         \hline
         U01         & Als Praxismitarbeiter/in möchte ich alle Funktionen aus der existierenden Applikation weiterhin verwenden können, damit mir diese weiterhin die Arbeit erleichtern. \footnote[2]{}                        \\
         \hline
-
-        U02         & Als Praxismitarbeiter/in möchte ich, dass wichtige eingehende Benachrichtigungen vorgelesen werden, damit den Inhalt der Benachrichtigung kenne, ohne meine Aufmerksamkeit auf den Bildschirm zu richten. \\
+        U02         & Als Praxismitarbeiter/in möchte ich, dass eingehende Benachrichtigungen vorgelesen werden, damit den Inhalt der Benachrichtigung kenne, ohne meine Aufmerksamkeit auf den Bildschirm zu richten. \\
         \hline
         U03         & Als Praxismitarbeiter/in möchte ich, das Vorlesen von Benachrichtigungen deaktivieren können, damit ich bei der Arbeit nicht unnötig gestört werde.                                                       \\
         \hline
@@ -42,9 +41,9 @@ Im Folgenden werden die Anforderungen pro Stakeholdergruppe tabellarisch aufgeli
         \hline
         U08 & Als Praxismitarbeiter/in möchte ich benachrichtigt werden, wenn ein anderes Zimmer eine Sprachverbindung öffnet, damit ich auf die Anfrage Antworten kann.                             \\
         \hline
-        U09 & Als Praxismitarbeiter/in möchte ich vergangene und verpasste Sprachverbindungen nachvollziehen können, damit ich mich zurückmelden kann.                                               \\
+        U09 & Als Praxismitarbeiter/in möchte ich den Verlauf empfangener und verpasster Sprachverbindungen nachvollziehen können, damit ich mich zurückmelden kann.                                               \\
         \hline
-        U10 & Als Praxismitarbeiter/in möchte ich, dass eingehende Sprachverbindungen aus anderen Praxiszimmern automatisch geöffnet werden damit ich meine Hände für besseres brauchen kann.        \\
+        U10 & Als Praxismitarbeiter/in möchte ich, dass eingehende Sprachverbindungen aus anderen Praxiszimmern automatisch geöffnet werden, damit das Gespräch möglichst schnell beginnen kann.        \\
         \hline
         U11 & Als Praxismitarbeiter/in möchte ich, direkte Sprachverbindungen aus anderen Praxiszimmern trennen können damit ich ein Gespräch beenden kann.                                          \\
         \hline
@@ -63,11 +62,11 @@ Im Folgenden werden die Anforderungen pro Stakeholdergruppe tabellarisch aufgeli
         \hline
         \textbf{Id} & \textbf{Anforderung}                                                                                                                                                                                                    \\
         \hline
-        U13         & Als Praxisadministrator möchte ich konfigurieren können, welche Benachrichtigungen dem Praxismitarbeitenden vorgelesen werden, damit nur relevante Benachrichtigungen vorgelesen werden.                                \\
+        U13         & Als Praxisverantwortlicher möchte ich konfigurieren können, welche Benachrichtigungen dem Praxismitarbeitenden vorgelesen werden, damit nur relevante Benachrichtigungen vorgelesen werden.                                \\
         \hline
-        U14         & Als Praxisadministrator möchte ich konfigurieren können, aus welchen Zimmern Sprachverbindungen zu welchen anderen Zimmern aufgebaut werden können, damit die Mitarbeitendend das System effizient bedienen können.     \\
+        U14         & Als Praxisverantwortlicher möchte ich konfigurieren können, aus welchen Zimmern Sprachverbindungen zu welchen anderen Zimmern aufgebaut werden können, damit die Mitarbeitendend das System effizient bedienen können.     \\
         \hline
-        U15         & Als Praxisadministrator möchte ich Benachrichtigungen, Clients und Benutzer wie zuvor konfigurieren können, damit ich das System weiterhin auf meine Praxis zuschneiden und bestehende Konfigurationen übernehmen kann. \\
+        U15         & Als Praxisverantwortlicher möchte ich Benachrichtigungen, Clients und Benutzer wie zuvor konfigurieren können, damit ich das System weiterhin auf meine Praxis zuschneiden und bestehende Konfigurationen übernehmen kann. \\
         \hline
     \end{tabular}\label{tab:userstories2}
 \end{table}
@@ -82,18 +81,20 @@ Im Folgenden werden die Anforderungen pro Stakeholdergruppe tabellarisch aufgeli
         \hline
         U16         & Als Auftraggeber möchte ich die bestehende Betriebsinfrastruktur übernehmen, um von der bereits geleisteten Arbeit profitieren zu können.                                                     \\
         \hline
-        U17         & Als Auftraggeber möchte ich, dass die bestehende Komponenten des Systems wo immer möglich weiter verwendet werden, um von der bereits geleisteten Arbeit profitieren zu können.               \\
+        U17         & Als Auftraggeber möchte ich, dass die bestehenden Komponenten des Systems wo immer möglich weiter verwendet werden, um von der bereits geleisteten Arbeit profitieren zu können.               \\
         \hline
-        U18         & Als Auftraggeber möchte ich, der bestehende Mobile Client als native iOS Applikation ungeschrieben wird, um Wartbarkeit und Gerätekompatibilität zu gewährleisten.                            \\
+        U18         & Als Auftraggeber möchte ich, der bestehende Mobile Client als native iOS Applikation ungeschrieben wird, um Wartbarkeit und Gerätekompatibilität langfristig zu gewährleisten.                            \\
         \hline
-        U19         & Als Auftraggeber möchte ich, dass wo möglich der Betrieb von Serverseitigen Dienstleistungen über AWS betrieben wird, damit ich von bestehender Infrastruktur und Erfahrung profitieren kann. \\
+        U19         & Als Auftraggeber möchte ich, dass wo möglich der Betrieb von Serverseitigen Dienstleistungen über Amazon Webservices betrieben wird, damit ich von bestehender Infrastruktur und Erfahrung profitieren kann. \\
         \hline
     \end{tabular}\label{tab:userstories3}
 \end{table}
 
 \subsection{Features}
 
-Aus den User Stories ergeben sich drei Features, welche mit dem Projekt "P2P Sprachübertragung in Praxisrufsystemen" umgesetzt werden müssen.
+Die in Kapitel 3.1 beschriebenen User Stories lassen sich in drei Features einteilen.
+Diese drei Features bilden Grundlage für Aufteilung der Kapitel Konzept und Technologie Evaluation in den nachfolgenden Kapitel.
+Es wurde die folgenden drei Features definiert:
 
 \begin{table}[h]
     \centering
