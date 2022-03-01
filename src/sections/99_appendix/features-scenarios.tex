@@ -106,41 +106,45 @@ Diese dienen zur Verifizierung der Umsetzung der Sprachsynthese für Benachricht
     Then:   \> \> \> Der Initiator sieht die Verbindung und den Status aller Ziele \\
     Then:   \> \> \> Jedes Ziel verhält sich als ob es Teil einer Einzelunterhaltung ist (S26-S30).\\
     \\
-    Scenario S38: \> \> \> Inbox - Vergangene Sprachverbindungen \\ \\
+    Scenario S34: \> \> \> Inbox - Vergangene Sprachverbindungen \\ \\
     Given:  \> \> \> Eine Sprachverbindung wurde empfangen. \\
     When:   \> \> \> Die Sprachverbindung wird beendet.  \\
     Then:   \> \> \> Es ist ein Eintrag für die Verbindung in der Inbox zu sehen. \\
     \\
-    Scenario S39: \> \> \> Inbox - Verpasste Sprachverbindungen \\ \\
+    Scenario S35: \> \> \> Inbox - Verpasste Sprachverbindungen \\ \\
     Given:  \> \> \> Das Ziel einer Sprachverbindung ist nicht erreichbar. \\
     When:   \> \> \> Es wird versucht eine Sprachverbindung zum Ziel aufzubauen.\\
     Then:   \> \> \> Es ist ein Eintrag für die verpasste Verbindung in der Inbox zu sehen.\\
     \\
-    Scenario S40: \> \> \> Inbox - Abgelehnte Unterhaltungen \\ \\
+    Scenario S36: \> \> \> Inbox - Abgelehnte Unterhaltungen \\ \\
     Given:  \> \> \> Das Ziel einer Sprachverbindung ist nicht erreichbar. \\
     And:  \> \> \> Das Ziel einer hat den Empfang von Anrufen lokal deaktiviert. \\
     When:   \> \> \> Es wird versucht eine Sprachverbindung zum Ziel aufzubauen.\\
     Then:   \> \> \> Es ist ein Eintrag für die verpasste Verbindung in der Inbox zu sehen.\\
     \\
-    Scenario S41: \> \> \> Verbindung trennen durch Empfänger \\ \\
-    Given:  \> \> \> ...\\
-    When:   \> \> \> ...\\
-    Then:   \> \> \> ...\\
+    Scenario S37: \> \> \> Verbindung trennen durch Empfänger \\ \\
+    Given:  \> \> \> Eine Sprachverbindung zwischen beliebig vielen Teilnehmern wurde aufgebaut. \\
+    When:   \> \> \> Das Ziel der Verbindung beendet die Verbindung. \\
+    Then:   \> \> \> Die Verbindung wird auf beiden Seiten beendet.\\
     \\
-    Scenario S42: \> \> \> Verbindung durch Initiator \\ \\
-    Given:  \> \> \> ...\\
-    When:   \> \> \> ...\\
-    Then:   \> \> \> ...\\
+    Scenario S38: \> \> \> Verbindung durch Initiator \\ \\
+    Given:  \> \> \> Eine Sprachverbindung zwischen zwei Teilnehmern wurde aufgebaut. \\
+    When:   \> \> \> Der Initiator der Verbindung beendet die Verbindung.
+    Then:   \> \> \> Die Verbindung wird auf beiden Seiten beendet.\\
     \\
-    Scenario S43: \> \> \> Austreten aus Gruppenunterhaltung \\ \\
-    Given:  \> \> \> ...\\
-    When:   \> \> \> ...\\
-    Then:   \> \> \> ...\\
+    Scenario S39: \> \> \> Austreten aus Gruppenunterhaltung \\ \\
+    Given:  \> \> \> Eine Sprachverbindung zwischen mehr als zwei Teilnehmern wurde aufgebaut. \\
+    When:   \> \> \> Eines der Ziele beendet die Verbindung. \\
+    Then:   \> \> \> Die Verbindung wird für dieses Ziel beendet.\\
+    And:   \> \> \> Die Verbindungen aller weiteren Teilnehmer bleiben offen.\\
     \\
-    Scenario 45: \> \> \> Konfiguration über Admin UI \\ \\
-    Given:  \> \> \> ...\\
-    When:   \> \> \> ...\\
-    Then:   \> \> \> ...\\
+    Scenario S40: \> \> \> Konfiguration über Admin UI \\ \\
+    Given: \> \> \>  Admin ist angemeldet\\
+    When: \> \> \>  Admin UI wird aufgerufen\\
+    Then: \> \> \>  Alle konfigurierten Buttons für Sprachverbindungen werden angezeigt.\\
+    And: \> \> \>  Neue Buttons für Sprachverbindungen können erstellt werden\\
+    And: \> \> \>  Bestehende Buttons für Sprachverbindungen können verändert werden\\
+    And: \> \> \>  Bestehende Buttons für Sprachverbindungen können gelöscht werden\\
     \\
 \end{tabbing}
 \clearpage
