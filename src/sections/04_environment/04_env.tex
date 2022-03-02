@@ -1,9 +1,22 @@
-\section{Ausgangslage und Umfeld}
+\section{Ausgangslage}
+
+Dieses Kapitel beschreibt das Umfeld in dem diese Projektarbeit ausgeführt wird.
+Dabei wird eine grobe Übersicht zu der im Vorgängerprojekt erarbeiteten Lösung gegeben.
+Es wird weiter ein Überblick über vergleichbare bestehende Systeme gegeben.
+
+\subsection{Bestehende Rufsysteme}
+
+Im Vorfeld dieses Projektes wurde eine Marktanalyse durchgeführt zu kommerziell erhältlichen Rufsystemen durchgeführt.
+Die Resultate dieser Analyse sind in der Aufgabenstellung dieses Projektes zusammengefasst:
+Die meisten kommerziell erhältlichen Rufsysteme basieren auf proprietären Standards und setzen veraltete Funktechnologien ein.
+Weiter seien bestehende Systeme weder über TCP/IP Netzwerke integrierbar, noch über externe eine API ansteuerbar.\cite{aufgabenstellung}
+
+Durch das Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' wurde ein im Funktionsumfang eingeschränktes cloudbasiertes Praxisrufsystem entwickelt.
+Dieses wird im folgenden Kapitel vorgestellt.
 
 \subsection{Vorarbeit Cloudbasiertes Praxisrufsystem}
 
-Durch das Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' wurde ein erstes cloudbasiertes Praxisrufsystem entwickelt.
-Dieses System ermöglicht es vorkonfigurierte Benachrichtigungen zwischen Endgeräten zu versenden.
+Das im Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' entwickelte Praxisrufsystem ermöglicht es vorkonfigurierte Benachrichtigungen zwischen Endgeräten zu versenden.
 Sprachverbindungen und Sprachsynthese für Benachrichtigungen werden von diesem System nicht unterstützt.
 
 Das bestehende System umfasst eine zentralen Serverkomponente, eine Weboberfläche und eine mobile Applikation.
@@ -27,33 +40,43 @@ Diese wird mit einer AWS Elastic Beanstalk Instanz betrieben.
 Das Admin UI ist eine simple Javascript Applikation.
 Sie wird mit AWS Amplify betrieben.\cite{ip5}
 
-\subsection{Vergleichbare Systeme}
-
-Was es auf dem Markt schon gibt.
-Halt eben nicht viel.
-
-\subsubsection{Sprachübertragung}
-
-Gibt keine cloudbasierten oder mobile applikation basierten.
-Am nächsten kommen meeting applikationen, telefon oder chat apps wie whatsapp und discord.
-Ganz andere anforderungen.
-Lange gespräche, Chats etc.
-
-WebRTC ist weit verbreitet und wird von fast allem grossen im Hintergrund verwendet.
-''https://bloggeek.me/massive-applications-using-webrtc/''
-
-\subsubsection{Sprachsynthese}
-Ist schwer.
-Macht man nicht selbst.
-Wird ganz viel als Service angeboten.
-Evaluation beschäftigt sich mit welcher anbieter.
-Konzept beschäftigt sich mit effizienter einbindung.
-
-\subsubsection{Mobile Client}
-Native Apps gibts viele.
-Aber keine die Praxisruf können.
-Wichtigste Anforderungen hier sind, dass bestehende Funktionen unterstützt werden.
-und dass Technologien für t2s und p2p technologie unterstützt werden.
+%\subsection{Vergleichbare Anwendungen}
+%
+%Wie in Kapitel 4.1 beschrieben, gibt es keine kommerziell erhältlichen, cloudbasierte Praxisrufsysteme.
+%Es gibt allerdings andere Anwendungen, welche ähnliche Technologien einsetzten und ähnliche Probleme lösen.
+%Dieses Kapitel beschreibt, wie diese Sprachübertragung und Sprachsynthese lösen und zeigt auf, wieso diese Lösungen sich nicht als Praxisrufsystem eignen.
+%
+%\subsubsection{Sprachübertragung}
+%
+%Die zentrale Aufgabenstellung dieses Projektes dreht sich um die Integration von Sprachverbindungen in ein cloudbasiertes Praxisrufsystem.
+%Als Endgerät dafür dienen iOS Tablets.
+%
+%
+%
+%
+%Sprachverbindungen in mobilen Geräten sind weit verbreitet.
+%Neben traditionellen
+%
+%Gibt keine cloudbasierten oder mobile applikation basierten.
+%Am nächsten kommen meeting applikationen, telefon oder chat apps wie whatsapp und discord.
+%Ganz andere anforderungen.
+%Lange gespräche, Chats etc.
+%
+%WebRTC ist weit verbreitet und wird von fast allem grossen im Hintergrund verwendet.
+%''https://bloggeek.me/massive-applications-using-webrtc/''
+%
+%\subsubsection{Sprachsynthese}
+%Ist schwer.
+%Macht man nicht selbst.
+%Wird ganz viel als Service angeboten.
+%Evaluation beschäftigt sich mit welcher anbieter.
+%Konzept beschäftigt sich mit effizienter einbindung.
+%
+%\subsubsection{Mobile Client}
+%Native Apps gibts viele.
+%Aber keine die Praxisruf können.
+%Wichtigste Anforderungen hier sind, dass bestehende Funktionen unterstützt werden.
+%und dass Technologien für t2s und p2p technologie unterstützt werden.
 
 \clearpage
 
