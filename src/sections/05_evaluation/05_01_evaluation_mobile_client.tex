@@ -75,11 +75,14 @@ Die Erinnerungsfunktion kann mit Mitteln aus der iOS Standardbibliothek umgesetz
 \subsubsection{Entscheid}
 
 Der native iOS Mobile Client für Praxisruf wird mit Swift und SwiftUI umgesetzt.
-Der deklarative Syntax, ermöglicht es einfacher übersichtliche und lesbare Komponenten zu implementieren.
-Ausgezeichnete Integration in die XCode Entwicklungsumgebung und die zur Verfügung gestellten Standard Komponenten reduzieren den Entwicklungsaufwand weiter.
-Die Neuheit von SwiftUI bedeutet, dass möglicherweise gewisse Funktionen noch nicht mit purem SwiftUI umgesetzt werden können.
-Um diese Wahrscheinlichkeit zu minimieren, wird iOS15 als Zielplattform gewählt.
-Mit der Verwendung der neusten iOS Version als Zielplattform kann auch die neuste Version von SwiftUI und damit alle zur Verfügung stehenden Funktionen aus SwiftUI verwendet werden.
-Sollten trotzdem Funktionen benötigt werden, die SwiftUI nicht unterstützt, können diese dank der nahtlosen Integration mit UIKit implementiert und in Zukunft migriert werden.
+Die deklarative Syntax von SwiftUI, ermöglicht es einfacher übersichtliche und lesbare Komponenten zu implementieren.
+Integration in die XCode Entwicklungsumgebung und verfügbare Standardkomponenten vereinfachen die Entwicklung.
+Es ist möglich, dass einige Funktionen noch nicht mit SwiftUI umgesetzt werden können, weil dafür benötigte Features noch nicht unterstützt werden.
+Da UIKit Funktionen nahtlos in SwiftUI integriert werden können, ist es möglich betroffene Teile der Applikation mit UIKit zu implementieren.
+Diese Teile können, sobald die entsprechenden Funktionen in SwitUI verfügbar sind, migriert werden.
+
+Als Zielplatform für die Applikation wird iOS15 verwendet.
+Damit wird die neuste iOS Version unterstützt.
+Dies ermöglicht es, alle verfügbaren SwiftUI Features zu verwenden und minimiert die Wahrscheinlichkeit, auf UIKIt zurückgreifen zu müssen.
 
 \clearpage
