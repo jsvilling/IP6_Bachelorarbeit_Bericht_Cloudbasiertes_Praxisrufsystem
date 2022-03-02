@@ -1,13 +1,14 @@
 
 \subsection{Mobile Client}
 
-Mit dem Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' wurde bereits eine mobile Applikation für Praxisruf umgesetzt.
-Mit dieser Applikation können bereits heute Benachrichtungen über Praxisruf versendet und empfangen werden.\cite{ip5}
-Die bestehende Applikation wurde mit Nativescript\cite{nativescript} als Multi-Platform Applikation gebaut.
-Um die Wartbarkeit und Hardware- sowie Betriebssystemkomaptibilität zu gewährleisten wurde im Fazit des Vorgängerprojekts empfohlen,
-die Applikation neu als native Applikation für iOS und Android zu schreiben.\cite{ip5}
+Mit dem Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' eine mobile Applikation entwickelt, die als Endpunkt in einem Praxisrufsystem verwendet werden kann.
+Diese unterstützt das Senden und Empfangen vorkonfigurierter Benachrichtungen~\cite{ip5}.
+Die Applikation wurde auf Basis des Frameworks Nativescript~\cite{nativescript} als Multi-Platform Applikation entwickelt.
+Dadurch ist es möglich dieselbe Codebasis für die Entwicklung von Android und iOS Applikationen zu verwenden.
+Im Fazit des Vorgängerprojekts wurde empfohlen, diese Applikation durch native Applikationen pro Platform zu ersetzten.
+Dadurch könne effiziente Weiterentwicklung, sowie Hardware- und Betriebssystemkompatibilität langfristig gewährleistet werden~\cite{ip5}.
 
-Mit diesem Projekt soll die Applikation dementsprechend neu als native iOS Applikation umgesetzt werden.
+Mit diesem Projekt wird die Applikation deshalb neu als native iOS Applikation umgesetzt.
 Dabei ist es wichtig, dass sämtliche bestehende Funktionalität auch im neu entwickelten nativen Mobile Client zur Verfügung steht.
 Um weiterhin Benachrichtungen senden und empfangen zu können, muss die gewählte Technologie es ermöglichen Firebase Cloud Messaging anzubinden
 und Push Benachrichtigungen im Vorder- sowie im Hintergrund empfängen können.
@@ -16,20 +17,20 @@ Dadurch kann überprüft werden, ob der Benutzer ungelesene Benachrichtigungen h
 
 \subsubsection{Programmiersprache}
 
-Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift Industriestandard.\cite{ios_swift}
+Für die Entwicklung von nativen iOS Applikationen ist die Programmiersprache Swift Industriestandard~\cite{ios_swift}.
 Der native iOS Client für Praxisruf wird deshalb mit Swift implementiert.
 
 \subsubsection{Frameworks}
 
-Für die Umsetzung von iOS Applikationen stellt Apple die zwei Frameworks UIKit\cite{ios_uikit} und SwiftUI\cite{ios_swift_ui} zur Verfügung.
+Für die Umsetzung von iOS Applikationen stellt Apple die zwei Frameworks UIKit~\cite{ios_uikit} und SwiftUI~\cite{ios_swift_ui} zur Verfügung.
 UIKit ist das ältere der beiden Frameworks und ist seit iOS 2.0 verfügbar.
-Dementsprechend ist das Framework ausgereifter und bietet viele Funktionen zur Integration einer Applikation mit iOS.\cite{ios_uikit}
+Dementsprechend ist das Framework ausgereift und bietet viele Funktionen zur Integration einer Applikation mit iOS~\cite{ios_uikit}.
 
-SwiftUI ist deutlich neuer und steht seit iOS 13.0 zur Verfügung.
-Auf der offiziellen Dokumentationsseite zu SwiftUI schreibt Apple "SwiftUI helps you build great-looking apps across all Apple platforms with the power of Swift — and as little code as possible."\cite{ios_swift_ui}
-SwiftUI fokussiert sich auf eine declarative Syntax, welche es leichtgewichtiger als UIKit macht.
-Es bietet zudem ausgezeichnete Integration des Entwicklungsworkflows in die XCode Entwicklungsumgebung und viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten.
-Dadurch wird es einfacher eine Benutzeroberfläche mit dem nativem Look und Feel einer nativen iOS Applikation umzusetzten.
+SwiftUI ist deutlich neuer und steht seit iOS 13.0 zur Verfügung~\cite{ios_swift_ui}.
+Apple wirbt auf der offiziellen Dokumentationsseite für SwiftUI und schreibt: "SwiftUI helps you build great-looking apps across all Apple platforms with the power of Swift — and as little code as possible."~\cite{ios_swift_ui}
+SwiftUI fokussiert sich auf eine declarative Syntax und ist dadurch leichtgewichtiger als UIKit.
+Es bietet zudem ausgezeichnete Integration in die XCode Entwicklungsumgebung und viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten.~\cite{ios_swift_ui}.
+Dadurch wird es einfacher eine Benutzeroberfläche mit nativem Look und Feel einer iOS Applikation umzusetzten.
 
 Da SwiftUI deutlich neuer ist als UIKit, ist es möglich das es noch nicht alle Funktionen und Betriebssystem Integrationen unterstützt die in UIKIt möglich sind.
 Dieses Problem wird dadurch aufgehoben, dass UIKit Funktionen nahtlos in SwiftUI integriert werden können.\cite{ios_swift_ui_uikit}
@@ -39,13 +40,13 @@ Es ist also grundsätzlich möglich, alles was mit UIKit umgesetzt werden kann a
 
 \subsubsection{Unterstützung Benachrichtigungen}
 
-Um Notifikationen über Praxisruf versenden und Empfangen zu können, muss Firebase Cloud Messaging in die Applikation integriert werden können. 
-Firebase stellt für die Integration in iOS eine native Library zur Verfügung.\cite{firebase_github_ios} 
-Die Integration von Firebase Cloud Messaging kann über Funktionen dieser Library implementiert werden.
-Dies beinhaltet die Registrierung bei Firebase Cloud Messaging sowie das Empfangen der Benachrichtigungen über Firebase. \cite{firebase_ios}
-Damit Push-Benachrichtigungen über das Betriebssystem angezeigt werden können, müssen die Empfangen Benachrichtigungen an das Betriebssystem übergeben werden.
-Mit AppDelegates ist es möglich sich in den Lifecycle des Betriebssystems einzuhängen\cite{ios_app_delegate}.
-Dadurch ist es auch möglich, Vorder- und Hintergrundbenachrichtigungen über das Benachrichtigungszenter von iOS anzuzeigen\cite{firebase_ios}.
+Die neue iOS Applikation, muss es weiterhin ermöglichen Benachrichtigungen über Firebase Cloud Messaging zu empfangen und versenden.
+Firebase stellt dazu eine native iOS Library zur Verfügung~\cite{firebase_github_ios}.
+Die Integration von Firebase Cloud Messaging kann mit dieser Library implementiert werden.
+Dies beinhaltet die Registrierung bei Firebase Cloud Messaging, sowie das Empfangen der Benachrichtigungen über Firebase~\cite{firebase_ios}.
+Damit Push-Benachrichtigungen über das Betriebssystem angezeigt werden können, müssen empfangene Benachrichtigungen an das Betriebssystem übergeben werden.
+Mit sogenannten AppDelegates ist es möglich sich in den Lifecycle des Betriebssystems einzuhängen~\cite{ios_app_delegate}.
+Dadurch ist es auch möglich, Vorder- und Hintergrundbenachrichtigungen über das Benachrichtigungszenter von iOS anzuzeigen~\cite{firebase_ios}.
 
 Die Firebase Cloud Messaging Library kann sowohl mit SwiftUI als auch mit UIKit verwendet werden.
 AppDelegates sind ein Konzept welches aus UIKit stammt\cite{ios_app_delegate}.
@@ -53,21 +54,23 @@ SwiftUI Applikationen können ohne AppDelegates implementiert werden.
 UIKit Funktionen können allerdings nahtlos mit SwiftUI integriert werden.\cite{ios_swift_ui_uikit}
 Die Firebase Cloud Messaging Library für iOS ermöglicht es also, Benachrichtigungen von Praxisruf sowohl mit UIKit als auch mit SwiftUI umzusetzten.
 
+Um Konfigurationen zu laden und Benachrichtigungen zu versenden, muss die REST Api des Cloudservice angesprochen werden können.
+Dies ist über die URLRequest-Komponente aus der iOS Standardbibliothek möglich~\cite{ios_urlrequest}.
 
 \subsubsection{Benachrichtigungen prüfen}
 
-Der Mobile Client soll den Benutzer regelmässig erinnern, wenn es ungelesene empfangene Benachrichtigungen gibt.
-Dazu muss regelmässig geprüft werden, ob es solche Benachrichtigungen gibt und gegebenenfalls ein Erinnerungston abgespielt werden.
-Die standard iOS Libraries von Apple bieten Mittel, mit welchen regelmässige Aufgaben angestossen werden können.
-Einerseits können über ''Timer'' in Regelmässigen abständen Events veröffentlicht werden.
+Die mobile Applikation aus dem Vorgängerprojekt erinnert in regelmässigen Abständen, wenn ungelesene Benachrichtigungen vorhanden sind.
+Diese Funktion muss auch von der neuen iOS Applikation unterstützt werden.
+Dazu muss regelmässig geprüft werden, ob es ungelesene Benachrichtigungen gibt und gegebenenfalls ein Erinnerungston abgespielt werden.
+Die standard iOS Bibliothek bietet Mittel, mit welchen regelmässige Aufgaben angestossen werden können.
+Einerseits können über eine ''Timer''-Komponente in Regelmässigen abständen Events veröffentlicht werden.
 Auf einer SwiftUI View kann ein beliebiger Listener registriert werden, der beim Empfang eines Events des Timers aufgerufen wird.
-Dies bringt die Einschränkung mit sich, dass die Prüfung nur ausgeführt ist, wenn die App im Vordergrund läuft und die View geladen wurde.\cite{ios_timer}
-Da der bestehende Mobile Client dieselbe Einschränkung hat, könnte mit einem Timer trotzdem genau dasselbe Verahlten wie im bestehenden Client umgesetzt werden.
-Apple bietet allerdings auch Mittel, um Aufgaben im Hintergrund zu verarbeiten.
-Über die Klasse BGTaskScheduler können Aufgaben erfasst werden, die im Hintergrund ausgeführt werden.\cite{ios_bgtaskscheduler}
+Dies bringt die Einschränkung mit sich, dass die Prüfung nur ausgeführt ist, wenn die App im Vordergrund läuft und die View geladen wurde~\cite{ios_timer}.
+Da der bestehende Mobile Client dieselbe Einschränkung hat, könnte mit einem Timer trotzdem genau dasselbe Verhalten wie in der bestehenden Applikation umgesetzt werden.
+Die Standardbibliothek bietet allerdings auch Mittel, um Aufgaben im Hintergrund zu verarbeiten.
+Über die Klasse BGTaskScheduler können Aufgaben erfasst werden, die im Hintergrund ausgeführt werden~\cite{ios_bgtaskscheduler}.
 
-Die Umsetzung von der Erinnerungsfunktion kann also ohne zusätzliche Frameworks umgesetzt werden.
-Es besteht zudem die Möglichkeit den Umfang des bestehenden Clients zu erweitern und die Prüfungen auch im Hintergrund laufen zu lassen.
+Die Erinnerungsfunktion kann mit Mitteln aus der iOS Standardbibliothek umgesetzt werden.
 
 \subsubsection{Entscheid}
 
