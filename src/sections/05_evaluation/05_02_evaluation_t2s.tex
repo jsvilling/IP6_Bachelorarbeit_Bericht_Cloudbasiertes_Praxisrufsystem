@@ -1,59 +1,74 @@
 \subsection{Sprachsynthese}
 
-Praxisruf soll es neu Unterstützen, dass empfangene Benachrichtigungen vorgelesen werden.\footnote{F02 Sprachsynthese}
-Um dies zu ermöglichen muss eine Technologie integriert werden, die es erlaubt den Textinhalt einer Benachrichtigung in eine Sprachdatei zu konvertieren.
-Diese Sprachdatei muss Audio beinhalten, welches vom Mobile Client abgespielt werden kann.
+Das Feature Sprachsynthese fordert, dass das System das Vorlesen empfangener Benachrichtigungen unterstützt.
+Um dies zu ermöglichen muss eine Technologie integriert werden, die es erlaubt aus Sprachdaten aus Textinhalten zu synthetisieren.
+Diese Sprachdaten müssen als Audiodateien vom Mobile Client abgespielt werden können.
 
 Diese Integration kann mit den Standardbibliotheken für iOS oder durch die Anbindung eines externen Providers umgesetzt werden.
-Die Anbindung eines externen Provider kann entweder direkt im Mobile Client implementiert werden.
-Alternativ das Backend von Praxisruf\footnote{Cloudservice} an den Provider angebunden werden und dem Mobile Client eine Schnittstelle bieten, um diese Daten abzufragen.
+Die Anbindung eines externen Providers kann direkt im Mobile Client implementiert werden.
+Alternativ kann die Serverkomponente Cloudservice an den Provider angebunden werden und allen Clients eine einheitliche Schnittstelle bieten, um diese Daten abzufragen.
 
 \subsubsection{Apple Speech Synthesis}
 
-Die Standardbibliothek von für iOS unterstützt das Konvertieren von Text zu Sprache.\cite{ios_speech_synthesis}
-Sprachsynthese könnte dadurch ohne die Anbindung eines externen Providers umgesetzt werden.
-Durch die Verwendung Funktionalität die Apple selbst zur Verfügung stellt, ist zudem die Kompatibilität mit nativen iOS Clients garantiert.
-Gleichzeitig entsteht auch eine starke Bindung an Apple als Sprachsyntheseprovider.
-Sollte die Funktion in künftigen Versionen nicht mehr unterstützt werden, müsste die ganze Integration von Sprachsynthese neu implementiert werden.
-Weiter bringt diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
-Letztlich hat diese Variante den Nachteil, dass dieselbe Funktionaltät für einen Android Client komplett neu entwickelt werden müsste.
+Die iOS Standardbibliothek bietet Komponenten zur Konvertierung von Text zu Sprache~\cite{ios_speech_synthesis}.
+Die Verwendung dieser Komponenten verspricht zwei Vorteile:
+Erstes kann Sprachsynthese dadurch ohne die Anbindung eines Drittanbieters umgesetzt werden.
+Zweitens ist die Kompatibilität mit iOS15 Clients garantiert und die Integration der Funktionen ohne externe Bibliotheken möglich~\cite{ios_speech_synthesis}.
+Gleichzeitig entsteht damit aber eine starke Bindung an Apple als Dienstleister für Sprachsynthese.
+Sollte die Funktion in künftigen Versionen nicht mehr unterstützt werden, müsste die ganze Integration von Sprachsynthese neu evaluiert und implementiert werden.
+Weiter reduziert diese Variante die Flexibilität der Systemarchitektur.
+Mit der Verwendung der iOS Standardbibliothek für Sprachsynthese, muss die Anbindung an den Dienstleister direkt in der iOS Applikation umgesetzt werden.
+Dies ist insbesondere ein Nachteil, da für dieselbe Funktionalität in zukünftigen Android Clients ein anderer Dienstleister verwendet werden muss.
+Eine einheitliche Integration der Sprachsynthese in zukünftigen Plattformen ist deshalb nicht möglich, wenn Apple Speech Synthesis verwendet wird.
 
 \subsubsection{Amazon Polly}
 
-Vom Auftraggeber ist explizit gewünscht, dass Infrastruktur und Services wo möglich über Amazon Webservices bestellt werden.\footnote{Siehe Kapitel 3 - F19}
-Mit dem Service ''Polly'' bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann.\cite{aws_polly}
-Amazon Webservices stellt dazu Libraries für iOS\cite{aws_polly_ios} als auch für Java zur Verfügung\cite{aws_polly_java}.
-Polly kann damit sowohl direkt in den nativen Mobile Client als auch in den Cloudservice integriert werden.
+Vom Auftraggeber ist explizit gewünscht, dass für Infrastruktur und Dienstleistungen wo möglich Amazon Webservices verwendet wird\footnote{Siehe Kapitel 3.1.3}.
+Mit dem Amazon Polly bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann~\cite{aws_polly}.
+Amazon Webservices stellt Libraries für iOS~\cite{aws_polly_ios}, Android~\cite{aws_polly_sdks} und für Java zur Verfügung~\cite{aws_polly_java}.
+Polly kann damit sowohl direkt in native mobile Applikationen als auch in den Cloudservice integriert werden.
 
-Polly von AWS Webservices bietet eine Library für die Intagration in iOS. \cite{aws_polly_ios}
-Mit dieser Library ist es möglich, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren.
-Damit wird eine Lösung eingesetzt, die analog auch für zukünftige Android Clients eingesetzt werden kann.
-Die starke Bindung zu Apple wird durch diese Lösung ebenfalls aufgehoben.
-Sie wird allerdings durch eine starke bindung zu Amazon Webservices ersetzt.
+Die iOS Library von Amazon Polly ermöglicht es, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren~\cite{aws_polly_ios}.
+Diese Lösung kann für zukünftige Android Clients analog mit der Android Library für Aws Polly umgesetzt werden.
+Die starke Bindung zu Apple als Dienstleister für Sprachsynthese entfällt durch diese Lösung.
+Es wird allerdings eine starke bindung zu Amazon Polly als Dienstleister geschaffen.
 Ein Wechsel des Providers bleibt auch in dieser Variante aufwändig.
 Weiter bringt auch diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
 
-\clearpage
+Mit der Java Bibliothek von Amazon Polly kann die Anbindung des Sprachsyntheseproviders im Cloudservice vorgenommen werden.
+Dadurch ist es möglich im Cloudservice eine Schnittstelle zu implementieren, welche den Bezug von Sprachdaten für Benachrichtigungen erlaubt.
+Diese Schnittstelle kann in die bestehende API des Cloudservices integriert werden.
+Damit können alle Clients die Sprachdaten über dieselbe Schnittstelle beziehen.
+Caching von Sprachdaten kann sowohl auf Serverseite als auch auf Clientseite implementiert werden.
+Die Integration von Sprachsynthese in die API des Cloudservices ermöglicht es weiter, den gewählten Dienstleister in Zukunft einfach und ohne die Clients anzupassen auszutauschen.
+Gleichzeitig hat diese Variante den Nachteil, dass der Cloudservice komplexer wird.
+Durch die Integration von Sprachsynthese wird ein neues Umsystem angebunden.
+Die Komplexität des Systems als Ganzes, wächst dadurch in jedem Fall.
+Wie stark die Komplexität des Systems zunimmt, kann jedoch minimiert werden, indem die neue Funktionalität eng gekapselt wird.
+Sie kann so umgesetzt werden, dass sie unabhängig vom restlichen System bleibt und alle nötigen Daten über die Schnittstelle der anderen Module bezieht.
 
-Alternativ ist es möglich, die Anbindung des Sprachsyntheseproviders im Cloudservice vorzunehmen.
-Dies hat einerseits den Vorteil, dass alle Clients eine einheitliche Schnittstelle haben können.
-Sowohl iOS als auch Android und WebClients können die Audiodaten über genau dieselbe Schnittstelle beziehen.
-Dies ermöglicht es auch den Provider in Zukunft auszutauschen ohne in den Clients etwas verändern zu müssen.
-Die Option hat zusaätzlich den Vorteil, dass Optimierungen, die nicht Client spezifisch sind getroffen werden können.
-So wäre es möglich einen externen File Storage anzubinden auf, welchem Audiodaten gespeichert werden.
-Dadurch müsste der Sprachsynthese Provider weniger oft angesprochen werden.
-Die Variante hat den Nachteil, dass der Cloudservice komplexer wird.
-Durch die Integration von Sprachsynthese muss aber mindestens eine Komponente im System ausgebaut werden.
-Wie stark die Komplexität des System wächsts, kann jedoch minimiert werden, indem die neue Funktionalität gekapselt wird.
-Sie kann so umgesetzt werden, dass sie unabhängig von restlichen System bleibt und alle nötigen Daten über die Schnittstelle der anderen Module bezieht.\footnote{Siehe Kapitel 5.1}
+Als dritte Option für die Integration von Amazon Polly kan AWS Lambda verwendet werden~\cite{aws_polly}.
+AWS Lambda erlaubt es Funktionalität serverless auszuführen.
+Der entsprechende Code läuft in diesem Fall nicht als klassischer Server, sondern wird nur bei Bedarf ausgeführt~\cite{aws_lambda}
+Die Integration von Amazon Polly über AWS Lambda kann für das Praxisrufsystem in zwei Verarbeitungsschritten implementiert werden.
+In einem ersten Schritt werden die zu synthetisierenden Daten geladen und an Amazon Polly gesendet.
+Anschliessend werden die Resultate, die Amazon Polly liefert persistiert.
+Die Abfrage von Sprachdaten kann in diesem Fall ebenfalls in die API des Cloudservices integriert werden.
+Dazu müssen die persistierten Sprachdaten geladen und zurückgegeben werden.
+Die Verwendung von AWS Lambda hat damit den Nachteil, dass die synthetisierten Sprachdaten zwingend ausserhalb des Mobile Clients persistiert werden müssen.
+Weiter findet damit eine zusätzliche Bindung an Amazon statt.
+Gleichzeitig bietet es den Vorteil, dass weniger Infrastruktur benötigt wird, da die Abfrage an AWS Polly ohne dedizierten Server abgesetzt werden kann.
 
 \subsubsection{Entscheidung}
 
-Die Sprachsynthese wird durch die Anbindung des externen Providers AWS Polly umgesetzt.
-Der Cloudservice übernimmt die Kommunikation mit AWS Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
+Die Sprachsynthese wird durch die Anbindung des externen Providers Amazon Polly umgesetzt.
+Der Cloudservice übernimmt die Kommunikation mit Amazon Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
+Diese Schnittstelle wird in die API des Cloudservices integriert.
+Die Anbindung an Amazon Polly wird dabei direkt im Cloudservice implementiert und nicht über AWS Lambda gelöst.
 
-Durch diesen Ansatz kann die Abhängigkeit zu einem spezifischen Provider minimiert werden und die Anbindung für alle Client Plattformen gleich gelöst werden.
-Dies macht diese Variante zukunftssicher und einfacher betreibbar.
-Der Einfluss von zusätzlicher Komplexität, die dieser Ansatz mit sich bringt, soll durch eine entsprechende Kapselung in der Systemarchitektur minimiert werden.
+Durch diesen Ansatz wird die Abhängigkeit zu einzelnen Provider minimiert.
+Die Anbindung von Sprachsynthese kann für alle Client Plattformen einheitlich umgesetzt werden.
+Dies macht diese Variante zukunftssicher und bietet grössere Flexibilität für den Betrieb.
+Der Einfluss von zusätzlicher Komplexität, die dieser Ansatz mit sich bringt, wird durch entsprechende Kapselung in der Systemarchitektur minimiert.
 
 \clearpage
