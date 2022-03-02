@@ -65,10 +65,11 @@ Die Sprachsynthese wird durch die Anbindung des externen Providers Amazon Polly 
 Der Cloudservice übernimmt die Kommunikation mit Amazon Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
 Diese Schnittstelle wird in die API des Cloudservices integriert.
 Die Anbindung an Amazon Polly wird dabei direkt im Cloudservice implementiert und nicht über AWS Lambda gelöst.
+So kann die bestehende Infrastruktur des Cloudservices übernommen werden und es ist nicht notwendig die Sprachdaten zu persistieren.
 
 Durch diesen Ansatz wird die Abhängigkeit zu einzelnen Provider minimiert.
 Die Anbindung von Sprachsynthese kann für alle Client Plattformen einheitlich umgesetzt werden.
-Dies macht diese Variante zukunftssicher und bietet grössere Flexibilität für den Betrieb.
-Der Einfluss von zusätzlicher Komplexität, die dieser Ansatz mit sich bringt, wird durch entsprechende Kapselung in der Systemarchitektur minimiert.
+Dies macht die gewählte Variante zukunftssicher und bietet grosse Flexibilität für den Betrieb.
+Der Zuwachs an Komplexität durch die Anbindung eines neuen Umsystems wird durch entsprechende Kapselung der Funktionalität in ein eigenes Modul minimiert.
 
 \clearpage
