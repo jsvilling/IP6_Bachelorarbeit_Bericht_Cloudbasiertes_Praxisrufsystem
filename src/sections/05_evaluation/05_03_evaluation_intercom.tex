@@ -1,72 +1,91 @@
-\subsection{Gegensprechanlage}
+\subsection{Sprachübertragung}
 
-Praxisruf soll um die Funktion einer Gegensprechanlage erweitert werden.
-Um dies zu ermöglichen, muss das System Sprachübertragung zwischen Mobile Clients in Echtzeit unterstützten.
-In diesem Kapitel werden die Technologien evaluiert, mit denen dies Umgesetzt werden kann.
+Die zentrale Aufgabenstellung dieser Arbeit dreht sich darum, Peer-To-Peer Sprachübertragung in ein cloudbasiertes Praxisrufsystem zu integrieren.
+Sprachübertragung in Echtzeit muss in Form von Anrufen zwischen Clients ermöglicht werden.
+Diese Erweiterung ermöglicht es, das Praxisrufsystem als Gegensprechanlage zu verwenden.
+Dieses Kapitel beschreibt zwei Ansätze, mit welchen diese Anforderung umgesetzt werden kann.
+Der erste Ansatz beinhaltet die Anbindung eines bestehenden Telefonieproviders.
+Der zweite Ansatz verzichtet auf die Integration eines Providers und setzt Sprachverbindungen als direkte Peer-To-Peer Verbindungen zwischen Clients um.
 
 \subsubsection{Amazon Chime}
 
-Eine Möglichkeit um Sprachverbindungen in Praxisruf zu implementieren, ist die Integration einer bestehenden Business Kommunikationslösung, wie Webex oder Microsoft Teams.
-Amazon Webservices bietet für diesen Zweck ''Amazon Chime'' an.
-Amazon Chime ist ein Kommunkations Service welcher Funktionen für Meetings, Chats und Geschäftsanrufe ermöglicht.\cite{aws_chime}
-Mit dem Amazon Chime SDK für iOS, ist es möglich Sprach- und Videoanrufe bis hin zu Screensharing in native iOS Applikationen zu integrieren.\cite{aws_chime_sdk}
+Eine Möglichkeit um Sprachverbindungen in Praxisruf zu implementieren, ist die Integration einer bestehenden Business-Kommunikationslösung, wie Webex oder Microsoft Teams.
+Auch für die Integration von Sprachverbindungen gilt, dass für Infrastruktur und Dienstleistungen wo möglich Amazon Webservices verwendet wird\footnote{Siehe Kapitel 3.1.3}.
+Mit Amazon Chime bietet Amazon einen Dienst für Telefonie, Chats und Videokonferenzen~\cite{aws_chime}.
+Chime bietet einerseits Web- und Mobile Applikationen für Anrufe und Meetings.
+Andererseits ist es mit dem Amazon Chime SDK für iOS möglich, Chime in eigene native iOS Applikationen zu integrieren~\cite{aws_chime_sdk}.
 
-Die Integration eines solchen Dienstes hat den Vorteil, dass die Telefonie in einen etablierten Provider ausgelagert werden kann.
+Integration eines Providers wie Amazon Chime hat den Vorteil, dass die Telefonie in einen etablierten Provider ausgelagert werden kann.
 Durch Verträge mit dem Provider können Verfügbarkeitsgarantien und Supportleistungen vereinbart werden.
-Dies erhöht die Stabilität des Systems und ermöglicht effizienteres Reagieren im Fehlerfall.
-Weiter fallen für Praxisruf selbst wenig bis keine Aufwände für den Betrieb der nötigen Telefonieinfrastruktur.
-Die Kosten, welche durch die Anbindung eines Providers anfallen, sind damit schlimmstenfalls gerechtfertigt und bestennfalls die günstigere Option, als die Infrastruktur selbst zu betreiben.
+Dies erhöht die Stabilität des Systems und ermöglicht effizientes Reagieren im Fehlerfall.
+Weiter fallen für Praxisruf selbst wenig bis keine Aufwände für den Betrieb der nötigen Infrastruktur.
 
-Die Funktionen für Chats, Videounterhaltungen, Meetings und Bildschirmübertragung sind für den Anwendungsfall ''Gegensprechanlage in einem Praxisrufsystem'' nicht relevant.
-Bei der Verwendung von Amazon Chime würde also nur ein kleines Subset der Möglichkeiten die der Service bietet verwendet.
-Der Nachteil daran ist, dass damit eine starke Bindung an den Amazon Chime SDK und die Abläufe, die Amazon Chime zum Verbindungsaufbau vorsieht.
+Amazon Chime unterstützt deutlich mehr Funktionen als in einem Praxisrufsystem benötigt werden.
+Ein Rufsystem muss als Gegensprechanlage verwendet werden können und kurze Gespräche zwischen Teilnehmern erlauben.
+Dies bedeutet einerseits, dass Chime garantiert alle Funktionen bietet welche benötigt werden.
+Es bedeutet aber andererseits auch, dass nur ein kleines Subset der vorhandenen Möglichkeiten ausgenutzt wird.
+Ein Nachteil daran ist, dass eine starke Bindung an Amazon und die Abläufe, die Amazon Chime zum Verbindungsaufbau vorsieht, stattfindet.
+Dabei von vielen Vorteilen von Amazon Chime nicht profitiert werden, weil die entsprechenden Funktionen für ein Praxisrufsystem nicht relevant sind.
 
 \subsubsection{WebRTC}
 
-WebRTC steht für Web Real-Time Communication.
-Es ist ein Open Source Projekt, welches Echtzeitkommunikation für mobile Applikationen und Browser Applikationen ermöglicht.
-Es unterstützt Video-, Sprach- und generische Daten, die zwischen Peers gesendet werden.
-Die Technologien hinter WebRTC sind als offener Webstandard implementiert und in allen gängigen Browsern als reguläre JavaScript-APIs verfügbar.
-Für native Clients wie Android- und iOS-Anwendungen steht eine Bibliothek mit derselben Funktionalität zur Verfügung.\cite{webrtc}
-WebRTC baut zur Kommunikation direkte Peer To Peer Verbindungen zwischen den Kommunikationspartnern auf.
-Um dies zu ermöglichen ist eine Signaling Instanz notwendig, welche Informationen die zum Verbindungsaufbau notwendig sind zwischen den Partnern vermittelt.
+WebRTC (Web Real-Time Communication) ermöglicht Echtzeitkommunikation basierend auf einem offenen Standard.
+Das Open-Source-Projekt wird unter anderem von Apple, Google, Microsoft und Mozilla unterstützt.
+Es erlaubt den Austausch von Sprach-, Video- und allgemeinen Daten zwischen Clients.
+Wie auf der offiziellen Webseite von WebRTC beschrieben stehen die Technologien
+''\ldots in allen gängigen Browsern als reguläre JavaScript-APIs verfügbar.
+Für native Clients wie Android- und iOS-Anwendungen steht eine Bibliothek zur Verfügung, die dieselben Funktionen bietet.''~\cite{webrtc}.
+
+WebRTC baut zur Kommunikation direkte Peer-To Peer-Verbindungen zwischen den Kommunikationspartnern auf.
+Die WebRTC Libraries und APIs bieten Komponenten für die Integration von Peer-To-Peer Verbindung, Hardwarezugriff auf Microphon und Kamera.
+WebRTC spezifiziert allerdings nicht, wie für den Verbindungsaufbau notwendige Informationen zwischen Teilnehmern ausgetauscht werden müssen.
+Um den Austausch diese Informationen zu ermöglichen ist eine Signaling Instanz notwendig.
+Die Signaling Instanz muss es ermöglichen, Informationen zwischen Teilnehmern zu vermitteln.
 WebRTC spezifiziert nicht, wie diese Signaling Instanz aussehen muss.
-Neben dieser Signaling Instanz ist keine Infrastruktur notwendig, um Daten auszutauschen.
-Sämtliche Sprachdaten werden direkt über die Peer To Peer Verbindungen zwischen Clients ausgetauscht.
+Neben der Signaling Instanz ist keine weitere Infrastruktur notwendig.
+Sämtliche Daten werden direkt über die Peer-To-Peer Verbindungen zwischen Clients ausgetauscht.
 
-Dies hat den Vorteil, dass die Infrastruktur schlank gehalten werden kann.
-Zudem kann der Signaling Service auf die eigenen Bedürfnisse zugeschnitten werden.
-Die Kanäle über die Signale ausgetauscht werden, können frei gewählt werden.
-Das Signaling im Kontext von Praxisruf kann damit im Cloudservice implementiert werden.
-Für die Benachrichtigung bei verpassten Anrufen können eigene Meachanismen eingebunden werden.
-Im Fall von Praxisruf, kann dafür der Notification Teil des Cloudservices verwendet werden.
-Diese Flexibilität bedeutet auch, dass der Signaling Service weitgehend unabhängig von der spezifischen Technologie implementiert werden kann.
-
-\clearpage
+Dies hat den Vorteil, dass die Abhängigkeit zu externen Umsystemen minimiert werden kann.
+Der Signaling Service kann auf die eigenen Anforderungen zugeschnitten werden.
+Die Technologie über welche Signale ausgetauscht werden, kann frei gewählt werden.
+Signaling für Sprachverbindungen im Praxisrufsystem kann damit in den Cloudservice integriert werden.
+So kann notwendige Infrastruktur, die als Teil des Praxisrufsystems betrieben werden muss, schlank gehalten werden.
+Die Integration der Signalvermittlung in den Cloudservice bietet weiter den Vorteil, dass bestehende Funktionen des Systems angesprochen werden können.
+So können z.B. \ Benachrichtigung bei verpassten Anrufen können über die bereits implementierte Benachrichtigungsfunktion versendet werden.
 
 Die Verwendung von WebRTC hat den Nachteil, dass kein fachlicher Support bei Verbindungsproblemen zur Verfügung steht.
-Dies wird dadurch relativiert, dass der eigene Signaling Service sehr einfach gehalten werden kann.
-Es wird weiter dadurch relativiert, dass der eigene Signaling Service ebenfalls bei einem Cloud Provider betrieben wird.
-Dafür können wiederum Supportvereinbarungen getroffen werden.
+Signaling Instanz und Implementation der Sprachverbindungen stehen in der Verantwortung des Betreibers des Praxisrufsystems.
+Abgesehen von Fehlern in der Implementation können Verbindungsprobleme an zwei Stellen auftreten.
+Einerseits ist es möglich, dass die Signaling Instanz ausfällt und nicht erreichbar ist.
+Dieses Problem kann durch den Betrieb des Cloudservice adressiert werden.
+Die Signaling Instanz kann in den Cloudservice integriert werden.
+Dieser wird wiederum bei einem Cloud-Provider betrieben.
+Für diesen Betrieb können Verträge definiert werden die Verfügbarkeit und Support im Fehlerfall bieten.
+Andererseits können lokale Netzwerkprobleme auftreten, welche Endgeräte unerreichbar machen.
+Dieses Problem besteht unabhängig davon, wie Sprachübertragung implementiert wird.
+Im Fall des Praxisrufsystems kann das Problem dadurch adressiert werden, dass nicht erreichbare Endgeräte durch asynchrone Benachrichtigungen über verpasste Verbindungen informiert werden.
 
-\textbf{TODO:} Signaling Technologie: Websockets, Notification, SSE mit EventSource
-
-Die Verwendung von Peer To Peer Verbindungen ist effizient für Verbindungen bei 1:1 Unterhaltungen.
-Für 1:m Verbindungen müssen aber tatsächlich m Verbindungen aufgebaut werden.
-Bei grossen Gruppen, ist diese Art des Verbindungsaufbaus ineffizient.
-Grundsätzlich wäre es möglich, die Kommunikation über einen zentralen Peer zu bündeln.\cite{webrtc_mesh}
-Um dies zu ermöglichen ist aber wieder Infrastruktur nötig, über welche Sprachdaten übertragen werden können.
+Die Gegensprechanlage in einem Praxisrufsystem muss Verbindung mit mehreren Teilnehmern gleichzeitig erlauben.
+Verbindungen müssen deshalb als zwischen zwei Teilnehmern als 1:1 Verbindungen, aber auch zwischen mehreren Teilnehmern als 1:n Verbindungen umgesetzt werden.
+WebRTC sieht ausschliesslich direkte Peer-Tp-Peer Verbindungen vor.
+Es ist allerdings möglich, mehrere direkte Peer-To-Peer Verbindungen gleichzeitig zu verwenden~\cite{webrtc_mesh}.
+Weiter ist es möglich, die Kommunikation über eine zentrale Instanz zu bündeln.
+Eine solche nennt sich Multipoint Conferencing Unit (MCU).
+Bei der Verwendung einer MCU werden Verbindungen nicht direkt zwischen Endgeräten hergestellt.
+Stattdessen stellt jedes Endgerät eine Verbindung mit der MCU her.
+Die MCU vermittelt die Daten zwischen allen Teilnehmern.
+Die Verwendung einer MCU verkompliziert das System und die benötigte Infrastruktur massgeblich~\cite{webrtc_mcu}.
 
 \subsubsection{Entscheidung}
 
-Die Funktion Gegensprechanlage wir mit WebRTC umgesetzt.
-Dazu wird der Cloudservice um ein Modul erweitert, welches Signaling Informationen vermittelt.
-Im Mobile Client wird die WebRTC iOS Library integriert, um Peer To Peer Sprachverbindungen aufzubauen.
+Sprachübertragung wird mit WebRTC umgesetzt.
+Der Cloudservice wird um ein Modul erweitert, welches als Signaling Instanz dient.
+Die WebRTC iOS Bibliothek wird verwendet, um Peer-To-Peer Sprach-übertragung in einer nativen iOS App zu implementieren.
 
-Durch die Verwendung von WebRTC, können Sprachverbindungen aufgebaut werden, ohne einen neuen externen Service zu integrieren.
-Weiter kann der Infrastruktur zur Signalvermittlung unabhängig von der gewählten Technologie umgesetzt werden.
-Die Verfügbaren Libraries für iOs, Android und Javscript bedeuten, dass künftige Web- und Android Clients leicht in das System integriert werden können.
-Support für die Verfügbarkeit des Signaling Services wird über die Verfügbarkeit des Cloud Providers sichergestellt.
-\textbf{TODO:} Als Signaling Technologie wird Websockets verwendet
+Durch die Verwendung von WebRTC, können Sprachverbindungen aufgebaut werden, ohne ein weiteres Drittsystem anzubinden.
+Die benötigte Infrastruktur kann dadurch auf ein Minimum reduziert werden.
+Eine eigene Implementierung der Signaling Instanz ermöglicht es weiter, bestehende Funktionen des Praxisrufsystems effizient zu verwenden.
+Die Verfügbaren Libraries für iOs, Android und Javascript bedeuten, dass künftige Web- und Android Clients in das System integriert werden können.
+Verfügbarkeit der Signaling Instanz wird den Betrieb des Cloudservices sichergestellt.
 
 \clearpage
