@@ -1,31 +1,101 @@
+\section{Peer-To-Peer Sprachübertragung}
 
-\section{Technische Grundlage}
+Dieses Kapitel beschreibt die Funktionsweise von WebRTC und bildet theoretische Grundlage dafür, wie Peer-To-Peer Sprachübertragung mit WebRTC in einem Praxisrufsystem eingesetzt werden kann.
 
-Beschreibt die theoretische Grundlage für die verwendeten Technologien.
-Was ist grundsätzlich notwendig, um das in ein Praxisrufsystem zu integrieren.
+\subsection{Kommunikationsprotokolle}
 
-\subsection{Peer-To-Peer Sprachübertragung}
+Im Folgenden werden die zentralen Kommunikationsprotokolle beschrieben, welche von WebRTC verwendet werden.
+Die wichtigsten Protokolle im WebRTC Umfeld sind das Session Description Protocol und das Interactive Connectivity Establishment.
 
-Was braucht WebRTC um P2P aufzubauen.
-Was sind die iOS Spezifischen Komponenten.
-Was bedeutet das für Praxisruf.
-Übertragungsprotokolle und sicherheit.
+Das Session Description Protocol (SDP) dient als Beschreibung einer Verbindung über welche Multimediadaten wie Sprache oder Video übertragen werden~\cite{rfc_4566_sdp}.
+Diese Beschreibung beinhaltet Metainformationen zu einer Verbindung.
+Dazu gehören unter anderem Auflösung, Format sowie Verschlüsselung und Codierung der zu übertragenden Daten~\cite{mozilla_webRTC_protocols}.
+WebRTC verwendet SDP um zu Beschreiben, welche Art von Daten mit einer Verbindung übertragen werden und wie diese verarbeitet werden können~\cite{webrtc_spec}.
+Um eine Verbindung mit WebRTC aufzubauen, müssen die Teilnehmer der Verbindung SDP Informationen austauschen.
+Dieser Austausch bildet den ersten Teil an Signalmeldungen, welche über die Signaling Instanz ausgetauscht werden müssen.
 
-\subsection{Sprachsynthese}
+Das Protokoll Interactive Connectivity Establishment (ICE) ermöglicht es, Netzwerkverbindungen zwischen Endgeräten aufzubauen.
+Es wird verwendet, um eine möglichst direkte Netzwerkverbindung zwischen zwei Teilnehmern herzustellen.
+Zu diesem Zweck tauschen die Teilnehmenden sogenannte ICE Candidates aus.
+Ein ICE Candidate beschreibt eine mögliche Verbindung, über welche die Verbindung Kommunikation stattfinden kann~\cite{rfc_8445_ice}.
+ICE wird in WebRTC verwendet, um die Netzwerkverbindung zwischen zwei Teilnehmern aufzubauen~\cite{mozilla_webRTC_protocols}.
+Der Austausch von ICE Candidates bildet den zweiten Teil an Signalmeldungen, welche über die Signaling Instanz ausgetauscht werden müssen~\cite{webrtc_spec}.
 
-Was braucht es um AWS Polly zu integrieren.
-Lambda und ähnliches ist Provider spezifisch.
-Schnittstelle in Cloudservice ist besser.
-Übertragungsprotokolle und sicherheit.
-%''https://docs.aws.amazon.com/polly/latest/dg/encryption-in-transit.html''
+% Session Traversal Utilities for NAT (STUN) könnte man erwähnen.
+% TURN könnte man erwähnen.
+% Network Address Translation (NAT) könnte man auch noch behandeln.
 
-\subsection{Native iOS Applikation}
+\subsection{Verbindungsaufbau}
 
-Muss die Anbindung an Umsysteme implementieren.
-Umsysteme sind Messaging Service, Cloud Service.
-Weiter müssen die Komponenten für P2P Verbindungen zu anderen Geräten geschrieben werden.
-Verbindungsmanagement und UX.
-Übertragungsprotokoll und Sicherheit FCM.
+Die Protokolle SDP und ICE werden in Endgeräten verwendet, um Verbindungen aufzubauen.
+Als zentrale Schnittstelle für diese Protokolle im Endgerät definiert der Standard das Interface RTCPeerConnection.
+Diese Schnittstelle repräsentiert die Peer-To-Peer Verbindung zu einem anderen Endgerät.
+Sie muss sowohl auf dem Gerät, welches einen Anruf startet, als auch auf dem Zielgerät initialisiert werden~\cite{webrtc_spec}.
+
+Die WebRTC Bibliothek für iOS implementiert dieses Interface.
+Es bietet die Möglichkeit eine RTCPeerConnection für die gewünschte Übertragung zu initialisieren.
+Nach dieser Initialisierung ist noch keine Verbindung zu einem anderen Endgerät aufgebaut.
+Es ist ausschliesslich ein lokales Verbindungsobjekt initialisiert.
+Aus diesem Verbindungsobjekt können die nötigen SDP Informationen generiert werden.
+Diese Informationen müssen über die Signaling Instanz an das Zielgerät übertragen werden.
+Dieses kann darauf die RTCPeerConnection auf seiner Seite initialisieren und entsprechende SDP Informationen über die Signaling Instanz zurücksenden.
+
+Damit die Peer-To-Peer Verbindung aufgebaut werden kann, müssen die ICE Candidates gemäss dem ICE Protokoll ermittelt werden.
+Wenn eine direkte Verbindung zwischen beiden beteiligten Geräten aufgebaut werden kann, sind keine weiteren Anfragen notwendig.
+Ein ICE Candidate für die direkte Verbindung kann erstellt und über die Signaling Instanz geteilt werden.
+Ist keine direkte Verbindung möglich, müssen mögliche ICE Candidates von einem ICE Server ermittelt werden.
+Die Abfragen an den ICE Server werden von der Implementation der RTCPeerConnection übernommen.
+Verfügbare ICE Server und das für die Abfrage zu verwendende Protokoll müssen bei Initialisierung der RTCPeerConnection mitgegeben werden.
+ICE Candidates werden von beiden Teilnehmern erstellt und über die Signaling Instanz geteilt.
+Dieser Prozess wird wiederholt, bis sich beide Teilnehmer auf einen ICE Candidate geeinigt haben.
+
+\subsection{Signaling}
+
+Der Aufbau von Peer-To-Peer Sprachverbindungen mit WebRTC erfordert das Austauschen on Signalmeldungen.
+Dabei sind wie in Kapitel 6.2 beschrieben mindestens die drei Signale ''Offer'', ''Answer'' und ''Ice Candidate'' notwendig.
+Um diesen Austausch zu ermöglichen ist eine zentrale Signaling Instanz notwendig.
+Diese Signale entgegennehmen und an relevante Empfänger weiterleiten können.
+
+Der WebRTC Standard schreibt nicht, vor wie eine Signaling Instanz umgesetzt werden muss.
+Er definiert einzig, welchen Inhalt Signale für den Verbindungsaufbau beinhalten müssen und wie dieser Inhalt verarbeitet werden muss.
+Konzept und Funktionsweise der Signaling Instanz für das Praxisrufsystem wird in Kapitel 7 beschrieben.
+
+\subsection{Unicast, Multi-Cast, Broadcast}
+
+Dieses Kapitel beschreibt, der Verbindungsaufbau von Peer-To-Peer Verbindungen mit WebRTC als Uni-, Multi- und Broadcast in einem cloudbasierten Praxisrufsystem umgesetzt werden kann.
+
+WebRTC unterstützt ausschliesslich Peer-To-Peer Verbindungen.
+Einzelne Verbindungen können mit WebRTC immer nur zwischen genau zwei Teilnehmern bestehen.
+Gleichzeitig haben Signalmeldungen immer nur genau einen Empfänger.
+Aus der Sicht von WebRTC sind damit ausschliesslich Unicast Verbindungen möglich.
+
+Um Multi- und Broadcast Signale zu erlauben, muss auf Applikationsstufe eingegriffen werden.
+Es ist mit WebRTC nicht möglich, eine Verbindung zwischen mehr als zwei Teilnehmern aufzubauen.
+Es ist hingegen möglich, mehrere Verbindungen gleichzeitig aufzubauen und mit allen Teilnehmern gleichzeitig zu kommunizieren.
+Dies bedeutet, dass der Verbindungsaufbau wie in Kapitel 6.2 beschrieben für jedes Ziel einzeln ausgeführt werden muss.
+
+Verbindung zu mehreren und/oder allen Teilnehmern können als 1:n Verbindungen umgesetzt werden.
+Dazu müssen die relevanten Teilnehmer durch die Applikation vor Verbindungsaufbau identifiziert werden.
+Anschliessend wird der Verbindungsaufbau auf der Seite des Initiators für jeden Empfänger wiederholt.
+Jeder der Empfänger kann die Signale gleich wie in einer Unicast Verbindung verarbeiten.
+Bei einer solchen Verbindung kann der Initiator der Verbindung mit allen Empfängern kommunizieren.
+Jeder Empfänger kann allerdings nur mit dem Initiator kommunizieren.
+Eine Kommunikation zwischen einzelnen Empfängern ist in dieser Form nicht möglich.
+
+Um eine n:n Verbindung aufzubauen und die Kommunikation zwischen allen Teilnehmern zu erlauben, müsste jeder Teilnehmer mit jedem anderen Teilnehmer eine Verbindung aufbauen~\cite{webrtc_mesh}.
+Im Rahmen dieser Arbeit sind lediglich 1:n Verbindungen gefordert.
+Konzepte und Umsetzung für n:n Verbindungen werden hier deshalb nicht weiter behandelt.
+
+
+\subsection{Sicherheit}
+
+Signaling Verbindung muss sicher sein.
+Keine Anforderung an Protokoll, ausser das verschlüsselt.
+
+Übertragung der Sprachdaten muss verschlüsselt sein.
+Für die Verschlüsselung muss SRTP verwendet werden.
+Die Verschlüsselung ist Sache von dem der das Interface implementiert.
+Ist dementsprechend in der Library mit implementiert.
+
 
 \clearpage
-

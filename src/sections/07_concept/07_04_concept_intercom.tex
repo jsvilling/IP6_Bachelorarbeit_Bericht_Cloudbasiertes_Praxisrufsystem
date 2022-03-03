@@ -169,24 +169,6 @@ Wenn ein Signal nicht zugestellt werden kann und dieses Flag TRUE ist, wird der 
 Dazu wird das bestehende Notification Modul des Cloudservices verwendet.
 Für die Verwaltung von Sprachverbindungen werden insgesamt sechs Typen von Signalmeldungen definiert.
 
-OFFER: Ein Offer wird vom Initiator der Sprachverbindung an die Empfänger gesendet.
-Es beinhaltet die SDP\footnote{Sesseion Description Protocol} Informationen des Initiators.  \\
-
-ANSWER: Eine Answer wird vom Empfänger eines Offers an den Initiator der Sprachverbindung gesendet.
-Es beinhaltet SDP\footnote{Sesseion Description Protocol} Informationen des Empfängers.
-
-ICE CANDIDATE: Ein RTCIceCandidate beschreibt Routing- und Protokollinformationen, die für den Verbindungsaufbau verwendet werden.
-Nach Verarbeitung von OFFER und ANSWER tauschen Initiator und Empfänger solange ICE CANDIATE Signale aus, bis sie sich auf einen Kandidaten geeinigt haben.\\
-
-END: Wird von Empfänger oder Initiator versendet, nachdem die Verbindung durch tippen des Auflegen-Button in der Applikation beendet wurde.
-Empfang dieses Signal führt dazu, dass alle offene Sprachverbindungen beendet werden.\\
-
-UNVAILABLE: Wenn der Signalinvserver ein Signal nicht zustellen kann, wird das Ziel wenn möglich über eine Benachrichtigung informiert.
-Zudem wird ein Unavailable Signal zurück an den Sender gesendet.
-So weiss dieser, dass der gewünschte gesprächspartner nicht verfügbar ist. \\
-
-DECLINE: Praxismitarbeitende haben die Möglichkeit den Empfang von Anrufen zu deaktivieren.
-Wird ein Signal empfangen während Anrufe deaktiviert sind, sender der Mobile Client ein DECLINE Signal zurück. \\
 
 \clearpage
 
