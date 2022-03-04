@@ -277,10 +277,18 @@ Wurde hingegen eine ungültige Signalmeldung oder eine Fehlermeldung empfangen w
 Im Fehlerfall wird zudem überprüft ob die Verbindung noch offen verwendbar ist.
 Sollte die Verbindung nicht mehr verwendbar sein, wird die Methode onConnectionLost des Delegates aufgerufen.
 
+PraxisrufApi+Signaling definiert weiter Methoden um Signal- und Pingmeldungen zu versenden.
+Pingmeldungen werden in Regelmässigen Abständen gesendet um sicherzustellen, dass die Verbindung zu der Signaling Instanz stabil ist.
+Vor dem Senden einer Meldung wird geprüft, ob die Verbindung zur Signaling Instanz verwendbar ist.
+Ist dies nicht der Fall, wird die Methode onConnectionLost des Delegates aufgerufen und anschliessend versucht die Meldung zu versenden.
+Schlägt das Senden fehl, wird onErrorReceived auf dem Delegate aufgerufen.
 
-
-
-\clearpage
+Die Methoden des Protokolls CallClientDelegate werden durch die Klasse CallService implementiert.
+Der CallService vermittelt Anfragen zwischen Signaling Instanz, Benutzeroberfläche und der Integration der Peer-To-Peer Verbindungen im Mobile Client.
+Er ist dafür verantwortlich Signale an die Peer-To-Peer Verbindung weiterzuleiten, geschlossene Verbindungen wieder zu öffnen und Fehlermeldungen anzuzeigen.
+Das Wiederöffnen der Verbindung im Fehlerfall wird über die PraxsirufApi+Signaling Extension gemacht.
+Der entsprechende Aufruf wird aber im CallService implementiert.
+Dadurch können allfällige Fehlermeldungen angezeigt und Benutzerinteraktionen ermöglicht werden.
 
 \subsubsection{Signalverarbeitung im Mobile Client}
 
@@ -321,7 +329,6 @@ Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt e
 Dieses Signal gibt er an den CallService weiter.
 Der CallService leitet das Signal an den SignalingClient weiter, welcher das Versenden an den Cloud Service übernimmt.
 
-\clearpage
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.8\textwidth}
