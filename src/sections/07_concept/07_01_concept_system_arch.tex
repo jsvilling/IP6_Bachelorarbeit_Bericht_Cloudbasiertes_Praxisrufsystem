@@ -1,113 +1,120 @@
 
-\subsection{SystemArchitektur}
+\subsection{Systemarchitektur}
 
-Dieses Kapitel beschreibt die Erweiterungen und Anpassungen an der Systemarchitektur des bestehenden Praxisrufsystems.
+Dieses Kapitel beschreibt die Komponenten des Praxisrufsystems und wie diese erweitert werden.
 Das System wird um Komponenten zur Signalvermittlung und Sprachsynthese erweitert.
-Weiter wird die interne Struktur des Cloudservices angepasst um die Weiterentwicklung und Betrieb des Systems zu optimieren.
-\textbf{TODO:} Fix Diagram (Arrows & Names)
+Weiter wird die interne Struktur des Cloudservices angepasst um die Weiterentwicklung und Betrieb des Systems zu vereinfachen.
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.75\textwidth}
+    \begin{minipage}[b]{0.8\textwidth}
         \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Component_System_V02}}
-        \caption{Systemarchitektur Praxisruf}
+        \caption{Systemkomponenten}
     \end{minipage}
 \end{figure}
 
+Abbildung 7.1 gibt einen Überblick über die Systemkomponenten und welche Teile diese beinhalten.
+Die Pfeile zwischen Komponenten zeigen gerichtete Abfragen und damit eine Funktionale Abhängigkeit.
+Alle dargestellten Komponenten sind entkoppelt und Abfragen finden nur über definierte Schnittstellen statt.
+
 \subsubsection{Systemkomponenten}
 
-Dieses Kapitel gibt eine Übersicht zu den Systemkomponenten von Praxisruf.
-Dabei wird für jede Komponente beschrieben, welche Aufgaben ihr zufallen und welche Teile davon mit diesem Projekt angepasst werden.
+Dieses Kapitel beschreibt die in Abbildung 7.1 abgebildeten Systemkomponenten.
+Dabei wird für jede Komponente beschrieben, welche Aufgaben ihr zufallen und wie sie im Rahmen dieses Projektes erweitert wird.
 
 \textbf{Cloudservice}
 
-Der Cloudservice bildet das zentrale Backend des Praxisruf Systems.
-Der Cloudservice wird in die zwei Domänen Notification und Configuration aufgeteilt.
+Der Cloudservice bildet das zentrale Serverkomponente des Praxisrufsystems.
+Zu Beginn dieses Projektes umfasst der Cloudservice die beiden Domänen Notification und Configuration.
 Dabei ist die Domäne Notification für das Versenden von Benachrichtigungen und die Domäne Configuration für die Verwaltung und Auswertung der Konfigurationen verantwortlich.
-Zwischen den beiden Domänen besteht eine gerichtete Abhängigkeit.
-Die Domäne Notification benötigt zum Versenden von Benachrichtigungen Informationen aus der Configuration Domäne.
-Das Identifizieren der relevanten Empfänger geschieht in der Configuration Domäne.
-Dementsprechend benötigt die Notification Domäne beim Versenden die Information, an welche Empfänger die Benachrichtigung versendet werden soll.
+Die relevanten Empfänger für eine Benachrichtigung werden in der Configuration Domain ermittelt.
+Um auf diese Informationen zugreifen zu können, muss aus der Notification Domain eine Abfrage an die Configuration Domain geschehen.
+Die Configuration Domäne bietet dazu eine REST Schnittstelle~\cite{ip5}.
 
-Die Domänentrennung innerhalb des Cloudservices findet bis heute lediglich auf Package-Ebene statt.
+Die Trennung der Domänen wurde im Vorgängerprojekt lediglich auf Package-Ebene realisiert.
 Mit diesem Projekt soll die Trennung einen Schritt weiter gehen.
-Die Applikation wird in mehrere Module aufgeteilt.\footnote{Siehe Kapitel 5.1.2}
-Diese können zu einem späteren Zeitpunkt in einzelne Microservices aufgeteilt werden.
+Der Cloudservice wird Module aufgeteilt.
+Diese Module werden weiterhin in einer einzelnen Applikation zusammengefasst.
+Die Modularisierung können aber zu einem späteren Zeitpunkt in einzelne Microservices aufgeteilt werden.
 
-Nachdem die Auftrennung in Module statgefunden hat, wird der Cloudservice um zwei Module erweitert.
+Nachdem die Auftrennung in Module stattgefunden hat, wird der Cloudservice um die zwei Module Signaling und Speech Synthesis erweitert.
 Das neue Modul Signaling ist für die Signalvermittlung zwischen Mobile Clients verantwortlich.
-Dies ist nötigt um Peer To Peer Sprachverbindungen zwischen Mobile Clients aufzubauen.
+Es übernimmt die Aufgabe der Signaling Instanz für den Aufbau von Peer-To-Peer Sprachverbindungen mit WebRTC.
 Das Modul Signaling hat eine gerichtete Abhängigkeit zum Module Notification.
-Über das Notification Modul sollen Mobile Clients informiert werden, wenn ein Signal nicht versendet werden konnte, weil sie nicht mit dem Cloudservice verbunden waren.
-Das neue Modul Speech Synthesis dient als einheitliche Schnittstelle zu einem externen Seepch Synthesis Service.
-Dadurch kann auch wenn ein Android oder Web Client kommt, dieser genau gleich angebunden werden.
-Garantie, dass die Konfiguration und Funktionsweise dieselbe für alle Clients ist. \\
+Über das Notification Modul sollen Empfänger informiert werden, wenn ein Signal nicht zugestellt werden konnte.
+Das neue Modul Speech Synthesis dient als Schnittstelle zu einem externen Provider für Sprachsynthese.
+Dies ermöglicht es, die Sprachsynthese als Teil der API des Cloudservice anzubieten.
+Dadurch können Clients aller Plattformen und auch Systeme, die künftig angebunden werden, auf die Sprachsynthese zugreifen.
+Weil alle Clients die Daten aus derselben Schnittstelle beziehen, ist garantiert, dass die Konfiguration und Funktionsweise dieselbe für alle Clients ist. \\
 
 \textbf{Mobile Client}
 
-Mit dem Vorgängerprojekt wurde bereits ein Mobile Client umgesetzt.
-Dieser wurde als Shared Platform Applikation mit Nativescript umgesetzt.
-Er bietet Praxismitarbeitenden die Möglichkeit Benachrichtigungen zu versenden und zu empfangen.
-Mit diesem Projekt wird der Mobile Client als native iOS Applikation komplett neugeschrieben.
-Der neue iOS Client muss sämtliche Funktionen des bestehenden Mobile Clients unterstützen.
-Zudem wird im neuen Client die Funktion der Gegensprechanlage und das Vorlesen von Benachrichtigungen über Sprachsynthese umgesetzt.
+Der Mobile Client ist eine mobile Appliaktion, über welche das Praxisrufsystem bedient werden kann.
+Der mit dem Vorgängerprojekt umgesetzte Mobile Client erlaubt es Benachrichtigungen zu versenden und empfangen~\cite{ip5}.
+Dieser Mobile Client wird durch eine native iOS Applikation ersetzt.
+Die native iOS App wird von Grund auf neu entwickelt.
+Dabei muss sämtliche Funktionen des bestehenden Mobile Clients als Teil der nativen App neu implementiert werden.
+Weiter werden die Funktionen Gegensprechanlage und Sprachsynthese für empfangene Benachrichtigungen umgesetzt.
 
 \textbf{Admin UI}
 
-Das Admin UI ermöglicht dem Praxisadministrator, die Konfiguration des Systems zu verwalten.
-Die Konfiguration des Systems wird mit diesem Projekt erweitert.
-Einerseits können neu Buttons für die Gegensprechanalge konfiguriert werden.
-Andererseits kann eingestellt werden, welche Benachrichtigungen vorgelesen werden sollen.
-Beide Informationen müssen über das Admin UI verwaltet werden können.
+Das Admin UI ist eine Webapplikation, über welche die Konfiguration des Praxisrufsystems verwaltet werden kann.
+Die Konfiguration des Systems wird für Gegensprechanlage und Sprachsynthese erweitert.
+Für die Gegensprechanlage müssen Buttons konfiguriert werden können.
+Diese beinhalten Anzeigetext und Teilnehmer einer Sprachverbindung.
+Weiter muss pro Benachrichtigung konfigurierbar sein, ob ihr Inhalt bei Empfang vorgelesen werden sollen.
+Das Admin UI muss erweitert werden, um die Verwaltung der erweiterten Konfiguration zu ermöglichen.
 
 \textbf{Messaging Service}
 
 Der Messaging Service ist für die Zustellung von Push Benachrichtigungen an Mobile Clients verantwortlich.
-Der Cloudservice muss an den Messaging Service angebunden sein, um Benachrichtigungen anhnd der Konfiguration zu versenden.
+Der Cloudservice muss an den Messaging Service angebunden sein, um Benachrichtigungen anhand der Konfiguration zu versenden~\cite{ip5}.
 Die Anbindung des Cloudservices an den Messaging Service ist mit dem Vorgängerprojekt bereits umgesetzt und muss für dieses Projekt nicht angepasst werden.
-Der neu entwickelte native Mobile Client muss mit diesem Projekt an den Messaging Service angebunden werden, um Benachrichtigungen zu empfangen.
-Als Messaging Service wird Firebase Cloud Messaging verwendet.\\
+Die neu entwickelte native iOS App muss hingegen an den Messaging Service angebunden werden, um Benachrichtigungen zu empfangen.
+Als Messaging Service wird Firebase Cloud Messaging verwendet.
 
 \textbf{Speech Synthesis Service}
 
-Um Sprach Synthese zu ermöglichen, wird ein externer Service angebunden.
-Dieser übernimmt die Konvertierung von Text aus Benachrichtigungen zu synthetisierter Sprache.
+Um Sprachsynthese zu ermöglichen, wird ein externer Service angebunden.
+Dieser übernimmt die Konvertierung von Text aus Benachrichtigungen zu Sprachdaten.
 Die Anbindung an den Speech Synthesis Service wird ausschliesslich im Cloudservice implementiert.
 Sämtliche andere Komponenten die Sprachdaten benötigen, fragen diese beim Cloudservice ab.
-Welcher die Abfrage an den Speech Synthesis Service übernimmt und die Resultate dem Anfrager zur Verfügung stellt.
+Die REST API des Cloudservice wird um entsprechende Endpunkte erweitert.
 Als Speech Synthesis Service wird Amazon Polly verwendet.
 
-\clearpage
+\subsubsection{Modularisierung Cloudservice}
 
-\subsubsection{Modularisierung CloudService}
+Der mit dem Vorgängerprojekt umgesetzte Cloudservice ist als monolithische Applikation implementiert.
+Er trennt intern die beiden Domänen Notification und Configuration.
+Die Domäne Configuration ist für die Verwaltung und Auswertung der Konfiguration des Systems und die Domäne Notification für das Versenden von Benachrichtigungen verantwortlich.
+Abhängigkeiten zwischen den beiden Domänen ist über eine REST-Schnittstelle abstrahiert.
 
-Mit dem Projekt IP5 Cloudbasiertes Praxisrufsystem wurde der Cloudservice implementiert.
-Der Cloudservice trennt intern die beiden Domänen Notification und Configuration.
-Die Domäne Configuration ist für die Verwaltung und Auswertung der Konfiguration des Systems verantwortlich.
-Die Domäne Notification ist für das Versenden von Benachrichtigungen verantwortlich.
-Für das Versenden von Benachrichtigungen werden in der Notification Domäne Informationen aus der Configuration Domäne benötigt.
-Diese Informationen werden über eine REST-Schnittstelle abgefragt.
-
-Die Trennung der Notification und Configuration Domänen, ermöglicht es die beiden Teile der Applikation in separaten Services zu betreiben.
-So können diese unabhängig voneinander betrieben und erweitert werden.
+Die Trennung der Domänen, erlaubt es die Anwendung zukünftig in mehrere Microservices aufzuteilen.
+Diese könnten unabhängig betrieben und erweitert werden.
 Weiter wird es dadurch möglich, einzelnen Teilen der Applikation mehr Ressourcen zuzuteilen.
-Die Trennung der beiden Domänen in eigene Microservices wurde mit dem Projekt IP5 noch nicht vorgenommen.
+Die Trennung der Domänen in eigene Microservices wurde noch nicht vorgenommen.
 Die beiden Domänen wurden lediglich durch die Package Struktur innerhalb eines einzelnen monolithischen Services getrennt.
-Mit diesem Projekt soll die Trennung der Domänen einen Schritt weiter vorangetrieben werden.
 
-Neu soll es pro Domäne ein Gradle Modul geben, welches sämtliche Domänenobjekte, Services und Schnittstellen der jeweiligen Domäne kapselt.
+Die Trennung der Domänen innerhalb des Cloudservice wird weiter verstärkt.
+Teile der Applikation werden neu in Module aufgeteilt.
+Dabei wird pro Domäne ein Modul erstellt.
+Dieses kapselt sämtliche Domänenobjekte, Services und Schnittstellen der jeweiligen Domäne.
 Dadurch ist garantiert, dass die Domänen sauber voneinander getrennt sind.
 Sämtliche Kommunikation zwischen den Modulen muss über REST-Schnittstellen geschehen.
 
-Um den Betrieb des Cloudservices für dieses Projekt möglichst simpel zu halten, werden die einzelnen Teile immer noch als monolithische Applikation gestartet.
-Dazu wird ein Modul \textbf{App} erstellt, welches alle Domänen Module kapselt und in einer Applikation startet.
-Um die Applikation zukünftig in einzelne Micro Services aufzutrennen, müssen die einzelnen Module um eine Klasse erweitert werden, welche nur dieses Modul als Applikation startet.
-Komponenten, welche in mehr als einer Domäne verwendet werden, werden in ein zusätzliches \textbf{Commons} Modul verlegt.
+Es werden die vier Domänen-Module Configuration, Notification, Spech Synthesis und Signaling definiert.
+Das Modul Configuration beinhaltet alle Domänenobjekte, Services und Schnittstellen für die Verwaltung, Auswertung und Abfrage der Systemkonfiguration.
+Das Modul Notification beinhaltet alle Domänenobjekte, Services und Schnittstellen für das Versenden von Benachrichtiungen.
+Das Modul Speech Synthesis beinhaltet die Anbindung an den Speech Synthesis Service und stellt eine Schnittstelle zur verfügung über den das restliche System Sprachdaten beziehen kann.
+Das Modul Signaling beinhaltet Domänenobjekte, Services und Schnittstellen für die Signalvermittlung zwischen Mobile Clients.
+
+Weiter werden die zwei Module Commons und App definiert.
+Komponenten, welche in mehr als einer Domäne verwendet werden, werden in ein zusätzliches Commons Modul verlegt.
 Dazu gehören Data Transfer Objects für Schnittstellen zwischen den Modulen, geteilte Clients um Abfragen auf andere Module abzusetzen sowie Komponenten für Security und Fehlerhandling.
 Neben den Modulen App und Commons, werden vier weitere Module für die Domänen Configuration, Notification, Speech Synthesis und Signaling erstellt.
-Das Modul \textbf{Configuration} beinhaltet alle Domänenobjekte, Services und Schnittstellen für die Verwaltung, Auswertung und Abfrage der Systemkonfiguration.
-Das Modul \textbf{Notification} beinhaltet alle Domänenobjekte, Services und Schnittstellen für das Versenden von Benachrichtiungen.
-Das Modul \textbf{Speech Synthesis} beinhaltet die Anbindung an den Speech Synthesis Service und stellt eine Schnittstelle zur verfügung über den das restliche System Sprachdaten beziehen kann.
-Das Modul \textbf{Signaling} beinhaltet Domänenobjekte, Services und Schnittstellen für die Signalgvermittlung zwischen Mobile Clients.
+
+Der Cloudservice wird weiterhin als monolithische Applikation betrieben.
+Die Modularisierung garantiert dabei eine strikte Trennung der Domänen.
+In Zukunft können einzelne Module aus dem Cloudservice ausgelöst und als eigenständige Applikationen betrieben werden.
 
 \clearpage
