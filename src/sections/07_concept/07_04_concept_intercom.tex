@@ -124,6 +124,59 @@ Der Austausch von Signalmeldungen ist damit verschlüsselt.
 
 \clearpage
 
+\subsubsection{Signalmeldungen}
+
+Dieses Kapitel beschreibt die Signalmeldungen, welche für Sprachverbindungen verwendet werden.
+Abbildung 7.14 zeigt, wie Signalmeldungen im Mobile Client modeliert werden.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.33\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Class_Signal_V01}}
+        \caption{Signal }
+    \end{minipage}
+\end{figure}
+
+Alle Signalmeldungen beinhalten Identifikation von Sender und Empfänger.
+Diese werden vom Signalingserver verwendet, um die Signale korrekt weiterzuleiten.
+Type, Payload und Description werden im Mobile Client verwendet, um das Signal korrekt zu verarbeiten und Verbindungen aufzubauen.
+Das Flag notificationOnFailedDelivery wird im Cloudservice ausgewertet.
+Wenn ein Signal nicht zugestellt werden kann und dieses Flag TRUE ist, wird der Empfänger mit einer asynchrone Benachrichtigung darüber informiert.
+Dazu wird das bestehende Notification Modul des Cloudservices verwendet.
+Für die Verwaltung von Sprachverbindungen werden die folgenden sechs Typen von Signalmeldungen definiert.
+\\ \\
+\begin{tabbing}
+    Left \= Middle \= Right \= Right \kill
+    Offer
+    \> \> \> Ein Offer wird vom Initiator der Sprachverbindung an die Empfänger gesendet. Es
+    \\\> \> \> beinhaltet die Informationen des Initiators. \\ \\
+
+    Answer
+    \> \> \> Eine Answer wird vom Empfänger eines Offers an den Initiator der Sprachverbindung
+    \\\> \> \> gesendet. Es beinhaltet SDP Informationen des Empfängers. \\ \\
+
+    Ice Candidate
+    \> \> \> Ice Candidate Signal Beinhaltet Informatinoen eines ICE Candidates, die für den Ver-
+    \\ \> \> \> bindungsaufbau verwendet werden. Nach Verarbeitung von Offer und Answer
+    \\ \> \> \> tauschen Initiator und Empfänger solange Ice Candidate Signale aus, bis sie sich auf
+    \\ \> \> \> einen Kandidaten geeinigt haben.\\ \\
+
+    End
+    \> \> \> Wird von Empfänger oder Initiator versendet, nachdem die Verbindung durch tippen des
+    \\ \> \> \> Auflegen-Button in der Applikation beendet wurde. Empfang dieses Signal führt dazu,
+    \\ \> \> \> dass offene Sprachverbindungen zum Sender dieses Signals beendet werden.\\ \\
+
+    Unavailable
+    \> \> \> Wenn der Signalingserver ein Signal nicht zustellen kann, wird das Ziel über eine Benach-
+    \\ \> \> \> richtigung informiert. Zudem wird ein Unavailable Signal zurück an den Sender gesendet.
+    \\ \> \> \> Es wird angezeigt, dass der gewünschte gesprächspartner nicht verfügbar ist. \\ \\
+
+    Decline
+    \> \> \> Wird ein Signal empfangen während die Gegensprechanlage in den lokalen Einstellungen
+    \\ \> \> \> deaktiviert ist, sendet der Mobile Client ein Decline Signal zurück. Es wird angezeigt,
+    \\ \> \> \>  dass der gewünschte gesprächspartner nicht verfügbar ist.
+\end{tabbing}
+
 \subsubsection{Anmeldung und Registrierung}
 
 Der Ablauf von Anmeldung und Registrierung funktioniert mit dem neuen nativen Mobile Client grundsätzlich gleich wie zuvor.
@@ -153,26 +206,7 @@ Für Sprachverbindungen muss zudem eine Verbindung zum Signaling Modul des Cloud
 Dazu wird wie in Kapitel 7.4.6 beschrieben eine Websocketverbindung geöffnet.
 
 \clearpage
-\subsubsection{Signalmeldungen}
 
-Dieses Kapitel beschreibt die Signalmeldungen, welche für Sprachverbindungen verwendet werden.
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Signal_V01}
-        \caption{Signal (Mobile Client)}
-    \end{minipage}
-\end{figure}
-
-Alle Signalmeldungen beinhalten Identifikation von Sender und Empfänger.
-Diese werden vom Signalingserver verwendet, um die Signale korrekt weiterzuleiten.
-Type, Payload und Description werden im Mobile Client verwendet, um das Signal korrekt zu verarbeiten und Verbindungen aufzubauen.
-Das Flag notificationOnFailedDelivery wird im Cloudservice ausgewertet.
-Wenn ein Signal nicht zugestellt werden kann und dieses Flag TRUE ist, wird der Empfänger mit einer asynchrone Benachrichtigung darüber informiert.
-Dazu wird das bestehende Notification Modul des Cloudservices verwendet.
-Für die Verwaltung von Sprachverbindungen werden insgesamt sechs Typen von Signalmeldungen definiert.
-\clearpage
 \subsubsection{Verbindungsaufbau}
 
 Praxismitarbeitende können Sprachverbindungen zu anderen Clients aufbauen indem sie auf den entsprechenden Button in der Praxisruf App tippen.
@@ -186,8 +220,7 @@ Der Cloudservice findet die Verbindung der relevanten Empfänger und leitet die 
 Die Verbindung auf Empfängerseite wird nach Eingang des Offers initialisiert.
 Danach wird eine Answer zurück an den Initiator gesendet, welche über den Signalingserver zugestellt wird,
 Der Initiator empfängt die Antwort Signale und ergänzt die notwendigen Verbindungsinformationen.
-Folgende Graphik visualisiert diesen Ablauf:
-\textbf{TODO: } Add ICE Candidate Exchange
+Abbildung 7.15 visualisiert diesen Ablauf.
 
 \begin{figure}[h]
     \centering
@@ -197,9 +230,8 @@ Folgende Graphik visualisiert diesen Ablauf:
     \end{minipage}
 \end{figure}
 
-Nachdem die Offer und Answer Meldungen ausgetauscht sind, müssen Ice Candidate Meldungen versendet werden.
-So können sich die CLients über Routing- und Protokollinformationen einigen die für die Peer to Peer Verbindung verwendet werden.
-Der Austausch von Ice Meldungen wird in obiger Graphik nicht angezeigt.
+Nachdem die Offer und Answer Meldungen ausgetauscht sind, müssen Ice Candidate Meldungen ausgetauscht werden.
+Dieser Austausch ist der um die Übersichtlichkeit zu wahren nicht in Abbildung 7.15 dargestellt.
 Er verläuft nach demselben Prinzip wie der Austausch von Offer und Answer.
 Sobald sich die Clients auf die Verbindungsinformationen geeinigt haben, besteht die Sprachverbindung.
 
