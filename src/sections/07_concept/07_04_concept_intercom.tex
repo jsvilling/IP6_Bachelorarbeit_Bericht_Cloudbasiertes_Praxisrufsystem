@@ -1,25 +1,28 @@
 \subsection{Gegensprechanlage}
 
-Mit dem Einbau von synchroner Sprachübertragung wird Praxisruf um die Funktion einer Gegensprechanlage erweitert.
-Die gewählte Technologie WebRTC erlaubt es Peer to Peer Sprachverbindungen zwischen Clients aufzubauen.
+Mit dem Einbau von synchroner Sprachübertragung wird das Praxisrufsystem um die Funktion Gegensprechanlage erweitert.
+Die gewählte Technologie WebRTC erlaubt es Peer-to-Peer Sprachverbindungen zwischen Clients aufzubauen.
 Dieses Kapitel beschreibt wie das Praxisrufsystem erweitert wird, um eine konfigurierbare Gegensprechanlage mit WebRTC zu integrieren.
 
 \subsubsection{Konfiguration}
 
 Die Gegensprechanlage wird in den nativen Mobile Client integriert.
-Praxismitarbeitende können über Buttons Sprachverbindungen zu anderen Clients aufbauen.\footnote{Vlg. Kapitel 4.2.x}
-Welche Buttons und damit welche Sprachverbindungen zur Verfügung stehen, kann vom Administrator über das Admin UI konfiguriert werden.
-Damit dies möglich ist, sind Änderungen an der Configuration Domain des Cloudservice von Praxisruf sowie am Admin UI notwendig.
+Praxismitarbeitende können über Buttons Sprachverbindungen zu anderen Clients aufbauen.
+Welche Buttons und damit welche Sprachverbindungen zur Verfügung stehen, wird durch Praxisadministrierende über das Admin UI konfiguriert.
+Damit dies möglich ist, sind Änderungen an der Domäne Configuration des Cloudservice sowie am Admin UI notwendig.
+
+Die Konfiguration von Mobile Clients wird in der Domäne Configuration abgebildet.
+Zentral sind dabei die beiden Entities Client und ClientConfiguration.
+Ein Client repräsentiert ein physisches Endgerät.
+Eine ClientConfiguration definiert die Konfiguration eines Gerätes.
 
 Praxisruf bietet bereits heute die Möglichkeit Buttons zu konfigurieren, über welche Benachrichtigungen versendet werden können.
 Diese Buttons werden mit der Entität NotificationType konfiguriert, welche wiederum einer ClientConfiguration zugeordnet werden können.
-Diese ClientConfiguration wird bei der Anmeldung auf dem Mobile Client geladen und verwendet um die nötigen Buttons darzustellen.
-Analog dazu wird für den Aufbau von Sprachverbindungen eine Entität CallType erstellt.
+Diese ClientConfiguration wird bei der Anmeldung auf dem Mobile Client geladen und verwendet, um die nötigen Buttons darzustellen.
+Für die Konfiguration von Sprachverbindungen wird die Entität CallType erstellt.
 Ein CallType beinhaltet den Text, welcher auf dem zugehörigen Button auf Clientseite angezeigt wird und eine Liste von Clients, welche als Ziel der Sprachverbindung verwendet werden.
-
-Die Konfiguration eines Clients wird durch die bestehende Entität ClientConfiguration abgebildet.
-Diese Konfiguration wird um eine Liste von CallTypes erweitert.
-So kann für jeden Client definiert werden, welche Sprachverbindungen aufgebaut werden können.
+Abbildung 7.12 zeigt einen Ausschnitt aus dem Entity Relationship Diagramm der Configuration Domäne.
+Dabei sind die Teile, die für die Konfiguration von Sprachverbindungen ergänzt werden, grün markiert.
 
 \begin{figure}[h]
     \centering
@@ -31,13 +34,12 @@ So kann für jeden Client definiert werden, welche Sprachverbindungen aufgebaut 
 
 Das Admin UI wird mit Ansichten erweitert, um CallTypes zu erstellen, anzeigen, bearbeiten und löschen.
 Gleichzeitig wird der Cloudservice um Rest Endpunkte für das Lesen, Erstellen, Aktualisieren und Löschen von CallTypes erweitert.
-
-Die Ansichten für ClientConfigurations im Admin UI werden so erweitert, dass CallTypes darauf angezeigt, hinzugefügt und entferntw erden können.
+Die Ansichten für ClientConfigurations im Admin UI werden so erweitert, dass CallTypes darauf angezeigt, hinzugefügt und entfernt werden können.
 Die bestehenden Endpunkte für ClientConfiguration werden entsprechend erweitert.
 
 \clearpage
 
-\subsubsection{Signaling Server}
+\subsubsection{Signaling Instanz}
 
 Mit WebRTC werden Peer To Peer Sprachverbindungen aufgebaut.\footnote{citation}
 Bevor die Verbindung aufgebaut ist, kennen die beiden Clients sich gegenseitig noch nicht.
