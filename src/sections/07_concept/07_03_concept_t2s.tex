@@ -2,34 +2,32 @@
 
 Dieses Kapitel beschreibt die Integration der Sprachsynthese in das Praxisrufsystem.
 Der Fokus liegt dabei auf den Abläufen zum Empfangen von Benachrichtigungen und dem Abrufen der Sprachdaten.
+Der Empfang von Benachrichtigungen wird so erweitert, dass der Inhalt empfangener Benachrichtigungen automatisch vorgelesen wird.
 
 \subsubsection{Konfiguration}
-
-Nach Use Case U03\footnote{Siehe Kapitel 3} muss der Praxismitarbeitende alle Sprachbenachrichtigungen stummschalten können.
-Dazu wird der Mobile Client um eine Settings Ansicht erweitert.
-Auf dieser Ansicht, kann der Benutzer auswählen, ob Benachrichtigungen vorgelesen werden sollen.
-Ist die Option deaktiviert, werden Benachrichtigungen nie vorgelesen.
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.75\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_t2s_v01.drawio}
-        \caption{ERD Ausschnitt - Konfiguration Sprachsynthese}
-    \end{minipage}
-\end{figure}
 
 Benachrichtigungen für Praxisruf können über das Admin UI konfiguriert werden.
 Es kann pro Benachrichtigung Titel, Inhalt, Anzeigetext für Benachrichtigungsbuttons und eine Beschreibung erfasst werden.
 Diese Konfiguration wird über die Entität NotificationType verwaltet.
 Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Sprachsynthese relevant ist.
-Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen isTextToSpeech erweitert.
+Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen ''isTextToSpeech'' erweitert.
 Dieses Flag wird beim Versenden einer Benachrichtigung mitgesendet und kann vom Empfänger überprüft werden.
-Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Benachrichtigungen, welche dieses Flag auf TRUE gesetzt haben vorgelesen.
+Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Benachrichtigungen, welche dieses Flag aktiviert haben.
+Abbildung 7.9 zeigt einen Ausschnitt aus dem Entity Relationship Diagramm der Domäne Configuration.
+Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün markiert.
 
-Neben dem Feld isTextToSpeech, wird die NotificationType Entity um ein weiteres Feld version erweitert.
-Dieses Version Feld beinhaltet eine Ganzzahl welche mit jeder Änderung inkrementiert wird.
-Das Version Feld wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet und kann auf Client Seite zur Implementierung eines Caches verwendet werden.
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.75\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_t2s_v01.drawio}}
+        \caption{ERD Ausschnitt - Konfiguration Sprachsynthese}
+    \end{minipage}
+\end{figure}
 
+Neben dem Feld isTextToSpeech, wird die NotificationType Entity um ein weiteres Feld ''version'' erweitert.
+Das Versionsfeld beinhaltet eine Ganzzahl welche mit jeder Änderung inkrementiert wird.
+Der Inhalt dieses Felds wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet.
+Auf Client-Seite wird diese Information zur Implementierung eines Cache verwendet.
 
 \clearpage
 \subsubsection{Integration Sprachsynthese Provider}
