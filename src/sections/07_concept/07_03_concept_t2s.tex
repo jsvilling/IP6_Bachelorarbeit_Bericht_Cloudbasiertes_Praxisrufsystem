@@ -87,21 +87,25 @@ Sie werden deshalb direkt in der Konfigurationsdatei application.yml definiert u
 Als Credentials für die Anbindung dienen die zwei Schlüssel AccessKey und SecretKey.
 Diese werden nicht direkt im application.yml abgelegt.
 Für sämtliche Credentials wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebungsvariablen lädt.
-Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden und können einfach ausgetauscht werden.
+Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden.
 
 \subsubsection{Schnittstelle Cloud Service}
 
-Das Speech-Modul stellt einen Endpoint zur Verfügung über den die Sprachdaten zu einer Benachrichtigung abgefragt werden können.
-Der Endpoint bietet dabei nicht die möglichkeit generische Daten in Sprachdaten zu verwandeln.
-Stattdessen erlaubt er es Sprachdaten für die aktuelste Version von bekannten Benachrichtigungstypen zu beziehen.
-Der einzige Parameter für diese Anfragen ist die technische Identifikation des Benachrichtigungstyps (NotificationType) der relevanten Benachrichtigung.
-Anhand dieses Identifikators können die Informationen des Benachrichtigugnstyps über die REST-Schnittstelle des Configuration-Modul angefragt werden.
-Dadurch können Änderungen an einem Benachrichtigungstyp direkt angewendet werden, ohne dass die Informationen auf dem Mobile Client aktualisiert werden müssen.
-Die geladenen Daten können dann verwendet werden um eine Anfrage an den Sprachsynthese Provier zu senden.
-Die vom Provider gelieferten Sprachdaten können anschliessend als Resultat an den Client zurügegeben werden.
+Endgeräte im Praxisrufsystem müssen Sprachdaten über den Cloudservice beziehen können.
+Das Modul Speech Synthesis stellt deshalb eine Schnittstelle zur Verfügung, über welche Sprachdaten abgefragt werden können.
+Dabei ist es nicht möglich beliebige Textdaten in Sprachdaten zu verwandeln.
+Stattdessen erlaubt der Endpunkt die Abfrage Sprachdaten für die aktuellste Version eines Benachrichtigungstypen (NotificationType).
+
+Für die Sprachsynthese wird das Feld ''body'' auf aus der Entität NotificationType aus der Domäne Configuration verwendet.
+Der Endpunkt zum Bezug von Sprachdaten nimmt deshalb einen Parameter mit dem Namen 'notificationTypeId' entgegen.
+Dieser Parameter muss dem technischen Identifikator eines Benachrichtigungstyps (NotificationType) entsprechen.
+Anhand dieses Identifikators wird der entsprechende NotificationType über die API des Moduls Configuration bezogen.
+Anschliessend wird eine Anfrage an Amazon Polly gesendet um die Textdaten als Sprache zu synthetisieren.
+Die von Polly gelieferten Sprachdaten können anschliessend als Resultat zurückgegeben werden.
+
 Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
 Die Sprachdaten werden dabei als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
-Auf Client Seite, kann dieser Endpunkt so als Download angesprechen werden.
+Der Endpunkt wird aus Endgeräten mit Http GET Anfragen angesprochen.
 
 \clearpage
 \subsubsection{Anbindung Mobile Client}
