@@ -32,58 +32,62 @@ Auf Client-Seite wird diese Information zur Implementierung eines Cache verwende
 \clearpage
 \subsubsection{Integration Sprachsynthese Provider}
 
-Die Anbindung des Sprachsynthese Providers erfolgt zentral im Cloudservice.
-Mobile Clients sprechen den Sprachsynthese Provider nie direkt an.
-Sie kommunizieren stattdessen mit dem Cloudservice, welcher Anfragen an den Sprachsynthese Provider ausführt und die Resultate an den Mobile Client weiterleitet.
-Dazu wird der Cloudservice um ein Modul mit dem Namen Speech Synthesis erweitert.
-Das Speech-Modul darf gleich wie die Module Configuration und Notification keine direkten Abhängigkeiten auf andere Cloud Service Module haben.
-Sämtliche notwendige Kommunikation zwischen den Modulen findet über Rest-Schnittstellen statt.
-Diese Unabhängigkeit ermöglicht es, das Modul in Zukunft einfach aus dem Cloudservice auszubauen und als eigenständigen Micro-Service zu betreiben.
+Dieses Kapitel beschreibt, wie Amazon Polly in das cloudbasierte Praxisrufsystem integriert wird, um das Vorlesen von Benachrichtigungen zu ermöglichen.
 
-Wie in Kapitel 4.2 beschrieben, wird AWS Polly als Sprachsynthese Provider für dieses Projekt verwendet.
-Demenstprechend, muss die Anbindung im Cludservice für AWS Polly implementiert werden.
-Die Abhängigkeit an einen spezifischen Provider soll dabei soweit wie möglich minimiert werden.
-So kann bei Bedarf einfacher auf einen anderen Provicer gewechselt werden.
+Die Anbindung an Amazon Polly erfolgt zentral im Cloudservice.
+Sämtliche Anfragen an Amazon Polly werden durch den Cloudservice gemacht.
+Empfänger von Benachrichtigungen senden keine direkten Anfragen an Amazon Polly.
+Sie kommunizieren stattdessen mit dem Cloudservice.
+Dieser führt die Anfrage an Amazon Polly aus und gibt die Resultate an den Anfrager zurück.
+
+Für die Anbindung von Amazon Polly wird der Cloudservice um ein Modul mit dem Namen ''Speech Synthesis'' erweitert.
+Dieses Modul muss unabhängig von allen anderen Domänen-Modulen des Cloudservice umgesetzt werden.
+Werden Daten aus einer anderen Domäne benötigt, muss die Kommunikation über die REST API des entsprechenden Domänen-Moduls gehen.
+Diese Unabhängigkeit ermöglicht es, das Modul in Zukunft einfach aus dem Cloudservice auszubauen und als eigenständigen Microservice zu betreiben.
+
+Die Abhängigkeit zu Amazon Polly als Provider soll weitmöglichst minimiert werden.
+So kann bei Bedarf einfacher auf einen anderen Provider gewechselt werden.
 Um dies zu ermöglichen wird das Interface SpeechSynthesisService definiert.
-Dieses gibt eine einzelne Methode vor, welche eine InputStreamResource zurückgibt und eine Universal Unique Id als Parameter entgegennimmt.
-Der Parameter entsprocht dabei der technischen Identifikation des zu synthetisierenden Benachrichtigungstypes.
-Die InputStreamResource muss die snythetisierten Sprachdaten enthalten.
+Dieses gibt eine einzelne Methode vor, welche eine InputStreamResource zurückgibt und eine Universal Unique Id (UUID) als Parameter entgegennimmt.
+Der Parameter entspricht der technischen Identifikation des zu synthetisierenden Benachrichtigungstypes (NotificationType).
+Die InputStreamResource muss die synthetisierten Sprachdaten enthalten.
+Dieses Interface wird der Komponente, welche die Schnittstelle nach aussen bietet verwendet.
+Um einen neuen Provider zu unterstützen, kann dieses Interface implementiert werden und die neue Implementation in Schnittstelle verwendet werden.
+Das Klassendiagramm in Abbildung 7.10 gibt einen Überblick über den Aufbau des Moduls Speech Synthesis.
 
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V02}
+        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V02}}
         \caption{Klassendiagramm Modul SpeechSynthesis}
     \end{minipage}
 \end{figure}
 
-Dieses Interface kann als Abhängigkeit im Endpunkt, mit welchem Mobile Clients kommunizieren verwendet werden.
-Um einen spezifischen Sprachsynthese Provider zu unterstützen, reicht es aus, dieses Interface zu implementieren und eine entsprechende Instanz zur Verfügung zu stellen.
+Für die Anbindung des Providers Amazon Polly wird das SpeechSynthesisService Interface mit der Klasse AwsPollySpeechSynthesisService implementiert.
+Amazon stellt einen Java Bibliothek für Amazon Polly zur Verfügung, welcher diese Anbindung ermöglicht~\cite{aws_polly_sdks}.
+Diese Bibliothek bietet alle Klassen die für die Anbindung an AWS Polly nötig sind und wird in der Implementierung des SprachSyntheseProviderService verwendet, um den Service anzubinden.
 
-Für dieses Projekt bedeutet dies, dass ein SprachSyntheseProviderService für AWS Polly implementiert werden.
-AWS Polly bietet einen Java SDK, welcher die Anbindung ermöglicht.
-Dieser SDK bietet alle Klassen die für die Anbindung an AWS Polly nötig sind und wird in der Implementierung des SprachSyntheseProviderService verwendet, um den Service anzubinden.
-
-Konkret benötigt es für die Anbindung von AWS Polly drei Komponenten.
-Als Erstes muss ein AWSStaticCredentialsProvider zu Verfügung gestellt werden.
+Die Anbindung von Amazon Polly benötigt drei Komponenten.
+Als Erstes muss eine Instanz von AWSStaticCredentialsProvider zur Verfügung gestellt werden.
 Dieser liefert die Credentials, welche das System berechtigen, Anfragen an AWS Polly zu senden.
-Als zweites muss eine Voice konfiguriert werden.
-Diese definiert Sprache und Stimme, welche für die Synthetisierung der Sprachdaten verwendet wird.
-Letztlich muss ein AmazonPollyClient konfiguriert werden.
+Als Zweites muss eine Voice konfiguriert werden.
+Die Voice definiert Sprache und Stimme, welche für die Sprachausgabe verwendet wird.
+Letztlich muss eine Instanz von AmazonPollyClient konfiguriert werden.
 Dieser Client wird verwendet, um Anfragen an AWS Polly zu senden.
-Er verwendet den zuvor konfigurierten CredentialsProvider, um die Anfrage mit den entsprechenden Credentials zu ergänzen
-und die konfigurierte, Voice um die Daten entsprechend zu synthetisieren.
+Er verwendet den zuvor konfigurierten CredentialsProvider, um die Anfrage mit den entsprechenden Credentials zu ergänzen.
+Die zuvor konfigurierte Voice wird bei Anfragen an Amazon Polly mitgesendet, damit die Daten mit den gewünschten Parametern synthetisiert werden.
 
-Da im Cloudservice Spring Boot verwendet wird, können diese Komponenten in einer Spring Konfigurationsklasse konfiguriert und instanziert werden.
-Im konkreten Service können diese dann als Abhängigkeiten angegeben werden und stehen über die Spring Dependency Injection zur Verfügung.
-Die Properties welche für die Konfiguration notwendig sind, werden aus dem application.yml für das aktuell aktive Profil geladen.
+Der Cloudservice ist als Java-Applikation mit Spring Boot umgesetzt.
+Dies ermöglicht es, die notwendigen Komponenten in einer Spring Konfigurationsklasse zu konfigurieren und als Spring Beans zu instanziieren.
+Über die Dependency Injection von Spring werden diese Komponenten dem AwsPollySpeechSynthesisService übergeben werden.
+
+Die Properties, welche für die technische Konfiguration notwendig sind, werden aus dem application.yml für das aktuell aktive Profil geladen.
 Sprache und Region werden sich im Rahmen dieses Projektes nie ändern und beinhalten keine sensitiven Informationen.
-Sie werden deshalb direkt im application.yml definiert und mit dem Quellcode des Projektes verwaltet.
-Als Credentials für die Anbindung dienen die zwei Schlüssel AccessKey und SecretKey.\footnote{quote here}
+Sie werden deshalb direkt in der Konfigurationsdatei application.yml definiert und mit dem Quellcode des Projektes verwaltet.
+Als Credentials für die Anbindung dienen die zwei Schlüssel AccessKey und SecretKey.
 Diese werden nicht direkt im application.yml abgelegt.
-Für sämtliche Credentiels wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebunsvariablen lädt.
+Für sämtliche Credentials wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebungsvariablen lädt.
 Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden und können einfach ausgetauscht werden.
-In der Implementation des Services kann nun über den injezierten AmazonPollyClient eine Abfrage an den Speech Synthesis Service gesendet werden.
 
 \subsubsection{Schnittstelle Cloud Service}
 
