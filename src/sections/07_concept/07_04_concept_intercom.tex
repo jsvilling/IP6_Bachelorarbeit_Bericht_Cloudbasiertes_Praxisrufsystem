@@ -41,53 +41,35 @@ Die bestehenden Endpunkte für ClientConfiguration werden entsprechend erweitert
 
 \subsubsection{Signaling Instanz}
 
-Mit WebRTC werden Peer To Peer Sprachverbindungen aufgebaut.\footnote{citation}
-Bevor die Verbindung aufgebaut ist, kennen die beiden Clients sich gegenseitig noch nicht.
-Die beteiligten Clients müssen Signale austauschen können um sich auf die Details der Verbindung zu einigen.
-Es braucht deshalb eine Instanz, welche beide Seiten kennt und Vermittlung von Signalmeldungen übernimmt.
-In Praxisruf übernimmt der Cloudservice die Funktion, Benachrichtigungen zu vermitteln.
+Mit WebRTC werden Peer-To-Peer Verbindungen aufgebaut~\cite{webrtc}.
+Damit diese Verbindungen aufgebaut werden können, müssen die beteiligten Geräte Signalmeldungen austauschen können.
+Dazu ist eine Instanz notwendig, welche Signale zwischen den Endgeräten vermitteln kann.
+Diese Signaling Instanz wird als Teil des Cloudservice implementiert.
 
-Prinzipiell ist es möglich, den Signalaustausch in dieses Modul zu integrieren.
-Dieser Ansatz hat aber zwei grosse Probleme.
-Erstens ist die Grösse von Medlungen, welche über den gewählten Messaging Service (Firebase Cloud Messaging) ausgetauscht werden können beschränkt.
-Meldungen zum Aufbau von WebRTC Verbindungen können diese Grösse überschreiten.\footnote{cite}
-Zweitens geschieht das Versenden von Benachrichtigungen über einen asynchronen Mechanismus.
-Die Signale für Sprachverbindungen sollen aber synchron ausgetauscht werden.
-Es soll unmittelbar beim Versuch des Verbindungsaufbau klar sein, ob die Verbindung etabliert werden kann oder nicht.
+%Prinzipiell ist es möglich, den Signalaustausch in dieses Modul zu integrieren.
+%Dieser Ansatz hat aber zwei grosse Probleme.
+%Erstens ist die Grösse von Medlungen, welche über den gewählten Messaging Service (Firebase Cloud Messaging) ausgetauscht werden können beschränkt.
+%Meldungen zum Aufbau von WebRTC Verbindungen können diese Grösse überschreiten.\footnote{cite}
+%Zweitens geschieht das Versenden von Benachrichtigungen über einen asynchronen Mechanismus.
+%Die Signale für Sprachverbindungen sollen aber synchron ausgetauscht werden.
+%Es soll unmittelbar beim Versuch des Verbindungsaufbau klar sein, ob die Verbindung etabliert werden kann oder nicht.
+%Diese Id entspricht der technischen Identifikation des entsprechenden Mobile Clients und muss, wenn sich der Mobile Client für eine Verbindung registriert mitgesendet werden.
 
-Mit diesem Projekt wird der Cloudservice deshalb um ein weiteres Modul ''Signaling'' erweitert, welches den austausch von Signalen zwischen Clients ermöglicht.
-Gleich wie das Modul für Sprachsynthese wird er unabhängig von den anderen Domänenmodulen im Cloudservice implementiert.
-Alle Informationen, welche aus anderen Domänen benötigt werden, werden über Rest-Schnittstellen bezogen.
-Das Modul Signaling übernimmt drittens Aufgaben.
-Erstens muss es den Clients die Möglichkeit bieten, sich für Sprachverbindungen zu registrieren und diese Registrierungen verwalten.
-Zweitens muss es Signalmeldungen empfangen und an die relevanten Empfänger zustellen.
-Drittens muss es wann immer möglich Clients über nicht zustellbare Signale benachrichtigen.
-Diese drei Funktionen müssen unabhängig von der gewählten Technologie für den Signalaustausch unterstützt werden.
-Es wird ein entsprechendes Interface spezifiziert\footnote{Siehe Listing 6}.
+Der Cloudservice wird um ein neues Modul ''Signaling'' erweitert.
+Dieses soll den Austausch von Signalen zwischen Clients ermöglichen.
+Gleich wie das Modul für Sprachsynthese wird es unabhängig von den anderen Domänenmodulen im Cloudservice implementiert.
+Das Modul Signaling muss dabei zwei Aufgaben übernehmen.
+Erstens muss es Mobile Clients die Möglichkeit bieten, sich für Sprachverbindungen zu registrieren.
+Zu diesem Zweck müssen Mobile Clients eine Verbindung mit der Signaling Instanz herstellen und trennen können.
+Zweitens muss es Signalmeldungen empfangen und an die relevanten Empfänger zustellen können.
+Kann eine Signalmeldung nicht zugestellt werden, muss es den betroffenen Empfänger über das verpasste Signal informieren.
+
+Für diese Funktionen wird das Interface ClientConnector definiert.
 Dieses definiert die Methoden afterConnectionEstablished und afterConnectionClosed.
-Die beiden Methoden werden aufgerufen, wenn eine Verbindung geöffnet resp. geschlossen wurde.
-Geöffnete Verbindungen werden in Memory geführt.
-Dabei wird jede Verbindung durch eine UUID identifiziert.
-Diese UUID entspricht der technischen Identifikation des entsprechenden Mobile Clients und muss, wenn sich der Mobile Client für eine Verbindung registriert mitgesendet werden.
-Ein Mobile Client ist für den Signalaustausch verfügbar, wenn das Signaling Modul eine Verbindung mit seiner technischen Id kennt.
-Sobald eine Verbindung geschlossen wurde, wird sie aus der Liste der in Memory Verbindungen wieder gelöscht.
-Der entsprechende Mobile Client steht damit nicht mehr für den Signalaustausch zu Verfügung.
-
-Für das Zustellen von Signalen wird die Methode sendMessage definiert.
-Jede Message beinhaltet eine Payload und die Identifikation des Empfängers.
-Der Signaling Service durchsucht die bekannten Verbindungen und findet die Verbindung für die Identifikation des Empfängers.
-Anschliessend sendet er das Signal über die Verbindung dieses Empfängers.
-
-Für die Verwaltung von bestehenden Verbindungen wird die Komponente ConnectionRegistry implementiert.
-Diese muss Verbindungen anhand einer id registrieren und Verbindungen wieder entfernen können.
-Weiter müssen Verbindungen anhand ihrer id gefunden werden können.
-Die ConnectionRegistry wird als Wrapper um eine Java HashMap implementiert.
-Durch die Verwendung der Map über einen Wrapper bleibt die Implementation aber unabhängig davon und kann leicht ausgetauscht werden. \footnote{Siehe Listing 7}
-
-\clearpage
-
-%\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ClientConnector.java}
-%\lstinputlisting[caption=ClientConnector.java,language=java,label={lst:ClientConnector.java}]{listings/ConnectionRegistry.java}
+Die beiden Methoden werden aufgerufen, wenn eine Verbindung geöffnet bzw.\ geschlossen wurde.
+Die Implementierung dieses Interfaces ist dafür verantwortlich verfügbare Verbindungen zu verwalten.
+Weiter definiert das Interface die Methode handleSignal.
+Diese muss verwendet werden, um ein Signal entgegenzunehmen und an relevante Empfänger weiterzuleiten.
 
 \begin{figure}[h]
     \centering
@@ -97,28 +79,48 @@ Durch die Verwendung der Map über einen Wrapper bleibt die Implementation aber 
     \end{minipage}
 \end{figure}
 
-Die Schnittestelle des Signaling Servers nach aussen wird mit Websockets umgesetzt.
-Wie die restlichen Module des Cloudservices wird auch der Singaling Server als Spring Boot Modul umgesetzt.
-Mit dem Projekt Spring-Boot-Starter-Websocket, können Websocketanbindungen in einer Spring Boot Applikation umgesetzt werden.\footnote{cite}
-Es wird ein WebsocketHandler implementiert, welcher unter dem Pfad ''server-url/signaling'' erreichbar ist.
-Die Implementation der Websocketschnittstelle implementiert das oben beschriebene ClientConnector Interface mit der entsprechenden Funktion.
+Die Klasse SignalingService implementiert das ClientConnector Interface.
+Der SignalingService führt eine Liste an verfügbaren Verbindungen.
+Dabei wird jede Verbindung durch eine eindeutige Id gekennzeichnet.
+Für die Verwaltung von Verbindungen wird die Komponente ConnectionRegistry implementiert.
+Diese muss Verbindungen anhand einer Id registrieren und wieder entfernen können.
+Weiter müssen Verbindungen anhand ihrer Id gefunden werden können.
+Für das Zustellen von Signalen über bekannte Verbindungen wird die Methode handleSignal implementiert.
+Jedes Signal muss die Identifikation seines Empfängers beinhalten.
+Beim Empfang eines Signals wird kontrolliert, ob die ConnectionRegistry eine Verbindung für die Identifikation des Empfängers enthält.
+Ist dies der Fall, wird das Signal über diese Verbindung an den Empfänger übermittelt.
+Wenn dies nicht der Fall ist oder wenn das Senden des Signals fehlschlägt, ist der Empfänger nicht erreichbar.
+Nicht erreichbare Empfänger werden mit Benachrichtigungen über verpasste Signale informiert.
+Dazu wird eine Benachrichtigung über die API des Moduls Notification versendet.
 
+Die Schnittestelle der Signaling Instanz im Cloudservice wird mit Websockets umgesetzt.
+Dazu wird die Bibliothek Spring-Boot-Starter-Websocket verwendet.
+Es wird ein WebsocketHandler implementiert, welcher unter dem Pfad ''$<$serverUrl$>$/signaling'' erreichbar ist.
 Etablierte Verbindungen müssen eindeutig einem Client zugeordnet werden können.
-Diese Client Identifikation wird als Query Parameter bei Verbindungsaufbau mitgegeben und im WebsocketHandler ausgelesen.
-Anschliessend wird die WebsocketSession zusammen mit der Client Identifikation in der ConnectionRegistry gespeichert.
-Wird die WebsocketSession geschlossen, wird sie durch den WebsocketHandler wieder von aus der ConnectionRegistry entfernt.
+Diese Identifikation wird als Query Parameter bei Verbindungsaufbau mitgegeben.
+Der WebsocketHandler definiert Methoden die beim Öffnen und Schliessen von Verbindungen aufgerufen werden.
+Diese delegieren das Verwalten der Verbindungen an den SignalingService.
+Empfangene Meldungen werden an den SignalingService übergeben und wie oben beschrieben verarbeitet.
+
+\subsubsection{Signaling Security}
 
 Der Zugriff auf den Signaling Service darf nur für Berechtigte möglich sein.
 Um dies sicherzustellen, wird der Verbindungsaufbau nur erlaubt, wenn die Anfrage dazu authentisiert ist.
-Für die Authentisierung wird derselbe Meachnismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
-Über die SecurityConfig des Cloudservices wird die Authentification aller Http Requests überprüft.
-Diese Konfiguration sorgt dafür, das unauthentifizierte Http Requests eine entsprechende Response erhalten.
-Sie verhindert allerdings nicht, dass eine Websocketverbindung aufgebaut wurde, obwohl der Request nicht authentifiziert werden konnte.
-Um dies zu verhindern, muss der Http Request für den Aufbau einer Websocketverbindung notwendig sind abgefangen werden und geprüft werden, ob der Request authentifiziert wurde.\cite{cite}
-Spring bietet dazu die Klasse HttpSessionHandshakeInterceptor.
-Mit der Methode beforeHandshake kann der Request vor dem Verbindungsaufbau abgefangen werden und die Authentisierung überprüft werden.
-Ist diese gültig, wird die Verbindung aufgebaut.
-Andernfalls wird der Verbindungsaufbau abgebrochen und eine Reponse mit HttpStatue ''unauthorized'' zurückgesendet.
+Für die Authentisierung wird derselbe Mechanismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
+Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
+Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist.
+Wenn kein gültiges Token vorhanden ist, wird eine entsprechende Fehlermeldung zurückgegeben.
+Der Aufbau der Websocketverbindung wird abgebrochen.
+
+Mit der Klasse HttpSessionHandshakeInterceptor kann vor dem Aufbau einer Websocketverbindung geprüft werden, dass der Http Request für den Verbindungsaufbau authentifiziert wurde.
+Mit der Verarbeitung des Http Requests durch die SecurityConfig des Cloudservices wurden die Rollen, welche dem Aufrufer zugeteilt ausgelesen.
+Im HttpSessionHandshakeInterceptor können diese Informationen ausgewertet und geprüft werden, dass ein Benutzer für den Austausch von Signalmeldungen authorisiert ist.
+Ist er dies nicht, wird der Aufbau der Websocketverbindung wird abgebrochen und eine Fehlermeldung zurückgegeben.
+Das Praxisrufsystem kennt die zwei Rollen ''ADMIN'' und ''USER''.
+Beide Rollen sind berechtigt, dass Rufsystem über den Mobile Client zu verwenden und dürfen damit Signalmeldungen austauschen.
+
+Für den Aufbau von Websockets wird das ausschliesslich das Protokoll Secure WebSockets (WSS) verwendet.
+Der Austausch von Signalmeldungen ist damit verschlüsselt.
 
 \clearpage
 
@@ -129,26 +131,26 @@ Praxismitarbeitende öffnen die Applikation und geben ihr Benutzername und Passw
 Der Mobile Client verwendet diese um sich über Basic Authentication beim Cloudservice anzumelden.
 Als Antowrt auf die Anmeldung gibt der Cloudservice ein JWT Token zurück.
 Dieses wird für die Authentifizierung aller weiteren Anfragen an den Cloudservice verwendet.
-Nachdem die Anmeldung erfolgt ist, wird eine Liste aller Clientconfigurations die dem aktuellen Benutzer zur Verfügung stehen beim Cloudservice angefragt.
+Nachdem die Anmeldung erfolgt ist, wird eine Liste der verfügbaren Konfigurationen geladen.
 Der Benutzer wählt die gewünschte Konfiguration aus und bestätigt.
 
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.9\textwidth}
-        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_Registration}
-        \caption{Mockup Home}
+        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_Registration}}
+        \caption{Sequenzdiagramm - Anmeldung und Registrierung im Mobile Client}
     \end{minipage}
 \end{figure}
 
 Danach wird diese Konfiguration geladen und die Hauptansicht angezeigt.
 Die geladene Konfiguration beinhaltet alle Informationen die nötig sind um Buttons für Benachrichtigungen und Sprachverbindungen anzuzeigen.
 Im Hintergrund muss sich der Mobile Client nun für Benachrichtigungen und Sprachverbindungen registrieren.
-Für Benachrichtigungen registriert er sich zuerst beim Messaging Service.
+Für Benachrichtigungen registriert er sich zuerst bei Firebase Cloud Messaging.
 Er erhält ein Token, welches den Client beim Messaging Service identifiziert.
 Dieses Token sendet der Mobile Client zusammen mit der gewählten Konfiguration an den Cloudservice.
-Dieser persistiert die Registrierung bei sich und kann sie verwenden um Benachrichtigungen an diesen Client zuzustellen.
-Für Sprachverbindungen muss zudem eine Verbindung zum Signlaing Modul des Cloudservices aufgebaut werden.
-Dazu wird wie in Kapitel 5.4.5 beschrieben eine Websocketverbindung geöffnet.
+Dieser persistiert die Registrierung und kann sie verwenden, um Benachrichtigungen an diesen Client zuzustellen.
+Für Sprachverbindungen muss zudem eine Verbindung zum Signaling Modul des Cloudservices aufgebaut werden.
+Dazu wird wie in Kapitel 7.4.6 beschrieben eine Websocketverbindung geöffnet.
 
 \clearpage
 \subsubsection{Signalmeldungen}
@@ -170,9 +172,8 @@ Das Flag notificationOnFailedDelivery wird im Cloudservice ausgewertet.
 Wenn ein Signal nicht zugestellt werden kann und dieses Flag TRUE ist, wird der Empfänger mit einer asynchrone Benachrichtigung darüber informiert.
 Dazu wird das bestehende Notification Modul des Cloudservices verwendet.
 Für die Verwaltung von Sprachverbindungen werden insgesamt sechs Typen von Signalmeldungen definiert.
-
-
 \clearpage
+\subsubsection{Verbindungsaufbau}
 
 Praxismitarbeitende können Sprachverbindungen zu anderen Clients aufbauen indem sie auf den entsprechenden Button in der Praxisruf App tippen.
 Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client noch nicht, zu welchen Clients diese Verbindung aufgebaut werden soll.
@@ -330,12 +331,6 @@ Praxismitarbeitende können Sprachverbindungen durch einen Button beenden.
 Durch antippen des Auflagen-Buttons wird die bestehende Peer to Peer Verbindung zum Gesprächspartner getrennt.
 Anschliessend wird ein Signal vom Typ End an die Gesprächspartner gesendet.
 Durch Empfang des End-Signals, weiss der Gesprächspartner, dass die Verbindung durch das Gegenüber getrennt wurde und kann die Verbindung seinerseits entfernen.
-
-\subsubsection{Security}
-
-Der Austausch von Daten über Websockets erfolgt ausschliesslich über Secure WebSockets (WSS).
-Für den Aufbau von Websocketverbindungen, muss der Benutzer ebenfalls authentifiziert sein.
-Dazu muss der Http-Handshake Request um die Websocketverbindung zu öffnen mit einem entpsrechend gültigem JWT Token authentifiziert werden.
 
 
 \clearpage
