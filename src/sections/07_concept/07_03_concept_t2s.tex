@@ -96,7 +96,7 @@ Das Modul Speech Synthesis stellt deshalb eine Schnittstelle zur Verfügung, üb
 Dabei ist es nicht möglich beliebige Textdaten in Sprachdaten zu verwandeln.
 Stattdessen erlaubt der Endpunkt die Abfrage Sprachdaten für die aktuellste Version eines Benachrichtigungstypen (NotificationType).
 
-Für die Sprachsynthese wird das Feld ''body'' auf aus der Entität NotificationType aus der Domäne Configuration verwendet.
+Für die Sprachsynthese wird das Feld ''title'' auf aus der Entität NotificationType aus der Domäne Configuration verwendet.
 Der Endpunkt zum Bezug von Sprachdaten nimmt deshalb einen Parameter mit dem Namen 'notificationTypeId' entgegen.
 Dieser Parameter muss dem technischen Identifikator eines Benachrichtigungstyps (NotificationType) entsprechen.
 Anhand dieses Identifikators wird der entsprechende NotificationType über die API des Moduls Configuration bezogen.
@@ -110,30 +110,35 @@ Der Endpunkt wird aus Endgeräten mit Http GET Anfragen angesprochen.
 \clearpage
 \subsubsection{Anbindung Mobile Client}
 
-Für die Integration des SpeechSynthesis Endpunkts aus dem CloudService muss die in Kapitel 5.2 beschriebene Klasse PraxisrufApi erweitert werden.
-Neben dem Abfragen von JSON Daten über HTTP Schnittstellen, muss diese für die Sprachsynthese auch das herunterladen von Dateien unterstützten.
-Dies kann URLSession aus der iOS Standardbibliothek bietet dafür mit URLSession.downloadTask die Möglichkeit Inhalte von einer URL herunterzuladen.\cite{ios_downloadtask}
-Der Service PraxisrufApi wird dementsprechend um eine Methode download ergänzt.
-Diese ist dafür verantwortlich, eine Anfrage für den Download mit Credentials aus dem iOS Keystore zu ergänzen und die Abfrage zu versenden
-und die Resultate oder Fehler an den mitgegebenen CompletionHandler zu übergeben.\footnote{Vgl. Kapitel 5.2}
-Heruntergaladene Dateien werden vom PraxisrufApi in einem temporären Verzeichnis gespeichert.
+Dieses Kapitel beschreibt wie die API des Cloudservice aus einer nativen iOS Applikation abgesprochen werden kann.
+
+Für die Integration des SpeechSynthesis Endpunkts aus dem CloudService wird die in Kapitel 7.2 beschriebene Klasse PraxisrufApi erweitert.
+Neben dem Abfragen von JSON Daten über HTTP Schnittstellen, muss diese für die Sprachsynthese auch das Herunterladen von Dateien unterstützten.
+Dazu wird die Komponente URLSession aus der iOS Standardbibliothek verwendet.
+Diese bietet mit URLSession.downloadTask die Möglichkeit Inhalte von einer URL herunterzuladen~\cite{ios_downloadtask}.
+
+Der Service PraxisrufApi wird dementsprechend um eine Methode mit dem Namen ''download'' ergänzt.
+Diese ist dafür verantwortlich, eine Anfrage für den Download mit Credentials aus dem iOS Keystore zu ergänzen und die Abfrage zu versenden.
+Die Resultate der Abfrage und aufgetretene Fehler werden analog zu anderen Abfragen an eine Callback-Funktion übergeben.
+Heruntergeladene Dateien werden von PraxisrufApi in einem temporären Verzeichnis gespeichert.
 Das Resultat im Erfolgsfall ist deshalb nicht die heruntergeladene Datei selbst, sondern eine URL welche auf die Datei im temporären Verzeichnis zeigt.
-Die Sprachsynthese für Benachrichtigungen, soll automatisch ausgeführt werden sobald eine relevante Benachrichtigung empfangen wurde.
-Die Benachrichtigung wird im AppDelegate empfangen, aufbereitet und an die Applikation übergeben.
-Die aufberetieten Daten beinhalten, die Information, ob die Benachrichtigung für die Sprachsynthese relevant ist.
-Dies kann dem isTextToSpeech Flags in der Benachrichtigung entnommen werden.
-Für die Verarbeitung der Sprachdaten, wird ein eigener Service erstellt.
-Dieser SpeechSynthesisService verwendet die Downloadfunktion aus der PraxisrufApi Basisklasse, um Sprachdaten vom Cloudservice abzufragen.
-Wurden die Daten erfolgreich geladen, kopiert er die heruntergeladenen Daten aus dem temporären Downloadverzeichnis in ein permanentes Verzeichnis.
-Die Datei wird dabei unter dem Namen ''ID NotificationType''.''version'' gespeichert.
-Anschliessend werden die Inhalte der Datei als Audio wiedergegeben.
-Die Namenskonvention für die gespeicherten Dateien, erlaubt es ein einfaches Cache zu implementieren.
+
+Die Sprachsynthese für Benachrichtigungen muss automatisch ausgeführt werden, nachdem eine relevante Benachrichtigung empfangen wurde.
+Der Empfang der Benachrichtigung findet über die Anbindung von Firebase Cloud Messaging im AppDelegate statt.
+Die Benachrichtigung wird im AppDelegate empfangen und an die Applikation übergeben.
+Die empfangene Benachrichtigung beinhaltet mit dem ''isTextToSpeech'' Flag, die Information, ob sie für die Sprachsynthese relevant ist.
+
+Ist eine Benachrichtigung für Sprachsynthese relevant, werden die Sprachdaten dazu vom Cloudservice bezogen.
+Dazu wird ein SpeechSynthesisService implementiert, welcher PraxisrufApi verwendet, um eine Anfrage an den Cloudservice zu senden.
+Wurden die Daten erfolgreich geladen, kopiert der SpeechSynthesisService die heruntergeladenen Daten aus dem temporären Downloadverzeichnis in ein permanentes Verzeichnis.
+Die Datei wird dabei unter dem Namen ''$<$NotificationTypeId$>$''.''$<$Version$>$'' gespeichert.
+Sowohl NotificationTypeId als auch Version können der empfangenen Benachrichtigung entnommen werden.
+Nachdem die Sprachdatei unter dem neuen Namen gespeichert ist, wird ihr Inhalt abgespielt.
+
+Die Namenskonvention für die gespeicherten Sprachdateien, erlaubt es ein Cache auf der Seite der iOS Applikation umzusetzen.
 Bevor der SpeechSynthesisService eine Anfrage an den Cloudservice absetzt, prüft er, ob bereits eine Datei mit dem entsprechenden Namen vorhanden ist.
-Ist dies der Fall, wird keine Anfrage versendet und die Datei wird direkt abgespielt.
-Die Id des NotificationTypes im Dateinamen sorgt dafür, dass pro Benachrichtigungstyp nur einmal Sprachdaten abgefragt werden müssen.
-Die Version des NotificationTypes im Dateinamen sorgt dafür, dass die Daten bei einer Änderung am Benachrichtigungstyp neu geladen werden.
-Da der Inhalt einer Benachrichtigung im Cloudservice abgefüllt wird, bedeuet dies das Benachrichtigungen immer in der neusten Version angezeigt werden.
-Durch die beschriebene Implementierung des Chaches ist sichergestellt, das auch immer diese Version für die Sprachsynthese verwendet wird.
+Ist dies der Fall, wird keine Anfrage an den Cloudservice gesendet und es wird die bereits gespeicherte Sprachdatei abgespielt.
+Dieses Cache ermöglicht es Anfragen für Sprachsynthese zu minimieren und nach Änderungen trotzdem immer die aktuellsten Daten zu erhalten.
 
 \clearpage
 \subsubsection{Laufzeitsicht}
