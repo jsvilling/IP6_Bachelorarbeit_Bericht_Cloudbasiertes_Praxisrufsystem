@@ -322,12 +322,18 @@ Praxismitarbeitende können das Empfangen von Anrufen lokal deaktivieren.
 Wenn der Empfang von Anrufen deaktiviert ist, werden Offer Signale nicht mit einer Answer sondern mit einem Declined Signal beantwortet.
 Empfängt ein Client ein Declined Signal, erstellt er lokal einen Eintrag in der Inbox und zeigt eine Push Benachrichtigung an um den Benutzer darauf hinzuweisen.
 
-
 \subsubsection{Verbindungsende}
 
 Praxismitarbeitende können Sprachverbindungen durch einen Button beenden.
 Durch antippen des Auflagen-Buttons wird die bestehende Peer to Peer Verbindung zum Gesprächspartner getrennt.
 Anschliessend wird ein Signal vom Typ End an die Gesprächspartner gesendet.
 Durch Empfang des End-Signals, weiss der Gesprächspartner, dass die Verbindung durch das Gegenüber getrennt wurde und kann die Verbindung seinerseits entfernen.
+
+\subsubsection{Security}
+
+Der Austausch von Daten über Websockets erfolgt ausschliesslich über Secure WebSockets (WSS).
+Für den Aufbau von Websocketverbindungen, muss der Benutzer ebenfalls authentifiziert sein.
+Dazu muss der Http-Handshake Request um die Websocketverbindung zu öffnen mit einem entpsrechend gültigem JWT Token authentifiziert werden.
+
 
 \clearpage
