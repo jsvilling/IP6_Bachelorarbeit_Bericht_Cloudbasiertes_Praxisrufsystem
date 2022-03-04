@@ -237,18 +237,18 @@ Sobald sich die Clients auf die Verbindungsinformationen geeinigt haben, besteht
 
 \clearpage
 
-\subsubsection{Anbindung Mobile Client an Singaling Server}
+\subsubsection{Anbindung Mobile Client an Singaling Instanz}
 
 Für den Aufbau von Sprachverbindungen zwischen Mobile Clients müssen mehrere Signalmeldungen ausgetauscht werden.
-Der Cloud Service wird im Rahmen dieses Projektes um eine Websocket Schnittstelle erweitert, welche dies ermöglicht.\footnote{Vgl. Kapitel 5.4}
+Der Cloud Service wird im Rahmen dieses Projektes um eine Schnittstelle erweitert, welche dies ermöglicht.
 Als Technologie für diese Schnittstelle werden Websockets verwendet.
-Der Api Service wird dementsprechend erweitert, um Websocket Verbindungen zu ermöglichen.
+Der Service PraxisrufApi wird dementsprechend erweitert, um Websocket Verbindungen zu ermöglichen.
 Dies beinhaltet den Auf- und Abbau von Websocket Verbindungen, sowie das Senden und Empfangen von Meldungen über diese Verbindung.
-Weiter muss die Verbindung konstant offen gehalten und im Fehlerfall erneut aufgebaut werden können.
+Die Verbindung zur Signaling Instanz konstant offen gehalten und im Fehlerfall erneut aufgebaut werden können.
 
 Der Austausch von Signalmeldungen ist der einzige Anwendungsfall in Praxisruf, der Websocketverbindungen benötigt.
-Deshalb wird auf eine generische Integration von Verbindungen analog von Http Verbindungen\footnote{Vgl. Kapitel 5.2.2} verzichtet.
-Stattdessen wird eine Extension Klasse PraxisrufApi+Signaling nach folgendem Muster erstellt:
+Deshalb wird auf eine generische Integration von Verbindungen analog von Http Verbindungen verzichtet.
+Es werden die Extension PraxisrufApi+Signaling und das Protokoll PraxisrufApiSignalingDelegate definiert, wie in Abbildung 7.17 dargestellt implementiert.
 
 \begin{figure}[h]
     \centering
@@ -258,22 +258,27 @@ Stattdessen wird eine Extension Klasse PraxisrufApi+Signaling nach folgendem Mus
     \end{minipage}
 \end{figure}
 
-Die Signaling Extension kann immer genau eine offene Verbindung verwalten.
-Diese wird als Instanzvariable innerhalb des Services geführt.
-Der Status dieser Verbindung kann als Computed Property "disconnected" intern abgefragt werden.
-Die Extension bietet Methoden um den Signaling Service zu Verbinden.
-Eine Verbindung wird dabei immer spezifisch für die aktuell gewählte Client Configuration geöffnet. \footnote{Vgl. Kapitel X.X}
-Weiter werden Methoden angeboten, um Pingsignale zu senden oder die Verbindung zu trennen.
-Zudem bietet die Extension Methoden, um Signalmeldungen über die geöffnete Verbindung zu senden,
-sowie eine Methode um empfangene Signalmeldungen zu verarbeiten.
-Für die Integration der Singalingverbindung in den Rest der Applikation, wird das Protokoll PraxisrufApiSignalingDelegate definiert.
 
-Vor dem Versenden einer Signal- oder Pingmeldung wird überprüft, ob eine Verbindung geöffnet und Fehlerfrei ist.
-Ist dies nicht der Fall, wird die Verarbeitung die onConnectionLostMethode des Delegates aufgerufen.
-Die Implementation dieses Delegates ist dafür verantwortlich, die Verbindung wieder zu öffnen.
-Die Methoden onSignalReceived resp. onErrorReceived werden aufgerufen wenn ein Signal resp. eine Fehlermeldung empfangen wurde.
-Im Fehlerfall soll wenn nötig eine Fehlermeldung angezeigt werden und die Verbindung repariert werden.
-Wenn eine Signalmeldung empfangen wurde, muss diese an die Applikation zu Verarbeitung weitergereicht werden.
+Die Extension PraxisrufApi+Signaling ist für die Verbindung zu der Signaling Instanz verantwortlich.
+Für die Integration dieser Extension in den Rest der Applikation wird das Protokoll PraxisrufApiSignalingDelegate definiert.
+
+Die Verbindung zu der Signaling Instanz wird direkt nach der Anmeldung im Mobile Client aufgebaut.
+Dazu wird die Methode connectSignalingServer verwendet.
+Die Identifikation des Clients wird bei dieser Abfrage als Parameter mitgegeben.
+So kann die Verbindung von der Signaling Instanz eindeutig einem Client zugeordnet werden.
+Nachdem die Verbindung geöffnet ist, dürfen Signale empfangen und verarbeitet werden.
+Dies wird durch die Methode listenForSignal initialisiert.
+Darin wird der Websocketverbindung signalisiert, dass der Client bereit ist die nächste Meldung zu empfangen.
+Sobald eine Meldung empfangen wird, wird diese über PraxisrufApiSignalingDelegate verarbeitet.
+
+Für die Verarbeitung von Meldungen wird die entsprechende Methode des PraxisrufApiSignalingDelegate verwendet.
+Wurde eine gültige Signalmeldung empfangen, wird diese über die Methode onSignalReceived verarbeitet.
+Wurde hingegen eine ungültige Signalmeldung oder eine Fehlermeldung empfangen wird die Methode onErrorReceived aufgerufen.
+Im Fehlerfall wird zudem überprüft ob die Verbindung noch offen verwendbar ist.
+Sollte die Verbindung nicht mehr verwendbar sein, wird die Methode onConnectionLost des Delegates aufgerufen.
+
+
+
 
 \clearpage
 
