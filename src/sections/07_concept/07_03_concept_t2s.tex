@@ -140,7 +140,6 @@ Bevor der SpeechSynthesisService eine Anfrage an den Cloudservice absetzt, prüf
 Ist dies der Fall, wird keine Anfrage an den Cloudservice gesendet und es wird die bereits gespeicherte Sprachdatei abgespielt.
 Dieses Cache ermöglicht es Anfragen für Sprachsynthese zu minimieren und nach Änderungen trotzdem immer die aktuellsten Daten zu erhalten.
 
-\clearpage
 \subsubsection{Laufzeitsicht}
 
 Dieses Kapitel fasst den Ablauf für das Senden, Empfangen und Vorlesen von Benachrichtigungen zusammen.
@@ -157,14 +156,6 @@ Daraufhin wird die Benachrichtigung im internen Model einem NotificationService 
 Dieser fügt die empfangene Benachrichtigung in eine Inbox ein.
 Ab diesem Moment ist die Benachrichtigung in der Inbox des Mobile Clients ersichtlich.
 
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.9\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Sequence_Speech_Synth_V01}}
-        \caption{Sequenzdiagramm Sprachsynthese - Systemsicht}
-    \end{minipage}
-\end{figure}
-
 Nachdem eine empfangene Benachrichtigung der Inbox hinzugefügt wurde, wird geprüft ob Sprachsynthese in den lokalen Einstellungen aktiviert ist.
 Ist diese deaktiviert, endet die Verarbeitung.
 Ist die Sprachsynthese lokal aktiviert, wird geprüft ob das ''isTextToSpeech'' Flag auf der Benachrichtigung aktiviert ist.
@@ -179,5 +170,16 @@ Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um den Titel
 Die Resultate von Amazon Polly werden als Resultat der Anfrage des Mobile Clients zurückgegeben.
 Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version verknüpften NotificationType.
 Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Sequence_Speech_Synth_V01}}
+        \caption{Sequenzdiagramm Sprachsynthese - Systemsicht}
+    \end{minipage}
+\end{figure}
+
+Abbildung 7.11 Stellt den Ablauf für das Empfangen und Vorlesen von Benachrichtigungen aus Systemsicht dar.
+Die Prüfung des lokalen Cache wird dabei nicht dargestellt.
 
 \clearpage
