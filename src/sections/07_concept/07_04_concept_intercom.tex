@@ -362,34 +362,4 @@ Der CallService aktiviert die Ansicht für aktive Anrufe und leitet das Signal a
 Der CallClient initialisiert die Peer-To-Peer Verbindung und erstellt ein Answer-Signal zur Bestätigung.
 Dieses Signal wird wiederum über den CallService zum PraxisrufApi+Signaling weiter zum Cloudservice versendet.
 
-%\subsubsection{Verpasste Anrufe}
-%
-%Anrufe über die Gegensprechanlage können nur empfangen werden, solange die Applikation im Vordergrund läuft und eine Verbindung zur Signaling Instanz hergestellt hat.
-%Ist dies nicht der Fall können keine Signale empfangen werden.
-%Wenn der Singalingserver ein Signal für einen Empfänger erhält, der nicht verbunden ist wird versucht, diese über eine Benachrichtigung zu informieren.
-%Benachrichtigungen für verpasste Anrufe, werden gleich wie alle anderen Benachrichtigungen empfangen und in der Inbox angezeigt.
-%Für das Versenden der Benachrichtigung für verpasste Anrufe wird das bestehende Notification Modul des Cloudservice verwendet.
-%Dieses wird um einen Endpunkt erweitert, der es erlaubt Benachrichtigungen gezielt an einen einzelnen Client zu versenden.
-%Der neue Enpunkt nimmt zwei Parameter entgegen:
-%Die technische Identifikation des Empfängers und die technische Identifikation des relevanten Benachrichtigungstyps.
-%Der relevante Benachrichtigungstyp muss durch den Praxisadministrator im Admin UI erfasst werden.
-%Die technische Identifikation dieses Benachrichtigungstyps muss anschliessend in den Umgebungsvariablen des Signalingservices hinterlegt werden.
-%Wenn der Empfänger nicht für Benachrichtigungen registriert ist, kann er nicht über den verpassten Anruf informiert werden.
-%Dasselbe gilt, wenn die Benachrichtigung aus technischen Gründen nicht zugestellt werden kann.
-%Im Rahmen dieses Projektes wird kein Mechanismus implementiert, um diese fehlgeschlagene Zustellung automatisch zu wiederholen.
-%
-%\subsubsection{Deaktivierte Anrufe}
-%
-%Praxismitarbeitende können das Empfangen von Anrufen lokal deaktivieren.
-%Wenn der Empfang von Anrufen deaktiviert ist, werden Offer Signale nicht mit einer Answer sondern mit einem Declined Signal beantwortet.
-%Empfängt ein Client ein Declined Signal, erstellt er lokal einen Eintrag in der Inbox und zeigt eine Push Benachrichtigung an um den Benutzer darauf hinzuweisen.
-%
-%\subsubsection{Verbindungsende}
-%
-%Praxismitarbeitende können Sprachverbindungen durch einen Button beenden.
-%Durch antippen des Auflagen-Buttons wird die bestehende Peer to Peer Verbindung zum Gesprächspartner getrennt.
-%Anschliessend wird ein Signal vom Typ End an die Gesprächspartner gesendet.
-%Durch Empfang des End-Signals, weiss der Gesprächspartner, dass die Verbindung durch das Gegenüber getrennt wurde und kann die Verbindung seinerseits entfernen.
-
-
 \clearpage
