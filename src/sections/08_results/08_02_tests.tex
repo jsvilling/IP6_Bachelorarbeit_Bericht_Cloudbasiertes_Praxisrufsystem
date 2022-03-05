@@ -144,7 +144,10 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2
     \end{tabular}\label{tab:funktion_testplan_2}
 \end{table}
 
-\subsubsection{Performancetests}
+Alle Testszenarien konnten mit einem positiven Resultat abgeschlossen werden.
+
+Neben Szenarien für Funktionstests, wurden einfache Tests zur Messung der Performance des Systems definiert.
+Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2022:
 
 \begin{table}[h]
     \centering
@@ -164,6 +167,17 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2
         \hline
         P06         & Ressourcenverbrauch der Applikation bleibt über Zeit konstant & tbd\\
         \hline
+        P07         & Übertragungsqualität von Sprachverbindungen ist ausreichend für normale Unterhaltungen & tbd\\
+        \hline
     \end{tabular}\label{tab:testplan_performance}
 \end{table}
+
+Die Performancekriterien P01 bis P06 sind vollständig erfüllt.
+Das Kriterium P07 wird mit Einschränkungen erfüllt.
+Die Qualität der Sprachverbindungen ist grundsätzlich ausreichend für eine Gegensprechanlage.
+Probleme können entstehen, wenn eine Sprachverbindung zwischen zwei Endgeräten im selben Raum aufgebaut wird.
+In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem schrillen Pfeifton führt.
+Dieses Problem ist durch eine entsprechende Ausrichtung der Geräte vermeidbar.
+Es schränkt aber ein, wie die Endgeräte des Systems in einer Praxis installiert werden können.
+
 \clearpage
