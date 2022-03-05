@@ -118,3 +118,20 @@ Die Modularisierung garantiert dabei eine strikte Trennung der Domänen.
 In Zukunft können einzelne Module aus dem Cloudservice ausgelöst und als eigenständige Applikationen betrieben werden.
 
 \clearpage
+
+\subsection{Domänenmodell Cloudservice}
+
+Das Domänenmodell Cloudservices wird für die Integration von Sprachsynthese und Gegensprechanlage erweitert.
+Abbildung 7.21 gibt eine Übersicht über das vollständige Domänenmodell der Domänen Configuration und Notification.
+Die neuen Domänen Speech Synthesis und Signaling führen keine persistierten Daten.
+Die Services und Komponenten dieser Domänen sind in den Kapiteln 7.3 und 7.4 beschrieben.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/erd_v02}}
+        \caption{Entitiy Relation Diagramm - Cloudservice}
+    \end{minipage}
+\end{figure}
+
+\clearpage
