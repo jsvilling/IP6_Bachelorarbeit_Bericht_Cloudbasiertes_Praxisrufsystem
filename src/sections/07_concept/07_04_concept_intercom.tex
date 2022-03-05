@@ -335,7 +335,7 @@ Diese Protokolle definieren die Funktionen, über welche die Komponenten Informa
 Die Serviceklasse CallService implementiert beide Delegate-Protokolle.
 Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert sich anschliessend bei beiden als Delegate.
 Der CallService selbst wird in den View Komponenten der Applikation verwendet.
-Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und SignalingClient.
+Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und PraxisrufApi+Signaling.
 Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
 
 Abbildung 7.19 zeigt die Kommunikation zwischen den beteiligten Komponenten beim Signalaustausch zum Aufbau einer Sprachverbindung.
@@ -345,7 +345,7 @@ Diese initialisiert den Anruf über den CallService.
 Der CallService ruft dazu als Erstes den CallClient auf.
 Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt ein Signal, um den Empfänger zu informieren.
 Dieses Signal gibt er an den CallService weiter.
-Der CallService leitet das Signal an den SignalingClient weiter, welcher das Versenden an den Cloud Service übernimmt.
+Der CallService leitet das Signal an den PraxisrufApi+Signaling weiter, welcher das Versenden an den Cloud Service übernimmt.
 
 \begin{figure}[h]
     \centering
@@ -357,10 +357,10 @@ Der CallService leitet das Signal an den SignalingClient weiter, welcher das Ver
 
 Das versendete Signal wird über das Signaling Modul des Cloud Service an den Empfänger übermittelt.
 Dieser empfängt das Signal über den SingalingClient.
-Der SignalingClient gibt das Signal über onSignalReceived an den CallService weiter.
+Der PraxisrufApi+Signaling gibt das Signal über onSignalReceived an den CallService weiter.
 Der CallService aktiviert die Ansicht für aktive Anrufe und leitet das Signal an den CallClient weiter.
-Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt eine Signal zur Bestätigung.
-Dieses Signal wird wiederun über den CallService zum SignalingClient weiter zum Cloud Service versendet.
+Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt ein Answer-Signal zur Bestätigung.
+Dieses Signal wird wiederum über den CallService zum PraxisrufApi+Signaling weiter zum Cloud Service versendet.
 Auf Starterseite, kann diese Bestätigung weiterverarbeitet werden.
 
 \subsubsection{Verpasste Anrufe}
