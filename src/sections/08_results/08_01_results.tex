@@ -1,13 +1,11 @@
 \subsection{Resultate}
 
-Praxisruf wurde wie in Kapitel 5 beschrieben erweitert.
-Es wurde eine native iOS App entwickelt, welche den Funktionsumgang des bestehenden Mobile Clients vollständig unterstützt.
-Weiter wurde mit AWS Polly ein Sprachsynthese Provider an das System angebunden.
-Diese Anbindung wird verwendet, um bei Bedarf den Inhalt empfangener Benachrichtigungen automatisch vorlesen zu lassen.
+Praxisruf wurde gemäss dem Konzept im Kapitel 7 erweitert.
+Es wurde eine native iOS App entwickelt, welche den Funktionsumgang, des bestehenden Mobile Clients vollständig unterstützt.
+Weiter wurde mit Amazon Polly Sprachsynthese in das System integriert.
+Diese Integration wird verwendet, um bei Bedarf den Inhalt empfangener Benachrichtigungen automatisch vorlesen zu lassen.
 Letztlich wurde WebRTC verwendet, um eine konfigurierbare Gegensprechanlage zu implementieren.
-Sowohl das Vorlesen von Benachrichtigungen, als auch die Gegensprechanlage sind über das Admin UI konfigurierbar.
-
-\subsubsection{Systemarchitektur}
+Sowohl das Vorlesen von Benachrichtigungen, als auch die Gegensprechanlage sind über eine Weboberfläche konfigurierbar.
 
 Die Systemarchitektur von Praxisruf wurde im Rahmen dieses Projektes erweitert.
 Betroffen davon sind der Mobile Client und Cloudservice.
@@ -15,10 +13,8 @@ Der Mobile Client wurde durch einen neuen nativen Mobile Client ersetzt.
 Der Cloudservice wurde um Komponenten zur Abfrage von Sprachdaten und Signalaustausch erweitert.
 Im Rahmen dieses Projektes wurde zudem der interne Aufbau des Cloudservices überarbeitet.
 Der Cloudservice wird nach wie vor als einzelner Service betrieben.
-Dieser Service ist aber neu in mehrere domänenspezifische Module aufgeteilt.\footnote{Siehe Kapitel 5.1}
+Dieser Service ist aber neu in mehrere domänenspezifische Module aufgeteilt.
 Diese Module können in Zukunft mit wenig Aufwand aus dem monolithischen Service ausgelöst und als eigene Services betrieben werden.
-
-\subsubsection{Sprachsynthese}
 
 Die Sprachsynthese für Benachrichtigungen in einem Praxisrufsystem konnten vollständig umgesetzt werden.
 Praxisadministratoren können über das Admin UI konfigurieren, welche Benachrichtigungen vorgelesen werden.
@@ -28,8 +24,6 @@ Für die Konvertierung von Benachrichtigungen zu Sprachdaten wurde im Cloudservi
 Der Cloudservice bietet nach aussen eine Http Schnittstelle über welche Sprachdaten von Benachrichtigungen bezogen werden können.
 Sprachdaten müssen immer anhand der technischen Identifikation des relevanten Benachrichtigungstypes angefragt werden.
 Die konkreten Daten für die Synthese werden anhand dieser Identifikation aus der persistierten Konfiguration geladen.
-
-\subsubsection{Gegensprechanlage}
 
 Es wurde eine konfigurierbare Gegensprechanlage entwickelt und in Praxisruf integriert.
 Die Konfiguration der Gegensprechanlage wurde in die bestehende Konfiguration eingebunden.
@@ -64,6 +58,7 @@ Wird eine Sprachverbindung zwischen zwei Mobile Clients aufgebaut, die unmittelb
 Praxisruf ist für ein Mobile Client pro Zimmer konzipiert.
 Diese Einschränkung ist für den Praxisbetrieb minimal bis gar nicht relevant.
 Die zweite Einschränkung betrifft den austausch von Sprachdaten.
+
 Sprachverbindungen können zwischen zwei oder mehr Empfängern aufgebaut werden.
 Die implementierte Gegensprechanlage hat dabei aber die Einschränkung, dass Verbindungen nur zwischen Anrufer und Empfänger aufgebaut wird.
 Es werden keine Verbindungen zwischen den einzelnen Empfängern aufgebaut.
@@ -71,7 +66,7 @@ Die implementierte Gegensprechanlage unterstützt damit 1:1 und 1:n Verbindungen
 
 \clearpage
 
-\subsubsection{Nativer Mobile Client}
+\subsubsection{Native iOS Applikation}
 
 Dieses Kapitel beschreibt das umgesetzte cloudbasierte Praxisrufsystem anhand der Ansichten der iOS Applikation.
 Sämtliche in diesem Kapitel dargestellten Ansichten wurden als Screenshots auf einem iPad 9. Generation erstellt.
