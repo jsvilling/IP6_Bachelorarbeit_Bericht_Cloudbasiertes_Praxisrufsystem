@@ -253,11 +253,10 @@ Es werden die Extension PraxisrufApi+Signaling und das Protokoll PraxisrufApiSig
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.9\textwidth}
-        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signaling_Connection}
+        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signaling_Connection}}
         \caption{Klassendiagramm - Signaling Schnittstelle in Mobile Client}
     \end{minipage}
 \end{figure}
-
 
 Die Extension PraxisrufApi+Signaling ist für die Verbindung zu der Signaling Instanz verantwortlich.
 Für die Integration dieser Extension in den Rest der Applikation wird das Protokoll PraxisrufApiSignalingDelegate definiert.
@@ -290,50 +289,69 @@ Das Wiederöffnen der Verbindung im Fehlerfall wird über die PraxsirufApi+Signa
 Der entsprechende Aufruf wird aber im CallService implementiert.
 Dadurch können allfällige Fehlermeldungen angezeigt und Benutzerinteraktionen ermöglicht werden.
 
-\subsubsection{Signalverarbeitung im Mobile Client}
+\subsubsection{Sprachverbindungen im Mobile Client}
 
-Neben austausch von Signalen muss auch die Sprachverbindung selbst verwaltet werden.
-Die Details der Sprachverbindung sind vendor spezifisch.
-Es wird deshalb eine eigene Klasse CallClient erstellt.
-Diese ist für das Verwalten von Verbindungen verantwortlich.
-Bei eingehenden Verbindungen muss sie signale empfangen, die Verbindung erstellen.
-Wenn nötig Antowrt Signale erstellen und zurückgeben.
-Bei ausgehenden Verbindungen muss sie Verbindung initialisieren.
-Es muss Signal erstellt und versendet werden.
-Weiter müssen Methoden angeboten werden um die Unterhaltung oder das Microphon zu muten.
-Und um die Verbindung zu schliessen.
-Und um den bei Änderung des internen Status, das UI entsprechend zu aktualisieren.
-
-Um die Integration der Sprachverbindung möglichst unabhängig und auswechselbar zu machen, wird der CalLClient nicht direkt in der View verwendet.
-Stattdessen definiert der CallClient ein Delegate Protocol, welches die notwendigen Callbacks definiert.
+Der Mobile Client muss Signale verarbeiten und die Peer-To-Peer Sprachverbindungen über die WebRTC Bibliothek verwalten.
+Für die Integration der WebRTC-Komponenten wird eine Klasse CallClient und ein Protokoll CallClientDelegate erstellt.
+Diese sind für das Verwalten von Sprachverbindungen verantwortlich.
+Abbildung 7.18 zeigt das Klassendiagramm beider Komponenten.
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.9\textwidth}
-        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signal_Processing}
-        \caption{Klassendiagramm - Signalingverarbeitung in Mobile Client}
+    \begin{minipage}[b]{0.6\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signal_Processing}}
+        \caption{Klassendiagramm - CallClient und CallClientDelegate}
     \end{minipage}
 \end{figure}
 
-Um Anrufe in der Applikation verwenden zu können müssen CallClient und PraxisrufApi+Signaling in die Benutzeroberfläche integriert werden.
-Beide Applikationen definieren ein Delegate Protocol, welches die Funktionen spezifiziert, über welche die Komponenten eingebunden werden können.
-Es wird eine weitere Serviceklasse mit dem Namen CallService implementiert, welche beide Delegate Protocols implementiert.
-Dieser Service instanziert CallClient und PraxisrufApi+Signaling und registriert sich anschliessend als Delegate bei beiden Instanzen.
-Der CallService selbst wird in der View verwendet.
-Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und SignalingClient.
+Für den Aufbau von ausgehenden Verbindungen wird eine RTCPeerConnection im CallClient des Senders initialisiert.
+Es werden die SDP Informationen für Beschreibung der Verbindung erstellt und mit einem Offer-Signal an den Empfänger gesendet.
+Das Offer-Signal wird über die Signaling Instanz an den Empfänger zugestellt.
+Der CallClient des Empfängers erstellt bei Empfang des Offer-Signals eine RTCPeerConnection anhand der darin enthaltenen SDP Informationen.
+Anschliessend erstellt er ein Answer-Signal und sendet dieses zurück an den Verbindungspartner.
+Das Answer-Signal wird vom Initiator der Verbindung verarbeitet, um die Verbindung zu bestätigen.
+Signale werden im CallClient durch die Methode receive empfangen und über die Methode send des CallClientDelegates versendet.
 
-Wenn der Benutzer einen Anruf startet, wird die View für aktive Anrufe geladen.
+Neben dem Austausch von Offer- und Answer-Signalen müssen Ice Candidate Signale ausgetauscht werden können.
+Sobald ein Ice Candidate zur Verfügung steht, erstellt der CallClient ein entsprechendes Signal und sendet es an den Empfänger.
+Damit dies möglich ist, muss der CallClient über verfügbare Ice Candidates informeirt werden.
+Die WebRTC Bibliothek bietet dazu das Protokoll RTCPeerConnectionDelegate.
+Dieses kann auf der RTCPeerConnection registriert werden und wird aufgerufen, sobald ein neuer Ice Candidate verfügbar ist.
+Der CallClient implementiert dieses Protokoll und registriert sich auf allen RTCPeerConnections.
+
+Sprachverbindungen müssen über die Benutzeroberfläche verwaltet werden können.
+Der CallClient bietet deshalb Methoden an, um eine Verbindung zu starten und beenden.
+Weiter bietet er die Möglichkeit Mikrofon und Lautsprecher für geöffnete Verbindungen stummzuschalten.
+Bei eingehenden Verbindungen, dem Beenden von Anrufen und Veränderungen am Status einer Verbindung, muss die Benutzeroberfläche informiert werden.
+Der CallClientDelegate definiert dazu Methoden über welche der CallClient diese Informationen weitergeben kann.
+
+\subsubsection{Signalverarbeitung im Mobile Client}
+
+Peer-To-Peer Sprachverbindungen werden über die Komponenten CalService, CallClient und PraxisrufApi+Signaling in den Mobile Client integriert.
+Dieses Kapitel beschreibt den Kommunikationsablauf zwischen diesen Komponenten.
+
+CallClient und PraxisrufApi+Signaling definieren je ein Delegate-Protokoll.
+Diese Protokolle definieren die Funktionen, über welche die Komponenten Informationen weitergeben können.
+Die Serviceklasse CallService implementiert beide Delegate-Protokolle.
+Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert sich anschliessend bei beiden als Delegate.
+Der CallService selbst wird in den View Komponenten der Applikation verwendet.
+Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und SignalingClient.
+Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
+
+Abbildung 7.19 zeigt die Kommunikation zwischen den beteiligten Komponenten beim Signalaustausch zum Aufbau einer Sprachverbindung.
+Dabei wird der Ablauf von Benutzerinteraktion des Senders bis zum Senden des Offer-Signals dargestellt.
+Sobald Praxismitarbeitende einen Anruf startet, wird die View für aktive Anrufe geladen.
 Diese initialisiert den Anruf über den CallService.
-Der CallService ruft dazu als erstes den CallClient auf.
-Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt ein Signel, um den Empfänger zu informieren.
+Der CallService ruft dazu als Erstes den CallClient auf.
+Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt ein Signal, um den Empfänger zu informieren.
 Dieses Signal gibt er an den CallService weiter.
 Der CallService leitet das Signal an den SignalingClient weiter, welcher das Versenden an den Cloud Service übernimmt.
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.8\textwidth}
+    \begin{minipage}[b]{0.7\textwidth}
         \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Caller_Signaling.drawio}
-        \caption{MobileClient - Anruf Starten Signal}
+        \caption{Sequenzdiagramm - Verbindungsaufbau im Mobile Client}
     \end{minipage}
 \end{figure}
 
@@ -344,8 +362,6 @@ Der CallService aktiviert die Ansicht für aktive Anrufe und leitet das Signal a
 Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt eine Signal zur Bestätigung.
 Dieses Signal wird wiederun über den CallService zum SignalingClient weiter zum Cloud Service versendet.
 Auf Starterseite, kann diese Bestätigung weiterverarbeitet werden.
-
-\clearpage
 
 \subsubsection{Verpasste Anrufe}
 
