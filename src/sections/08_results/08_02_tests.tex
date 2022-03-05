@@ -2,25 +2,53 @@
 
 \subsubsection{Benutzertests}
 
-Lorem ipsum
+Am 11.01.2022 wurden zusammen mit dem Auftraggeber Benutzertests durchgeführt.
+Die iOS Applikation wurde auf zwei Physische iPads installiert.
+Während den Benutzertests wurde folgendes getestet:
+
+\begin{enumerate}
+    \item Anmeldung und Konfigurationsauswahl im Mobile Client funktioniert wie mit dem alten Mobile Client.
+    \item Benachrichtigungen können zwischen Mobile Clients versendet werden.
+    \item Empfangene Benachrichtigungen werden dem Benutzer vorgelesen.
+    \item Sprachverbindungen können über Buttons hergestellt werden.
+    \item Sprachverbindungen werden automatisch angenommen.
+    \item Über Sprachverbindungen können in Echtzeit Unterhaltungen geführt werden.
+    \item Sprachverbindungen können wieder getrennt werden.
+\end{enumerate}
+
+Der Kunde hat während den Tests folgende Verbesserungswünsche eingebracht:
+
+\begin{enumerate}
+    \item Das Quittieren von Einträgen in der Inbox sollte diese direkt löschen.
+    \item Das Quittieren von Einträgen in der Inbox soll durch eine Wischgeste möglich sein.
+    \item Die Töne für Benachrichtigungen sollten konfigurierbar sein.
+    \item Icon und Name der App sollten ansprechend sein.
+    \item Bei eingehenden Sprachverbindungen soll ein Benachrichtigungston erklingen.
+    \item Status von Verbindungsteilnehmern soll als Icon dargestellt werden
+\end{enumerate}
+
+Dieses Feedback konnte grösstenteils umgesetzt werden.
+Punkt 3.\ konnte aus Zeitgründen nicht umgesetzt werden.
+Die Benachrichtigungstöne für empfangene Benachrichtigungen und eingehende Sprachverbindungen sind fest definiert und können nicht konfiguriert werden.
 
 \clearpage
 
-\subsubsection{Testplan migrierte Funktionalität}
+\subsubsection{Funktionstests}
 
-Im Rahmen des Projektes IP5 Cloudbasiertes Praxisrufsystem wurde ein finaler Testplan definiert.
+Im Rahmen des Projektes Peer-To-Peer Kommunikation für Sprachübertragung in einem Praxisrufsystem wurde ein finaler Testplan definiert.
 Diese Tests wurden zum Abschluss des Projektes durchgeführt, um die Funktionalität des Systems abschliessend zu testen.
-Um zu gewährleisten, dass alle Funktionen aus dem alten (Shared Platform) Mobile CLient auch im neuen (Native) Mobile Client zur Verfügung stehen wurden diese Tests zum Abschluss dieses Projekts wiederholt.
-Die detaillierte Definition der Testszenarien sind im Anhang E des Projektberichts IP5 Cloudbasiertes Praxisrufsystem beschrieben.\cite{ip5}
-Folgendes Protokoll gibt eine Übersicht über die Tests
+Die Szenarien S01 bit S18 wurden dabei aus dem Vorgängerprojekt ''IP5 Cloudbasiertes Praxisrufsystem'' übernommen.
+Dadurch kann sichergestellt werden, dass alle Funktionen aus dem Vorgängerprojekt korrekt migriert wurden.
+Die Testszenarien S19 bis S40 behandeln die Funktionen Sprachsynthese und Gegensprechanlage.
+Die detaillierte Definition mit Ausgangslage, Testschritten und erwartetem Resultat sind im Anhang C aufgeführt.
 
-Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.xx.2022:
+Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2022:
 
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|p{11cm}|c|c|}
         \hline
-        \textbf{Szenario} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
+        \textbf{Szenario} & \textbf{Beschreibung} & \textbf{Resultat} \\
         \hline
         S01         & Benachrichtigung versenden - Empfänger konfiguriert   & tbd\\
         \hline
@@ -58,18 +86,6 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.xx.2
         \hline
         S18         & Admin UI - Konfiguration Verwalten   & tbd\\
         \hline
-    \end{tabular}\label{tab:testplan_migration}
-\end{table}
-\clearpage
-
-\subsubsection{Testplan Sprachsynthese}
-
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|p{11cm}|c|c|}
-        \hline
-        \textbf{Szenario} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
-        \hline
         S19         & Benachrichtigung vorlesen - Sprachsynthese aktiviert und Benachrichtigung relevant & tbd\\
         \hline
         S20         & Benachrichtigung nicht vorlesen - Sprachsynthese aktiviert und Benachrichtigung nicht relevant & tbd\\
@@ -82,18 +98,6 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.xx.2
         \hline
         S24         & Benachrichtigung empfangen - Änderung an Typ in Admin UI wird sofort angewendet   & tbd\\
         \hline
-    \end{tabular}\label{tab:testplan_sprachsynthese}
-\end{table}
-
-\clearpage
-
-\subsubsection{Testplan Gegensprechanlage}
-\begin{table}[h]
-    \centering
-    \begin{tabular}{|l|p{11cm}|c|c|}
-        \hline
-        \textbf{Szenario} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
-        \hline
         S25         & Gegensprechanlage Buttons nach Anmeldung anzeigen & tbd\\
         \hline
         S26         & Verbindungsaufbau - Gegenüber ist Verfügbar & tbd\\
@@ -103,6 +107,17 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.xx.2
         S28         & Verbindungsaufbau - Gegenüber hat Gegensprechanlage deaktiviert & tbd\\
         \hline
         S29         & Verbindungsaufbau - Benachrichtigungston & tbd\\
+        \hline
+    \end{tabular}\label{tab:funktion_testplan_1}
+\end{table}
+
+\clearpage
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|p{11cm}|c|c|}
+        \hline
+        \textbf{Szenario} & \textbf{Beschreibung} & \textbf{Resultat} \\
         \hline
         S30         & Verbindungsaufbau - Automatische Annahme & tbd\\
         \hline
@@ -126,17 +141,16 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.xx.2
         \hline
         S40         & Konfiguration über Admin UI & tbd\\
         \hline
-    \end{tabular}\label{tab:testplan_gegensprechanlage}
+    \end{tabular}\label{tab:funktion_testplan_2}
 \end{table}
-\clearpage
 
-\subsubsection{Testplan Performance}
+\subsubsection{Performancetests}
 
 \begin{table}[h]
     \centering
     \begin{tabular}{|l|p{11cm}|c|c|}
         \hline
-        \textbf{Kriterium} & \textbf{Beschreibung}                                                                                                                                  & \textbf{Resultat} \\
+        \textbf{Kriterium} & \textbf{Beschreibung} & \textbf{Resultat} \\
         \hline
         P01         & Zeit bis Benachrichtigung ankommt im Schnitt < 5s & tbd\\
         \hline
