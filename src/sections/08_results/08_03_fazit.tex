@@ -2,79 +2,57 @@
 
 In diesem Kapitel werden die zentralen Herausforderungen während der Projektarbeit und die Schlussfolgerungen, die daraus gezogen werden, beschrieben.
 
-Eine Herausforderung in diesem Projekt, waren Konzept und Umsetzung der nativen iOS Applikation.
+Eine zentrale Herausforderung in diesem Projekt waren Konzept und Umsetzung der nativen iOS Applikation.
 Insbesondere die Integration von Sprachverbindungen und die effiziente Anbindung an Umsysteme waren herausfordernd.
-Die iOS Standardbibliothek sowie die Bibliotheken der verwendeten Anbieter bieten alle dazu benötigten Komponenten.
-Die Herausforderung bestand darin, diese Komponenten zu verwenden und Strukturen aufzubauen, welche effiziente Integration in eine SwiftUI Applikation ermöglichen.
+Die iOS Standardbibliothek sowie die Bibliotheken der verwendeten Anbieter bieten alle benötigten Komponenten.
+Die Herausforderung bestand darin, diese Komponenten anzuwenden und Strukturen aufzubauen, welche die effiziente Integration in eine SwiftUI Applikation ermöglichen.
 Das Erarbeiten, Umsetzten und Dokumentieren dieser Konzepte hat mehr Zeit in Anspruch genommen als erwartet.
 Schlussendlich hat dieser Aufwand aber einen grossen Mehrwert gebracht.
-Die Anbindungen an Umsysteme und Peer To Peer Verbindungen konnte in eigenen Komponenten gekapselt, welche effizient in SwiftUI eingebunden werden können.
+Die Anbindungen an Umsysteme und Peer-To-Peer Sprachverbindungen wurden eigenen Komponenten gekapselt, welche effizient in SwiftUI eingebunden werden können.
 Im Unterschied zur Entwicklung des Shared Platform Mobile Clients im Vorgängerprojekt, konnte der Aufwand hier mehrheitlich auf konzeptioneller Ebene gehalten werden.
 Die Anbindung der Schnittstellen und insbesondere die Verwendung von Gerätehardware und Betriebssystemfunktionen wie Pushbenachrichtigungen konnten deutlich einfacher umgesetzt werden.
 Es sind keine Probleme bezüglich Kompatibilität oder nicht unterstützten Funktionen aufgekommen.
 
-Ich schliesse daraus, dass sich die native Mobile Entwicklung mit SwiftUI die richtige Wahl für die Umsetzung einer App für ein Praxisrufsystem ist.
+Dieses Projekt hat gezeigt, dass die native Mobile Entwicklung mit SwiftUI die richtige Wahl für die Umsetzung einer App in einem Praxisrufsystem ist.
 Die native Entwicklung vereinfacht die Integration von Hardware- und Betriebssystemfunktionen massgeblich.
-Dabei ist es unerlässlich, die Konzepte zur Kommunikation mit Umsystemen klar definiert werden.
-Kommunikationsabläufe und Verantwortlichkeit der internen Komponenten muss klar definiert werden.
-Sind diese Voraussetzungen erfüllt, kann von den vorteilen die native Entwicklung bringt voll profitiert werden.
+Dabei ist es unerlässlich, dass die Konzepte zur Kommunikation mit Umsystemen klar definiert werden.
+Kommunikationsabläufe und Verantwortlichkeit der internen Komponenten müssen klar definiert werden.
+Sind diese Voraussetzungen erfüllt, kann von den vorteilen der nativen Entwicklung profitiert werden.
 
-Die Umsetzung von Peer-To-Peer Sprachverbindungen mit WebRTC stellte eine weitere grosse Herausforderung dar.
+Die grösste Herausforderung in diesem Projekt war die Umsetzung von Peer-To-Peer Sprachverbindungen mit WebRTC.\
 WebRTC bietet eine Bibliothek für native iOS Entwicklung.
-Diese Bibliothek implementiert den WebRTC-Standard und bietet alle Komponenten, die zum Aufbau von Sprachverbindungen notwendig sind.
-Die Bibliothek bietet allerdings keine nennenswerte Entwicklerdokumentation, welche die Verwendung der zur Verfügung gestellten Komponenten dokumentiert.
+Diese implementiert den WebRTC-Standard und bietet alle Komponenten, die zum Aufbau von Sprachverbindungen notwendig sind.
+Die Bibliothek bietet allerdings keine Entwicklerdokumentation, welche die Verwendung der zur Verfügung gestellten Komponenten dokumentiert.
 Dies hat die Umsetzung dieser Lösung deutlich erschwert.
-Es finden sich Referenzimplementierungen und einfache Anleitungen zur Integration von WebRTC in Applikationen.
-Diese sind in aller Regel aber sehr simpel gehalten.
-Sie beinhalten keine Mechanismen zum Verbindungsmanagement und keine saubere Integration in die Benutzeroberfläche.
-Die Komponenten aus dem WebRTC SDK werden kommentarlos verwendet.
-Dieses Problem wird ein Stück weit dadurch relativiert, dass WebRTC eine Open Source Technologie ist die von allen grossen Browsern unterstützt wird.
-Die Konzepte welche für den Verbindungsaufbau mit WebRTC verwendet werden, sind deshalb an vielen Orten beschrieben.
-Die Komponenten und Konzepte in WebRTC sind dabei Platformunabhängig dieselben.
-Dementsprechend konnten diese Resourcen verwendet werden, um das System zu versehen und auf die eigenen Anforderungen zugeschnitten umzusetzen.
-Schlussendlich konnte hier eine Lösung umgesetzt werden, die alle Anforderungen einer Gegensprechanlage im Praxisrufsystem erfüllt.
-
+Es existieren diverse Referenzimplementierungen und einfache Anleitungen zur Integration von WebRTC in Applikationen.
+Diese sind allerdings auf ein Minimum reduziert.
+Sie beinhalten keine Mechanismen zum Verbindungsmanagement und keine Integration in eine grössere Applikation.
+Die notwendigen Abläufe für Verbindungen konnten basierend auf dem WebRTC Standard erarbeitet werden.
+Das Konzept zur effizienten Integration eine mobile Applikation wurde mit diesem Projekt erarbeitet.
+Schlussendlich konnte so eine Lösung umgesetzt werden, die Anforderungen einer Gegensprechanlage im Praxisrufsystem erfüllt.
 Das Risiko mangelhafter Dokumentation wurde bereits bei der Evaluation der Technologie erkannt.
-WebRTC wurde trotzdem für dieses Projekt verwendet, da es Providerunabhängigkeit und maximale Flexibilität bei der Integration in das System bietet.
-Diese Vorteile konnten beim Projekt wirklich genutzt werden.
-Der Signalingservice ist komplett Providerunabhängig und kann bei einem beliebeingen Cloudprovider oder auf einem eigenen Server betrieben werden.
-Die Sprachverbindungen die im Mobile Client aufgebaut werden sind direkte Peer To Peer Verbindungen, auch dafür wird keine zusätzliche Instanz benötigt.
+WebRTC wurde trotzdem verwendet, da es Providerunabhängigkeit und maximale Flexibilität bei der Integration in das System bietet.
+Diese Vorteile konnten bei der Umsetzung genutzt werden.
+Die umgesetzte Signaling Instanz ist komplett unabhängig und kann bei einem beliebigen Provider betrieben werden.
+Sprachverbindungen im Mobile Client werden Peer-To-Peer zwischen beteiligten Endgeräten aufgebaut.
 
-Aus den Erfahrungen mit WebRTC im iOS Umfeld schliesse ich darauf, das WebRTC durchaus geeignet ist um ein Praxisrufsystem umzusetzen.
-Die Unabhängigkeit von Providern bringt grosse Flexibilität und Unabhängigkeit mit sich.
-Gleichzeitig, muss aber betrachtet werden, dass WebRTC eine Open Source Technologie von Google ist.
-Es gibt keine Garantie wie lange WebRTC weiterentwickelt wird oder dass es mit zukünftigen iOS Versionen kompatibel bleibt.
-WebRTC selbst ist aber ein offener Standard und Google liefert lediglich die Implementation.
-Da es heute in allen grossen Browsern unterstützt ist, ist es wahrscheinlich, dass es in jedem Fall von jemandem weiterentwickelt wird.
+Die Erfahrungen in diesem Projekt haben gezeigt, dass WebRTC geeignet ist um ein Praxisrufsystem umzusetzen.
+Es ermöglicht eine massgeschneiderte Lösung ohne Bindung an einen externen Dienstleister.
+Gleichzeitig erschwert es aber die Umsetzung aufgrund mangelnder Dokumentation.
+Für die Integration von WebRTC wurde eine Open Source Bibliothek verwendet.
+Das Projekt wird von namhaften Herstellern unterstützt.
+Es gibt aber keine Garantie, wie lange die Bibliothek weiterentwickelt wird und wie schnell neue iOS Versionen unterstützt werden.
 Um sicherzustellen, dass ein Praxisrufsystem das WebRTC verwendet langfristig erfolgreich bleibt, muss eine entsprechende Ausstiegsstrategie definiert werden.
 Dies beinhaltet zeitnahe evaluation neuer iOS Releases, um die Kompatibilität mit WebRTC sicherzustellen.
 Es beinhaltet weiter ein Konzept, wie WebRTC durch eine andere Technologie ersetzt werden kann.
 Im Rahmen dieser Projektarbeit konnte kein solches Konzept erstellt werden.
-Es wird empfohlen für die Weiterentwicklung von Praxisruf ein solches Konzept zu erstellen.
+Es wird empfohlen für die Weiterentwicklung des Praxisrufsystems ein solches Konzept zu erstellen.
 
 Die letzte Herausforderung, die hier erwähnt wird, betrifft die Planung des Projektes.
-Die Verzögerungen während der Umsetzung haben dazu geführt, dass weniger Zeit für Testen und Erweiterungen als geplant aufgewendet werden konnte.
-Das umgesetzte Praxisrufsystem erfüllt die zu Beginn definierten Anforderungen.
 Das Projekt konnte damit im Wesentlichen nach Plan ausgeführt werden.
-Die Erarbeitung der Anforderungen zu beginn war genau richtig.
-Es sollte mehr Zeit mit Puffer für Testing und Unerwartetes für diese Anforderungen eingeplant werden.
+Die Verzögerungen während der Umsetzung haben aber dazu geführt, dass weniger Zeit für Testen und Erweiterungen als geplant aufgewendet werden konnte.
+Regelmässige Absprache mit dem Auftraggeber hat es ermöglicht Rückmeldungen frühzeitig einzuarbeiten.
+Der Fokus konnte dabei aber nur auf die Mindestanforderungen an das System und nicht wie geplant auf Erweiterungen und Fehlerbehandlung gelegt werden.
+Für zukünftige Projekte wird empfohlen, Umsetzungsaufwände detaillierter zu planen und mehr Zeit für das Testen der Anforderungen einzuplanen.
 
-Insgesamt bin ich mit dem Resultat dieser Arbeit zufrieden.
-Die erarbeitete Architektur bietet eine solide Basis für ein cloudbasiertes Praxisrufsystem.
-Das umgesetzte System bietet einen voll funktionsfähigen Prototypen.
-Dieser kann als Basis für die Entwicklung eines kommerziell erfolgreichen Systems verwendet werden.
-
-Für die Weiterentwicklung des Produktes sind drei Schritte notwendig.
-Erstens muss das System in einem produktiven Umfeld getestet werden.
-Es wird empfohlen das System als Pilotprojekt in einzelnen Praxen einzusetzen und Feedback dazu einzuholen.
-Dieses Feedback kann benutzt werden um Fehler zu beheben und Usability des Systems zu verbessern.
-Da es sich um ein Pilotprojekt mit einem Prototypen handelt sollte das System aber nicht Missionskritisch sein.
-
-Zweitens muss das System Mandantenfähig werden.
-Es muss auch Authentifizierung und Authorisierung mit OAuth und OpenID Connect implementiert werden.
-Das entwickelte Praxisrufsystem ist es noch nicht.
-
-Drittens muss Stabilität und Background verbessert werden.
-Verlorene Sprachverbindungen wieder aufbauen.
-Qualität der Sprachübertragung und Feedbackzeug verbessern.
-Benachrichtigung von verpassten anrufen könnten direkt diese Verbindung öffnen.
+\clearpage
