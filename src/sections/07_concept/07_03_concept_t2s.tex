@@ -89,7 +89,7 @@ Diese werden nicht direkt im application.yml abgelegt.
 Für sämtliche Credentials wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebungsvariablen lädt.
 Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden.
 
-\subsubsection{Schnittstelle Cloud Service}
+\subsubsection{Schnittstelle Cloudservice}
 
 Endgeräte im Praxisrufsystem müssen Sprachdaten über den Cloudservice beziehen können.
 Das Modul Speech Synthesis stellt deshalb eine Schnittstelle zur Verfügung, über welche Sprachdaten abgefragt werden können.
@@ -107,7 +107,16 @@ Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring R
 Die Sprachdaten werden dabei als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
 Der Endpunkt wird aus Endgeräten mit Http GET Anfragen angesprochen.
 
-\clearpage
+\subsubsection{Sicherheit}
+
+Für die Authentisierung wird derselbe Mechanismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
+Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
+Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist~\cite{ip5}.
+Diese Prüfung wurde im Rahmen des Vorgängerprojektes umgesetzt und wird weiterverwendet.
+
+Um die Verschlüsselung der Übertragung von Sprachdaten und Anfragen zwischen Cloudservice und Mobile Client wird für die Übertragung ausschliesslich das Protokoll HTTPS verwendet.
+Die Übertragung von Daten zwischen Cloudservice und Amazon Polly ist über Secure Sockets Layer (SSL) geschützt~\cite{aws_polly_encryption_in_transit}.
+
 \subsubsection{Anbindung Mobile Client}
 
 Dieses Kapitel beschreibt wie die API des Cloudservice aus einer nativen iOS Applikation abgesprochen werden kann.
@@ -165,12 +174,6 @@ Dies wird gemacht in dem er überprüft, ob im Applikationsverzeichnis bereits e
 Ist dies der Fall, werden die Inhalte dieser Datei abgespielt und es wird keine Anfrage an den Cloudservice versendet.
 Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden, wird eine Anfrage an den CloudService gesendet.
 
-Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser die Inhalte der relevanten Benachrichtigung aus der Konfiguration.
-Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um den Titel der Benachrichtigung als Sprachdaten zu synthetisieren.
-Die Resultate von Amazon Polly werden als Resultat der Anfrage des Mobile Clients zurückgegeben.
-Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version verknüpften NotificationType.
-Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
-
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.9\textwidth}
@@ -178,6 +181,12 @@ Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
         \caption{Sequenzdiagramm Sprachsynthese - Systemsicht}
     \end{minipage}
 \end{figure}
+
+Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser die Inhalte der relevanten Benachrichtigung aus der Konfiguration.
+Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um den Titel der Benachrichtigung als Sprachdaten zu synthetisieren.
+Die Resultate von Amazon Polly werden als Resultat der Anfrage des Mobile Clients zurückgegeben.
+Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version verknüpften NotificationType.
+Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
 
 Abbildung 7.11 Stellt den Ablauf für das Empfangen und Vorlesen von Benachrichtigungen aus Systemsicht dar.
 Die Prüfung des lokalen Cache wird dabei nicht dargestellt.
