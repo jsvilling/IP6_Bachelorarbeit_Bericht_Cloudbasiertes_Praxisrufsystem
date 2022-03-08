@@ -70,6 +70,22 @@ Der WebRTC Standard schreibt nicht, vor wie eine Signaling Instanz umgesetzt wer
 Er definiert einzig, welchen Inhalt Signale für den Verbindungsaufbau beinhalten müssen und wie dieser Inhalt verarbeitet werden muss.
 Konzept und Funktionsweise der Signaling Instanz für das Praxisrufsystem wird in Kapitel 7 beschrieben.
 
+\subsection{Sicherheit}
+
+Bei Sprachverbindungen mit WebRTC gibt es zwei sicherheitskritische Kanäle.
+Erstens muss der Kanal, über welchen Signalmeldungen ausgetauscht werden gesichert sein.
+Nur Berechtigte dürfen Signalmeldungen versenden und empfangen.
+Dazu muss die Identität der Teilnehmer, die Signalmeldungen austauschen verifiziert werden.
+Aussenstehende dürfen die Kommunikation von Signalmeldungen nicht nachverfolgen können~\cite{rfc_8827_webRTC_SecurityArchitecture}.
+Die Implementierung dieser Mechanismen muss vom Anbieter der Signaling Instanz umgesetzt werden.
+
+Zweitens muss die Verbindung über welche Echtzeitdaten ausgetauscht werden gesichert sein.
+Diese Datenverbindungen werden über das Protokoll Datagram Transport Layer Security (DTLS) verschlüsselt.
+Bevor Daten über eine Verbindung ausgetauscht werden, wird pro Übertragungskanal ein DTLS-Handshake ausgeführt.
+Über diesen Handshake werden die nötigen Schlüsselinformationen ausgetauscht.
+Diese Schlüssel werden anschliessend für sichere Datenübertragung über das Protokoll ''Secure Real-Time Transport'' verwendet~\cite{rfc_8827_webRTC_SecurityArchitecture}.
+Die Implementierung dieser Mechanismen, muss gemäss WebRTC Standard, vom Anbieter der den Standard implementiert umgesetzt werden~\cite{webrtc_spec}.
+
 \subsection{Unicast, Multi-Cast, Broadcast}
 
 Dieses Kapitel beschreibt, der Verbindungsaufbau von Peer-To-Peer Verbindungen mit WebRTC als Uni-, Multi- und Broadcast in einem cloudbasierten Praxisrufsystem umgesetzt werden kann.
@@ -96,20 +112,5 @@ Um eine n:n Verbindung aufzubauen und die Kommunikation zwischen allen Teilnehme
 Im Rahmen dieser Arbeit sind lediglich 1:n Verbindungen gefordert.
 Konzepte und Umsetzung für n:n Verbindungen werden hier deshalb nicht weiter behandelt.
 
-\subsection{Sicherheit}
-
-Bei Sprachverbindungen mit WebRTC gibt es zwei sicherheitskritische Kanäle.
-Erstens muss der Kanal, über welchen Signalmeldungen ausgetauscht werden gesichert sein.
-Nur Berechtigte dürfen Signalmeldungen versenden und empfangen.
-Dazu muss die Identität der Teilnehmer, die Signalmeldungen austauschen verifiziert werden.
-Aussenstehende dürfen die Kommunikation von Signalmeldungen nicht nachverfolgen können~\cite{rfc_8827_webRTC_SecurityArchitecture}.
-Die Implementierung dieser Mechanismen muss vom Anbieter der Signaling Instanz umgesetzt werden.
-
-Zweitens muss die Verbindung über welche Echtzeitdaten ausgetauscht werden gesichert sein.
-Diese Datenverbindungen werden über das Protokoll Datagram Transport Layer Security (DTLS) verschlüsselt.
-Bevor Daten über eine Verbindung ausgetauscht werden, wird pro Übertragungskanal ein DTLS-Handshake ausgeführt.
-Über diesen Handshake werden die nötigen Schlüsselinformationen ausgetauscht.
-Diese Schlüssel werden anschliessend für sichere Datenübertragung über das Protokoll ''Secure Real-Time Transport'' verwendet~\cite{rfc_8827_webRTC_SecurityArchitecture}.
-Die Implementierung dieser Mechanismen, muss gemäss WebRTC Standard, vom Anbieter der den Standard implementiert umgesetzt werden~\cite{webrtc_spec}.
 
 \clearpage
