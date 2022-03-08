@@ -2,7 +2,7 @@
 
 Dieses Kapitel beschreibt die Funktionsweise von WebRTC und bildet theoretische Grundlage dafür, wie Peer-To-Peer Sprachübertragung mit WebRTC in einem Praxisrufsystem eingesetzt werden kann.
 
-\subsection{Kommunikationsprotokolle}
+\subsection{Verbindungsprotokolle}
 
 Im Folgenden werden die zentralen Kommunikationsprotokolle beschrieben, welche von WebRTC verwendet werden.
 Die wichtigsten Protokolle im WebRTC Umfeld sind das Session Description Protocol und das Interactive Connectivity Establishment.
@@ -21,9 +21,18 @@ Ein ICE Candidate beschreibt eine mögliche Verbindung, über welche die Verbind
 ICE wird in WebRTC verwendet, um die Netzwerkverbindung zwischen zwei Teilnehmern aufzubauen~\cite{mozilla_webRTC_protocols}.
 Der Austausch von ICE Candidates bildet den zweiten Teil an Signalmeldungen, welche über die Signaling Instanz ausgetauscht werden müssen~\cite{webrtc_spec}.
 
-% Session Traversal Utilities for NAT (STUN) könnte man erwähnen.
-% TURN könnte man erwähnen.
-% Network Address Translation (NAT) könnte man auch noch behandeln.
+Das ICE-Protokoll kann intern die Protokolle ''Session Traversal Utilities for NAT'' (STUN) und ''Traversal Using Relays around NAT'' (TURN) verwenden.
+Beide Protokolle erlauben es in IP-Netzwerken hinter Firewalls und Network Address Translators (NAT) Peer-To-Peer Verbindungen aufzubauen~\cite{rfc_8445_ice}.
+NAT wird verwendet, wenn die IP-Adresse eines Endgerätes im lokalen Netzwerk nicht von ausserhalb dieses Netzwerks erreichbar ist.
+NAT ermöglicht es, solchen Endgeräten mit Zielen ausserhalb des privaten Netzwerkes zu kommunizieren~\cite{rfc_2663_nat}.
+Das Protokoll STUN erlaubt den Umgang mit NAT, indem es Clients erlaubt, die eigene öffentliche IP-Adresse zu ermitteln.
+Um dies zu ermöglichen wird ein STUN-Server ausserhalb des lokalen Netzwerkes angefragt.
+Aufgrund der Adresse, welche dieser Server zurückliefert, kann ein Ice Candidate erstellt werden\cite{rfc_8445_ice}.
+Mit dem Protokoll TURN ist es möglich Verbindungen aufzubauen, wenn weitere Restriktionen vorhanden sind.
+Dabei dient ein TURN-Server als vermittelnde Instanz, welche auszutauschenden Daten zwischen den Endgeräten weiterleitet~\cite{webRTC_TURN}.
+
+Die Protokolle STUN und TURN sind nur notwendig, wenn keine direkte Verbindung zwischen den beteiligten Endgeräten möglich sind.
+Wenn alle beteiligten Endgeräte im selben lokalen Netzwerk sind und direkte Verbindungen aufbauen können, kann ein Ice Candidate mit der lokalen Adresse der Beteiligten erstellt werden~\cite{webRTC_TURN}.
 
 \subsection{Verbindungsaufbau}
 
@@ -44,6 +53,7 @@ Damit die Peer-To-Peer Verbindung aufgebaut werden kann, müssen die ICE Candida
 Wenn eine direkte Verbindung zwischen beiden beteiligten Geräten aufgebaut werden kann, sind keine weiteren Anfragen notwendig.
 Ein ICE Candidate für die direkte Verbindung kann erstellt und über die Signaling Instanz geteilt werden.
 Ist keine direkte Verbindung möglich, müssen mögliche ICE Candidates von einem ICE Server ermittelt werden.
+Dazu können die Protokolle STUN oder TURN eingesetzt werden.
 Die Abfragen an den ICE Server werden von der Implementation der RTCPeerConnection übernommen.
 Verfügbare ICE Server und das für die Abfrage zu verwendende Protokoll müssen bei Initialisierung der RTCPeerConnection mitgegeben werden.
 ICE Candidates werden von beiden Teilnehmern erstellt und über die Signaling Instanz geteilt.
@@ -86,16 +96,20 @@ Um eine n:n Verbindung aufzubauen und die Kommunikation zwischen allen Teilnehme
 Im Rahmen dieser Arbeit sind lediglich 1:n Verbindungen gefordert.
 Konzepte und Umsetzung für n:n Verbindungen werden hier deshalb nicht weiter behandelt.
 
-
 \subsection{Sicherheit}
 
-Signaling Verbindung muss sicher sein.
-Keine Anforderung an Protokoll, ausser das verschlüsselt.
+Bei Sprachverbindungen mit WebRTC gibt es zwei sicherheitskritische Kanäle.
+Erstens muss der Kanal, über welchen Signalmeldungen ausgetauscht werden gesichert sein.
+Nur Berechtigte dürfen Signalmeldungen versenden und empfangen.
+Dazu muss die Identität der Teilnehmer, die Signalmeldungen austauschen verifiziert werden.
+Aussenstehende dürfen die Kommunikation von Signalmeldungen nicht nachverfolgen können~\cite{rfc_8827_webRTC_SecurityArchitecture}.
+Die Implementierung dieser Mechanismen muss vom Anbieter der Signaling Instanz umgesetzt werden.
 
-Übertragung der Sprachdaten muss verschlüsselt sein.
-Für die Verschlüsselung muss SRTP verwendet werden.
-Die Verschlüsselung ist Sache von dem der das Interface implementiert.
-Ist dementsprechend in der Library mit implementiert.
-
+Zweitens muss die Verbindung über welche Echtzeitdaten ausgetauscht werden gesichert sein.
+Diese Datenverbindungen werden über das Protokoll Datagram Transport Layer Security (DTLS) verschlüsselt.
+Bevor Daten über eine Verbindung ausgetauscht werden, wird pro Übertragungskanal ein DTLS-Handshake ausgeführt.
+Über diesen Handshake werden die nötigen Schlüsselinformationen ausgetauscht.
+Diese Schlüssel werden anschliessend für sichere Datenübertragung über das Protokoll ''Secure Real-Time Transport'' verwendet~\cite{rfc_8827_webRTC_SecurityArchitecture}.
+Die Implementierung dieser Mechanismen, muss gemäss WebRTC Standard, vom Anbieter der den Standard implementiert umgesetzt werden~\cite{webrtc_spec}.
 
 \clearpage
