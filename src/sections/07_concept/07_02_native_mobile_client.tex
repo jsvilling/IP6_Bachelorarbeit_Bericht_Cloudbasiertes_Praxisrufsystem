@@ -113,6 +113,8 @@ Um die Integration dieser Klassen in die Applikation zu vereinfachen, wird ein z
 Dieser kapselt das Erstellen, Befüllen und Absetzten der nötigen UrlRequest Instanzen.
 Er bietet öffentliche Methoden für die Http Verben Get, Post und Delete an.
 Über diese können Http-Requests mit der jeweiligen Methode abgesetzt werden können.
+Zur Darstellung von Fehlern wird die Enum PraxisrufApiError definiert.
+Diese wird von PraxisrufApi verwendet, um dem Aufrufer das Fehlschlagen einer Anfrage mitzuteilen.
 Das Klassendiagramm in Abbildung 7.8 zeigt den Aufbau des Service PraxisrufApi\@.
 
 \begin{figure}[h]
