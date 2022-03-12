@@ -20,36 +20,36 @@ Dabei wird für jede Komponente beschrieben, welche Aufgaben ihr zufallen und wi
 
 \textbf{Cloudservice}
 
-Der Cloudservice bildet das zentrale Serverkomponente des Praxisrufsystems.
+Der Cloudservice bildet die zentrale Serverkomponente von Praxisruf.
 Zu Beginn dieses Projektes umfasst der Cloudservice die beiden Domänen Notification und Configuration.
 Dabei ist die Domäne Notification für das Versenden von Benachrichtigungen und die Domäne Configuration für die Verwaltung und Auswertung der Konfigurationen verantwortlich.
 Die relevanten Empfänger für eine Benachrichtigung werden in der Configuration Domain ermittelt.
-Um auf diese Informationen zugreifen zu können, muss aus der Notification Domain eine Abfrage an die Configuration Domain geschehen.
+Um auf diese Informationen zugreifen zu können, muss aus die Notification Domain eine Abfrage an die Configuration Domain gesendet werden.
 Die Configuration Domäne bietet dazu eine REST Schnittstelle~\cite{ip5}.
 
 Die Trennung der Domänen wurde im Vorgängerprojekt lediglich auf Package-Ebene realisiert.
 Mit diesem Projekt soll die Trennung einen Schritt weiter gehen.
-Der Cloudservice wird Module aufgeteilt.
-Diese Module werden weiterhin in einer einzelnen Applikation zusammengefasst.
-Die Modularisierung können aber zu einem späteren Zeitpunkt in einzelne Microservices aufgeteilt werden.
+Der Cloudservice wird in Module aufgeteilt.
+Diese Module werden weiterhin in einer einzelnen Applikation zusammengefasst, können aber zu einem späteren Zeitpunkt in einzelne Microservices betrieben werden.
 
-Nachdem die Auftrennung in Module stattgefunden hat, wird der Cloudservice um die zwei Module Signaling und Speech Synthesis erweitert.
+Nachdem die Auftrennung der bestehenden Domänen in Module stattgefunden hat, wird der Cloudservice erweitert.
+Es werden die zwei Module Signaling und Speech Synthesis umgesetzt.
 Das neue Modul Signaling ist für die Signalvermittlung zwischen Mobile Clients verantwortlich.
-Es übernimmt die Aufgabe der Signaling Instanz für den Aufbau von Peer-To-Peer Sprachverbindungen mit WebRTC.
-Das Modul Signaling hat eine gerichtete Abhängigkeit zum Module Notification.
-Über das Notification Modul sollen Empfänger informiert werden, wenn ein Signal nicht zugestellt werden konnte.
+Es übernimmt die Aufgabe der Signaling Instanz für den Aufbau von Sprachverbindungen mit WebRTC.
+Das Modul Signaling hat eine gerichtete Abhängigkeit zum Modul Notification.
+Es verwendet die API des Notification Moduls, um Empfänger mit Benachrichtigungen über verpasste Verbindungen zu informieren.
+
 Das neue Modul Speech Synthesis dient als Schnittstelle zu einem externen Provider für Sprachsynthese.
 Dies ermöglicht es, die Sprachsynthese als Teil der API des Cloudservice anzubieten.
 Dadurch können Clients aller Plattformen und auch Systeme, die künftig angebunden werden, auf die Sprachsynthese zugreifen.
-Weil alle Clients die Daten aus derselben Schnittstelle beziehen, ist garantiert, dass die Konfiguration und Funktionsweise dieselbe für alle Clients ist. \\
+Weil alle Clients die Daten aus derselben Schnittstelle beziehen, ist garantiert, dass die Konfiguration und Funktionsweise dieselbe für alle Clients ist.
 
 \textbf{Mobile Client}
 
 Der Mobile Client ist eine mobile Appliaktion, über welche das Praxisrufsystem bedient werden kann.
 Der mit dem Vorgängerprojekt umgesetzte Mobile Client erlaubt es Benachrichtigungen zu versenden und empfangen~\cite{ip5}.
 Dieser Mobile Client wird durch eine native iOS Applikation ersetzt.
-Die native iOS App wird von Grund auf neu entwickelt.
-Dabei muss sämtliche Funktionen des bestehenden Mobile Clients als Teil der nativen App neu implementiert werden.
+Dabei wird sämtliche Funktionen des Mobile Clients aus dem Vorgängerprojekt in die native App migriert.
 Weiter werden die Funktionen Gegensprechanlage und Sprachsynthese für empfangene Benachrichtigungen umgesetzt.
 
 \textbf{Admin UI}
@@ -68,6 +68,7 @@ Der Cloudservice muss an den Messaging Service angebunden sein, um Benachrichtig
 Die Anbindung des Cloudservices an den Messaging Service ist mit dem Vorgängerprojekt bereits umgesetzt und muss für dieses Projekt nicht angepasst werden.
 Die neu entwickelte native iOS App muss hingegen an den Messaging Service angebunden werden, um Benachrichtigungen zu empfangen.
 Als Messaging Service wird Firebase Cloud Messaging verwendet.
+\\
 
 \textbf{Speech Synthesis Service}
 
