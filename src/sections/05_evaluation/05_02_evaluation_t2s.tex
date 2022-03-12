@@ -1,12 +1,13 @@
 \subsection{Sprachsynthese}
 
-Das Feature Sprachsynthese fordert, dass das System das Vorlesen empfangener Benachrichtigungen unterstützt.
-Um dies zu ermöglichen muss eine Technologie integriert werden, die es erlaubt aus Sprachdaten aus Textinhalten zu synthetisieren.
-Diese Sprachdaten müssen als Audiodateien vom Mobile Client abgespielt werden können.
+In diesem Kapitel wird entschieden, mit welcher Technologie das Feature Sprachsynthese umgesetzt wird.
+Das Feature fordert, dass das System das Vorlesen empfangener Benachrichtigungen unterstützt.
+Um dies zu ermöglichen, muss eine Technologie integriert werden, die es erlaubt Sprachdaten aus Textinhalten zu synthetisieren.
+Diese Sprachdaten müssen als Audiodateien von der iOS Applikation abgespielt werden können.
 
-Diese Integration kann mit den Standardbibliotheken für iOS oder durch die Anbindung eines externen Providers umgesetzt werden.
-Die Anbindung eines externen Providers kann direkt im Mobile Client implementiert werden.
-Alternativ kann die Serverkomponente Cloudservice an den Provider angebunden werden und allen Clients eine einheitliche Schnittstelle bieten, um diese Daten abzufragen.
+Diese Anforderungen können mit den Standardbibliotheken für iOS-Entwicklung oder durch die Anbindung eines externen Anbieters umgesetzt werden.
+Die Anbindung eines externen Anbieters kann direkt im Mobile Client implementiert werden.
+Alternativ kann die Serverkomponente Cloudservice an einen Anbieter angebunden werden und allen Clients eine einheitliche Schnittstelle bieten, um diese Daten abzufragen.
 
 \subsubsection{Apple Speech Synthesis}
 
@@ -23,17 +24,18 @@ Eine einheitliche Integration der Sprachsynthese in zukünftigen Plattformen ist
 
 \subsubsection{Amazon Polly}
 
-Vom Auftraggeber ist explizit gewünscht, dass für Infrastruktur und Dienstleistungen wo möglich Amazon Webservices verwendet wird\footnote{Siehe Kapitel 3.1.3}.
-Mit dem Amazon Polly bietet Amazon Webservices einen Service, welcher Text in Sprachdaten verwandeln kann~\cite{aws_polly}.
+Die Anforderung U19\footnote{Siehe Kapitel 3.1.3} fordert, dass für Infrastruktur und Dienstleistungen wo möglich Amazon Webservices verwendet wird.
+Mit dem Amazon Polly bietet Amazon Webservices einen Dienst, welcher Text in Sprachdaten verwandeln kann~\cite{aws_polly}.
 Amazon Webservices stellt Libraries für iOS~\cite{aws_polly_ios}, Android~\cite{aws_polly_sdks} und für Java zur Verfügung~\cite{aws_polly_java}.
-Polly kann damit sowohl direkt in native mobile Applikationen als auch in den Cloudservice integriert werden.
+Amazon Polly kann damit sowohl direkt in native mobile Applikationen als auch in den Cloudservice integriert werden.
 
 Die iOS Library von Amazon Polly ermöglicht es, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren~\cite{aws_polly_ios}.
 Diese Lösung kann für zukünftige Android Clients analog mit der Android Library für Aws Polly umgesetzt werden.
 Die starke Bindung zu Apple als Dienstleister für Sprachsynthese entfällt durch diese Lösung.
 Es wird allerdings eine starke bindung zu Amazon Polly als Dienstleister geschaffen.
-Ein Wechsel des Providers bleibt auch in dieser Variante aufwändig.
-Weiter bringt auch diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
+Ein Wechsel des Anbieters bleibt auch in dieser Variante aufwändig.
+Insbesondere, wenn in Zukunft Clients auf für mehr Plattformen als iOS angeboten werden.
+%Weiter bringt auch diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
 
 Mit der Java Bibliothek von Amazon Polly kann die Anbindung des Sprachsyntheseproviders im Cloudservice vorgenommen werden.
 Dadurch ist es möglich im Cloudservice eine Schnittstelle zu implementieren, welche den Bezug von Sprachdaten für Benachrichtigungen erlaubt.
@@ -45,30 +47,35 @@ Gleichzeitig hat diese Variante den Nachteil, dass der Cloudservice komplexer wi
 Durch die Integration von Sprachsynthese wird ein neues Umsystem angebunden.
 Die Komplexität des Systems als Ganzes, wächst dadurch in jedem Fall.
 Wie stark die Komplexität des Systems zunimmt, kann jedoch minimiert werden, indem die neue Funktionalität eng gekapselt wird.
-Sie kann so umgesetzt werden, dass sie unabhängig vom restlichen System bleibt und alle nötigen Daten über die Schnittstelle der anderen Module bezieht.
+Sie kann so umgesetzt werden, dass sie unabhängig vom restlichen System bleibt und alle nötigen Daten über die Schnittstellen anderer Module bezieht.
 
-Als dritte Option für die Integration von Amazon Polly kan AWS Lambda verwendet werden~\cite{aws_polly}.
-AWS Lambda erlaubt es Funktionalität serverless auszuführen.
-Der entsprechende Code läuft in diesem Fall nicht als klassischer Server, sondern wird nur bei Bedarf ausgeführt~\cite{aws_lambda}
-Die Integration von Amazon Polly über AWS Lambda kann für das Praxisrufsystem in zwei Verarbeitungsschritten implementiert werden.
+Als dritte Option für die Integration von Amazon Polly kann AWS Lambda verwendet werden~\cite{aws_polly}.
+AWS Lambda erlaubt es Funktionalität ohne Serverinstanz auszuführen.
+Der Bezieher der Dienstleistung definiert die auszuführende Funktionalität und bestimmt, wann diese ausgeführt wird.
+Die Entscheidung, wie die Funktionalität ausgeführt wird, wird dabei an AWS übergeben~\cite{aws_lambda}.
+Dies erlaubt es Funktionalität in ein System zu integrieren, ohne Serverinfrastruktur aufbauen zu müssen.
+
+Die Integration von Amazon Polly über AWS Lambda kann für Praxisruf in zwei Verarbeitungsschritten implementiert werden.
 In einem ersten Schritt werden die zu synthetisierenden Daten geladen und an Amazon Polly gesendet.
 Anschliessend werden die Resultate, die Amazon Polly liefert persistiert.
 Die Abfrage von Sprachdaten kann in diesem Fall ebenfalls in die API des Cloudservices integriert werden.
 Dazu müssen die persistierten Sprachdaten geladen und zurückgegeben werden.
 Die Verwendung von AWS Lambda hat damit den Nachteil, dass die synthetisierten Sprachdaten zwingend ausserhalb des Mobile Clients persistiert werden müssen.
-Weiter findet damit eine zusätzliche Bindung an Amazon statt.
+Weiter bedeutet diese Anbindung eine stärkere Bindung an Amazon als Dienstleister, weil die Anbindung der Sprachsynthese über proprietäre Funktionalität von Amazon implementiert wird.
 Gleichzeitig bietet es den Vorteil, dass weniger Infrastruktur benötigt wird, da die Abfrage an AWS Polly ohne dedizierten Server abgesetzt werden kann.
 
 \subsubsection{Entscheidung}
 
-Die Sprachsynthese wird durch die Anbindung des externen Providers Amazon Polly umgesetzt.
+Die Sprachsynthese wird durch die Anbindung des externen Anbieters Amazon Polly umgesetzt.
 Der Cloudservice übernimmt die Kommunikation mit Amazon Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
 Diese Schnittstelle wird in die API des Cloudservices integriert.
 Die Anbindung an Amazon Polly wird dabei direkt im Cloudservice implementiert und nicht über AWS Lambda gelöst.
-So kann die bestehende Infrastruktur des Cloudservices übernommen werden und es ist nicht notwendig die Sprachdaten zu persistieren.
+So kann die bestehende Infrastruktur des Cloudservices übernommen werden und es ist nicht notwendig die Sprachdaten ausserhalb von Mobile Clients zu persistieren.
+Dies erlaubt es einerseits ein Clientseitiges Cache für Sprachdaten zu implementieren und dadurch Netzwerkanfragen zu minimieren.
+Es erlaubt es weiter, nur Sprachdaten zu synthetisieren, welche tatsächlich von Clients angefragt werden.
 
-Durch diesen Ansatz wird die Abhängigkeit zu einzelnen Provider minimiert.
-Die Anbindung von Sprachsynthese kann für alle Client Plattformen einheitlich umgesetzt werden.
+Durch diesen Ansatz wird die Abhängigkeit zu einzelnen Anbieter minimiert.
+Die Anbindung von Sprachsynthese kann für alle Client-Plattformen einheitlich umgesetzt werden.
 Dies macht die gewählte Variante zukunftssicher und bietet grosse Flexibilität für den Betrieb.
 Der Zuwachs an Komplexität durch die Anbindung eines neuen Umsystems wird durch entsprechende Kapselung der Funktionalität in ein eigenes Modul minimiert.
 
