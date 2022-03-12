@@ -1,0 +1,27 @@
+\subsection{Vorarbeit Cloudbasiertes Praxisrufsystem}
+
+Mit dem Vorgängerprojekt ''Cloudbasiertes Praxisrufsystem'' wurde ein cloudbasiertes Rufsystem mit dem Namen Praxisruf entwickelt.
+Dieses ermöglicht es, vorkonfigurierte Benachrichtigungen zu versenden und empfangen.
+Das System unterstützt allerdings noch keine Sprachverbindungen oder Sprachausgabe.
+
+Praxisruf umfasst eine zentrale Serverkomponente, eine Weboberfläche und eine mobile Applikation für iOS und Android Tablets.
+Die mobile Applikation dient als Benutzeroberfläche für Praxismitarbeitende.
+Sie ermöglicht es vorkonfigurierte Benachrichtigung zu senden und empfangen.
+Die Konfiguration des Systems wird mit der Serverkomponente ''Cloudservice'' verwaltet.
+Der Cloudservice bietet dazu eine API an, über welche Konfigurationen erfasst, gelesen und bearbeitet werden können.
+Die Weboberfläche ''Admin UI'' bietet eine Benutzeroberfläche, um Konfigurationen zu verwalten.
+Das Admin UI verwendet dazu die API des Cloudservice.
+Die API des Cloudservice wird weiter von der mobilen Applikation verwendet, um die Konfiguration zu laden und Benachrichtigungen zu versenden.
+
+Das Senden und Empfangen von Benachrichtigungen in Praxisruf wird durch Firebase Cloud Messaging (FCM) ermöglicht.
+Sowohl in der mobilen Applikation als auch im Cloudservice ist eine Anbindung an FCM implementiert.
+Dabei wird die Anbindung auf der Seite der App ausschliesslich zum Empfangen von Meldungen verwendet.
+Das Versenden von Benachrichtigungen wird an den Cloudservice delegiert.
+Dazu wird die API des Cloudservice verwendet.
+Der Cloudservice wertet die Konfiguration aus, um relevante Empfänger zu identifizieren.
+Anschliessend benutzt er die FCM-Anbindung, um die Benachrichtigung an alle relevanten Empfänger zuzustellen.
+
+Sämtliche Infrastruktur für Praxisruf ist mit Amazon Webservices (AWS) eingerichtet.
+Der Cloudservice besteht aus einer einzelnen Java-Applikation, welche mit einer AWS Elastic Beanstalk Instanz betrieben.
+Das Admin UI ist eine simple Javascript Applikation.
+Sie wird mit AWS Amplify betrieben~\cite{ip5}.
