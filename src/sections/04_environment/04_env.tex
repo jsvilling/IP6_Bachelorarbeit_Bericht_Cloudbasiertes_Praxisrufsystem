@@ -1,30 +1,40 @@
 \section{Ausgangslage}
 
-Dieses Kapitel beschreibt das Umfeld in dem diese Projektarbeit ausgeführt wird.
+Dieses Kapitel beschreibt die Ausgangslage zu Beginn dieser Projektarbeit.
 Dabei wird eine grobe Übersicht zu der im Vorgängerprojekt erarbeiteten Lösung gegeben.
 Es wird weiter ein Überblick über vergleichbare bestehende Systeme gegeben.
 
 \subsection{Bestehende Rufsysteme}
 
-Im Vorfeld dieses Projektes wurde eine Marktanalyse durchgeführt zu kommerziell erhältlichen Rufsystemen durchgeführt.
+Im Vorfeld dieses Projektes wurde eine Marktanalyse zu kommerziell erhältlichen Rufsystemen durchgeführt.
 Die Resultate dieser Analyse sind in der Aufgabenstellung dieses Projektes zusammengefasst:
 Die meisten kommerziell erhältlichen Rufsysteme basieren auf proprietären Standards und setzen veraltete Funktechnologien ein.
-Weiter seien bestehende Systeme weder über TCP/IP Netzwerke integrierbar, noch über externe eine API ansteuerbar.\cite{aufgabenstellung}
+Diese Systeme sind weder über TCP/IP-Netzwerke integrierbar, noch über externe APIs ansteuerbar~\cite{aufgabenstellung}.
+Bestehende Systeme sind deshalb oft aufwändig zu installieren und konfigurieren.
+Erweiterung und Veränderungen am System können nur mit grösserem Aufwand vorgenommen werden.
 
-Durch das Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' wurde ein im Funktionsumfang eingeschränktes cloudbasiertes Praxisrufsystem entwickelt.
-Dieses wird im folgenden Kapitel vorgestellt.
+Ein cloudbasiertes Praxisrufsystem kann diese Probleme lösen.
+Durch die Verwaltung der Konfiguration in Clouddiensten können Schnittstellen zur Integration von Endgeräten geboten werden.
+Weiter können Schnittstellen geschaffen werden, welche die Kommunikation anhand dieser Konfiguration vermitteln.
+Endgeräte können diese Schnittstellen verwenden, um ihre Konfiguration zu beziehen und mit anderen Endgeräten zu kommunizieren.
+Ein solches Rufsystem kann einfach verändert und erweitert werden.
+Die Konfiguration kann über die Schnittstellen der Clouddienste verwaltet werden.
+Neue Endgeräte können Ihre Konfiguration über dieselbe Schnittstelle beziehen und über die Clouddienste miteinander kommunizieren.
+Clouddienste können unabhängig von den Endgeräten skaliert werden und über die Schnittstellen in bestehende Netzwerke integriert werden.
 
 \subsection{Vorarbeit Cloudbasiertes Praxisrufsystem}
 
-Das im Projekt ''IP5 Cloudbasiertes Praxisrufsystem'' entwickelte Praxisrufsystem ermöglicht es vorkonfigurierte Benachrichtigungen zwischen Endgeräten zu versenden.
-Sprachverbindungen und Sprachsynthese für Benachrichtigungen werden von diesem System nicht unterstützt.
+Mit dem Vorgängerprojekt ''Cloudbasiertes Praxisrufsystem'' wurde ein Praxisrufsystem entwickelt, welches es ermöglicht, vorkonfigurierte Benachrichtigungen zwischen Endgeräten zu versenden.
+Das System wurde als cloudbasiertes Praxisrufsystem umgesetzt.
+Es führt die Konfiguration in einem Clouddienst und bietet Schnittstellen um die Konfiguration zu verwalten und Benachrichtigungen zu versenden.
 
 Das bestehende System umfasst eine zentralen Serverkomponente, eine Weboberfläche und eine mobile Applikation.
 Die mobile Applikation dient als Endgeräte für Praxismitarbeitende.
 Sie ermöglicht es vorkonfigurierte Benachrichtigung zu senden und empfangen.
 Die Konfiguration des Systems wird mit der Serverkomponente ''Cloudservice'' verwaltet.
-Der Cloudservice bietet dazu eine REST Api an, über welche Konfigurationen erfasst und gelesen werden können.
-Diese Api wird von der Weboberfläche ''Admin UI'' angesprochen, um Konfigurationen zu erstellen und bearbeiten.
+Der Cloudservice bietet dazu eine Http-Schnittstelle an, über welche Konfigurationen erfasst, gelesen und bearbeitet werden können.
+Diese Api wird von der Weboberfläche ''Admin UI'' angesprochen.
+Das Admin UI bietet eine Benutzeroberfläche, um Konfigurationen zu verwalten.
 Sie wird weiter von der mobilen Applikation verwendet, um die Konfiguration der Applikation zu laden.
 
 Das Senden und Empfangen von Benachrichtigungen im bestehenden System wird durch Firebase Cloud Messaging (Firebase Cloud Messaging) ermöglicht.
