@@ -89,26 +89,27 @@ Abhängigkeiten zwischen den beiden Domänen ist über eine REST-Schnittstelle a
 Die Trennung der Domänen, erlaubt es die Anwendung zukünftig in mehrere Microservices aufzuteilen.
 Diese könnten unabhängig betrieben und erweitert werden.
 Weiter wird es dadurch möglich, einzelnen Teilen der Applikation mehr Ressourcen zuzuteilen.
-Die Trennung der Domänen in eigene Microservices wurde noch nicht vorgenommen.
+Die Trennung der Domänen in eigene Microservices wurde im Rahmen des Vorgängerprojektes noch nicht vorgenommen.
 Die beiden Domänen wurden lediglich durch die Package Struktur innerhalb eines einzelnen monolithischen Services getrennt.
 
-Die Trennung der Domänen innerhalb des Cloudservice wird weiter verstärkt.
-Teile der Applikation werden neu in Module aufgeteilt.
+Mit diesem Projekt wir die Trennung der Domänen innerhalb des Cloudservice verstärkt.
+Die Applikation wird in strikt getrennte Module aufgeteilt.
 Dabei wird pro Domäne ein Modul erstellt.
 Dieses kapselt sämtliche Domänenobjekte, Services und Schnittstellen der jeweiligen Domäne.
 Dadurch ist garantiert, dass die Domänen sauber voneinander getrennt sind.
-Sämtliche Kommunikation zwischen den Modulen muss über REST-Schnittstellen geschehen.
+Sämtliche Kommunikation zwischen den Modulen muss über die API der jeweiligen Module geschehen.
 
 Es werden die vier Domänen-Module Configuration, Notification, Spech Synthesis und Signaling definiert.
 Das Modul Configuration beinhaltet alle Domänenobjekte, Services und Schnittstellen für die Verwaltung, Auswertung und Abfrage der Systemkonfiguration.
 Das Modul Notification beinhaltet alle Domänenobjekte, Services und Schnittstellen für das Versenden von Benachrichtiungen.
-Das Modul Speech Synthesis beinhaltet die Anbindung an den Speech Synthesis Service und stellt eine Schnittstelle zur verfügung über den das restliche System Sprachdaten beziehen kann.
-Das Modul Signaling beinhaltet Domänenobjekte, Services und Schnittstellen für die Signalvermittlung zwischen Mobile Clients.
+Das Modul Speech Synthesis beinhaltet die Anbindung an den Speech Synthesis Service.
+Es stellt eine Schnittstelle zur Verfügung, über die Sprachdaten angefragt werden können.
+Das Modul Signaling dient als Signaling Instanz für den Aufbau von Sprachverbindungen mit WebRTC\@.
+Es beinhaltet Domänenobjekte, Services und Schnittstellen für die Signalvermittlung zwischen Mobile Clients.
 
 Weiter werden die zwei Module Commons und App definiert.
 Komponenten, welche in mehr als einer Domäne verwendet werden, werden in ein zusätzliches Commons Modul verlegt.
 Dazu gehören Data Transfer Objects für Schnittstellen zwischen den Modulen, geteilte Clients um Abfragen auf andere Module abzusetzen sowie Komponenten für Security und Fehlerhandling.
-Neben den Modulen App und Commons, werden vier weitere Module für die Domänen Configuration, Notification, Speech Synthesis und Signaling erstellt.
 
 Der Cloudservice wird weiterhin als monolithische Applikation betrieben.
 Die Modularisierung garantiert dabei eine strikte Trennung der Domänen.
@@ -119,7 +120,7 @@ In Zukunft können einzelne Module aus dem Cloudservice ausgelöst und als eigen
 \subsubsection{Domänenmodell Cloudservice}
 
 Das Domänenmodell Cloudservices wird für die Integration von Sprachsynthese und Gegensprechanlage erweitert.
-Abbildung 7.2 gibt eine Übersicht über das vollständige Domänenmodell der Domänen Configuration und Notification.
+Abbildung 7.2 zeigt das vollständige Domänenmodell der Domänen Configuration und Notification.
 Die neuen Domänen Speech Synthesis und Signaling führen keine persistierten Daten.
 Die Services und Komponenten dieser Domänen sind in den Kapiteln 7.3 und 7.4 beschrieben.
 
