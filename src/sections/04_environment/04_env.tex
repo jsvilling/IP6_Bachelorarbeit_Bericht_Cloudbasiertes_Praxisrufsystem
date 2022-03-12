@@ -1,8 +1,8 @@
 \section{Ausgangslage}
 
 Dieses Kapitel beschreibt die Ausgangslage zu Beginn dieser Projektarbeit.
-Dabei wird eine grobe Übersicht zu der im Vorgängerprojekt erarbeiteten Lösung gegeben.
-Es wird weiter ein Überblick über vergleichbare bestehende Systeme gegeben.
+Es wird eine Übersicht zu bestehenden Lösungen und den Problemen, welche diese haben gegeben.
+Weiter wird ein Überblick zu der im Vorgängerprojekt erarbeiteten Lösung gegeben.
 
 \subsection{Bestehende Rufsysteme}
 
@@ -19,36 +19,37 @@ Weiter können Schnittstellen geschaffen werden, welche die Kommunikation anhand
 Endgeräte können diese Schnittstellen verwenden, um ihre Konfiguration zu beziehen und mit anderen Endgeräten zu kommunizieren.
 Ein solches Rufsystem kann einfach verändert und erweitert werden.
 Die Konfiguration kann über die Schnittstellen der Clouddienste verwaltet werden.
-Neue Endgeräte können Ihre Konfiguration über dieselbe Schnittstelle beziehen und über die Clouddienste miteinander kommunizieren.
+Neue Endgeräte können über diese Schnittstellen einfach in das System integriert werden.
 Clouddienste können unabhängig von den Endgeräten skaliert werden und über die Schnittstellen in bestehende Netzwerke integriert werden.
 
 \subsection{Vorarbeit Cloudbasiertes Praxisrufsystem}
 
-Mit dem Vorgängerprojekt ''Cloudbasiertes Praxisrufsystem'' wurde ein Praxisrufsystem entwickelt, welches es ermöglicht, vorkonfigurierte Benachrichtigungen zwischen Endgeräten zu versenden.
-Das System wurde als cloudbasiertes Praxisrufsystem umgesetzt.
-Es führt die Konfiguration in einem Clouddienst und bietet Schnittstellen um die Konfiguration zu verwalten und Benachrichtigungen zu versenden.
+Mit dem Vorgängerprojekt ''Cloudbasiertes Praxisrufsystem'' wurde ein cloudbasiertes Rufsystem mit dem Namen Praxisruf entwickelt.
+Dieses ermöglicht es, vorkonfigurierte Benachrichtigungen zu versenden.
+Das System führt die Konfiguration in einem Clouddienst.
+Es bietet Schnittstellen, um die Konfiguration zu verwalten und Benachrichtigungen zu versenden.
 
-Das bestehende System umfasst eine zentralen Serverkomponente, eine Weboberfläche und eine mobile Applikation.
-Die mobile Applikation dient als Endgeräte für Praxismitarbeitende.
+Praxisruf umfasst eine zentrale Serverkomponente, eine Weboberfläche und eine mobile Applikation für iOS und Android Tablets.
+Die mobile Applikation dient als Benutzeroberfläche für Praxismitarbeitende.
 Sie ermöglicht es vorkonfigurierte Benachrichtigung zu senden und empfangen.
 Die Konfiguration des Systems wird mit der Serverkomponente ''Cloudservice'' verwaltet.
-Der Cloudservice bietet dazu eine Http-Schnittstelle an, über welche Konfigurationen erfasst, gelesen und bearbeitet werden können.
-Diese Api wird von der Weboberfläche ''Admin UI'' angesprochen.
-Das Admin UI bietet eine Benutzeroberfläche, um Konfigurationen zu verwalten.
-Sie wird weiter von der mobilen Applikation verwendet, um die Konfiguration der Applikation zu laden.
+Der Cloudservice bietet dazu eine API an, über welche Konfigurationen erfasst, gelesen und bearbeitet werden können.
+Die Weboberfläche ''Admin UI'' bietet eine Benutzeroberfläche, um Konfigurationen zu verwalten.
+Das Admin UI verwendet dazu die API des Cloudservice.
+Die API des Cloudservice wird weiter von der mobilen Applikation verwendet, um die Konfiguration zu laden und Benachrichtigungen zu versenden.
 
-Das Senden und Empfangen von Benachrichtigungen im bestehenden System wird durch Firebase Cloud Messaging (Firebase Cloud Messaging) ermöglicht.
-Sowohl in der Mobile Client als auch im Cloudservice ist eine Anbindung an FCM implementiert.
-Dabei wird die Anbindung auf der Seite des Mobile Clients ausschliesslich zum Empfangen von Meldungen verwendet.
+Das Senden und Empfangen von Benachrichtigungen im bestehenden System wird durch Firebase Cloud Messaging (FCM) ermöglicht.
+Sowohl in der mobilen Applikation als auch im Cloudservice ist eine Anbindung an FCM implementiert.
+Dabei wird die Anbindung auf der Seite der App ausschliesslich zum Empfangen von Meldungen verwendet.
 Das Versenden von Benachrichtigungen wird an den Cloudservice delegiert.
-Dazu sendet ein Mobile Client eine Anfrage an die REST Api des Cloudservice.
-Dieser wertet die Konfiguration aus und benutzt die FCM Anbindung um eine Benachrichtigung an alle relevanten Empfänger zuzustellen.
+Dazu wird die API des Cloudservice verwendet.
+Der Cloudservice wertet die Konfiguration aus, um relevante Empfänger zu identifizieren.
+Anschliessend benutzt er die FCM-Anbindung, um die Benachrichtigung an alle relevanten Empfänger zuzustellen.
 
 Sämtliche Infrastruktur für das bestehende Praxisrufsystem ist mit Amazon Webservices (AWS) eingerichtet.
-Der Cloudservice besteht aus einer einzelnen Java-Applikation.
-Diese wird mit einer AWS Elastic Beanstalk Instanz betrieben.
+Der Cloudservice besteht aus einer einzelnen Java-Applikation, welche mit einer AWS Elastic Beanstalk Instanz betrieben.
 Das Admin UI ist eine simple Javascript Applikation.
-Sie wird mit AWS Amplify betrieben.\cite{ip5}
+Sie wird mit AWS Amplify betrieben~\cite{ip5}.
 
 %\subsection{Vergleichbare Anwendungen}
 %
