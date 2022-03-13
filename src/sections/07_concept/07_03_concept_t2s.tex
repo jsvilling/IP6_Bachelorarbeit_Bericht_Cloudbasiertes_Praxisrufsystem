@@ -1,6 +1,6 @@
 \subsection{Sprachsynthese}
 
-Dieses Kapitel beschreibt die Integration der Sprachsynthese in das Praxisrufsystem.
+Dieses Kapitel beschreibt die Integration von Sprachsynthese in Praxisruf.
 Der Fokus liegt dabei auf den Abläufen zum Empfangen von Benachrichtigungen und dem Abrufen der Sprachdaten.
 Der Empfang von Benachrichtigungen wird so erweitert, dass der Inhalt empfangener Benachrichtigungen automatisch vorgelesen wird.
 
@@ -12,7 +12,7 @@ Diese Konfiguration wird über die Entität NotificationType verwaltet.
 Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Sprachsynthese relevant ist.
 Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen ''isTextToSpeech'' erweitert.
 Dieses Flag wird beim Versenden einer Benachrichtigung mitgesendet und kann vom Empfänger überprüft werden.
-Insofern Sprachbenachrichtigungen in den Einstellungen aktiviert sind, werden Benachrichtigungen, welche dieses Flag aktiviert haben.
+Wenn das Vorlesen von Benachrichtigungen in den lokalen Einstellungen und das Flag auf der Benachrichtigung aktiviert sind, wird die Benachrichtigungen vorgelesen.
 Abbildung 7.9 zeigt einen Ausschnitt aus dem Entity Relationship Diagramm der Domäne Configuration.
 Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün markiert.
 
@@ -30,9 +30,9 @@ Der Inhalt dieses Felds wird ebenfalls beim Versenden von Benachrichtigungen mit
 Auf Client-Seite wird diese Information zur Implementierung eines Cache verwendet.
 
 \clearpage
-\subsubsection{Integration Sprachsynthese Provider}
+\subsubsection{Anbindung von Sprachsynthese in Cloudservice}
 
-Dieses Kapitel beschreibt, wie Amazon Polly in das cloudbasierte Praxisrufsystem integriert wird, um das Vorlesen von Benachrichtigungen zu ermöglichen.
+Dieses Kapitel beschreibt, wie Amazon Polly an den Cloudservice angebunden wird, um das Vorlesen von Benachrichtigungen zu ermöglichen.
 
 Die Anbindung an Amazon Polly erfolgt zentral im Cloudservice.
 Sämtliche Anfragen an Amazon Polly werden durch den Cloudservice gemacht.
@@ -42,17 +42,17 @@ Dieser führt die Anfrage an Amazon Polly aus und gibt die Resultate an den Anfr
 
 Für die Anbindung von Amazon Polly wird der Cloudservice um ein Modul mit dem Namen ''Speech Synthesis'' erweitert.
 Dieses Modul muss unabhängig von allen anderen Domänen-Modulen des Cloudservice umgesetzt werden.
-Werden Daten aus einer anderen Domäne benötigt, muss die Kommunikation über die REST API des entsprechenden Domänen-Moduls gehen.
-Diese Unabhängigkeit ermöglicht es, das Modul in Zukunft einfach aus dem Cloudservice auszubauen und als eigenständigen Microservice zu betreiben.
+Werden Daten aus einer anderen Domäne benötigt, muss die Kommunikation über die API des entsprechenden Moduls gehen.
+Diese Trennung ermöglicht es, das Modul in Zukunft einfach aus dem Cloudservice auszubauen und als eigenständigen Microservice zu betreiben.
 
-Die Abhängigkeit zu Amazon Polly als Provider soll weitmöglichst minimiert werden.
+Die Abhängigkeit zu Amazon Polly als Anbieter soll weitmöglichst minimiert werden.
 So kann bei Bedarf einfacher auf einen anderen Provider gewechselt werden.
 Um dies zu ermöglichen wird das Interface SpeechSynthesisService definiert.
 Dieses gibt eine einzelne Methode vor, welche eine InputStreamResource zurückgibt und eine Universal Unique Id (UUID) als Parameter entgegennimmt.
 Der Parameter entspricht der technischen Identifikation des zu synthetisierenden Benachrichtigungstypes (NotificationType).
 Die InputStreamResource muss die synthetisierten Sprachdaten enthalten.
-Dieses Interface wird der Komponente, welche die Schnittstelle nach aussen bietet verwendet.
-Um einen neuen Provider zu unterstützen, kann dieses Interface implementiert werden und die neue Implementation in Schnittstelle verwendet werden.
+Dieses Interface wird von der Komponente, welche die Schnittstelle nach aussen bietet verwendet.
+Um einen Anbieter für Sprachsynthese anzubinden, kann dieses Interface implementiert werden und der Schnittstelle zur Verfügung gestellt werden.
 Das Klassendiagramm in Abbildung 7.10 gibt einen Überblick über den Aufbau des Moduls Speech Synthesis.
 
 \begin{figure}[h]
@@ -63,7 +63,7 @@ Das Klassendiagramm in Abbildung 7.10 gibt einen Überblick über den Aufbau des
     \end{minipage}
 \end{figure}
 
-Für die Anbindung des Providers Amazon Polly wird das SpeechSynthesisService Interface mit der Klasse AwsPollySpeechSynthesisService implementiert.
+Für die Anbindung des Providers Amazon Polly wird das Interface SpeechSynthesisService mit der Klasse AwsPollySpeechSynthesisService implementiert.
 Amazon stellt einen Java Bibliothek für Amazon Polly zur Verfügung, welcher diese Anbindung ermöglicht~\cite{aws_polly_sdks}.
 Diese Bibliothek bietet alle Klassen die für die Anbindung an AWS Polly nötig sind und wird in der Implementierung des SprachSyntheseProviderService verwendet, um den Service anzubinden.
 
@@ -81,35 +81,46 @@ Der Cloudservice ist als Java-Applikation mit Spring Boot umgesetzt.
 Dies ermöglicht es, die notwendigen Komponenten in einer Spring Konfigurationsklasse zu konfigurieren und als Spring Beans zu instanziieren.
 Über die Dependency Injection von Spring werden diese Komponenten dem AwsPollySpeechSynthesisService übergeben werden.
 
-Die Properties, welche für die technische Konfiguration notwendig sind, werden aus dem application.yml für das aktuell aktive Profil geladen.
+Werte, welche für die technische Konfiguration notwendig sind, werden aus der Konfigurationsdatei application.yml geladen.
 Sprache und Region werden sich im Rahmen dieses Projektes nie ändern und beinhalten keine sensitiven Informationen.
-Sie werden deshalb direkt in der Konfigurationsdatei application.yml definiert und mit dem Quellcode des Projektes verwaltet.
+Sie werden deshalb direkt in der Konfigurationsdatei definiert und mit dem Quellcode des Projektes verwaltet.
 Als Credentials für die Anbindung dienen die zwei Schlüssel AccessKey und SecretKey.
-Diese werden nicht direkt im application.yml abgelegt.
-Für sämtliche Credentials wird im application.yml ein Platzhalter definiert, welcher die Credentials aus entsprechend benannten Umgebungsvariablen lädt.
+Credentials werden nicht direkt in der Konfigurationsdatei gespeichert.
+Stattdessen wird ein Platzhalter definiert, welcher die Werte für Credentials aus entsprechend benannten Umgebungsvariablen lädt.
 Die Zugangsdaten müssen damit nicht mit dem Quellcode verwaltet werden.
 
-\subsubsection{Schnittstelle Cloudservice}
+\subsubsection{Sprachsynthese über Cloudservice API}
 
-Endgeräte im Praxisrufsystem müssen Sprachdaten über den Cloudservice beziehen können.
+Endgeräte in Praxisruf müssen Sprachdaten über den Cloudservice beziehen können.
 Das Modul Speech Synthesis stellt deshalb eine Schnittstelle zur Verfügung, über welche Sprachdaten abgefragt werden können.
 Dabei ist es nicht möglich beliebige Textdaten in Sprachdaten zu verwandeln.
-Stattdessen erlaubt der Endpunkt die Abfrage Sprachdaten für die aktuellste Version eines Benachrichtigungstypen (NotificationType).
+Stattdessen erlaubt die Schnittstelle die Abfrage von Sprachdaten für Inhalt und Sender einer Benachrichtigung.
 
-Für die Sprachsynthese wird das Feld ''title'' auf aus der Entität NotificationType aus der Domäne Configuration verwendet.
-Der Endpunkt zum Bezug von Sprachdaten nimmt deshalb einen Parameter mit dem Namen 'notificationTypeId' entgegen.
-Dieser Parameter muss dem technischen Identifikator eines Benachrichtigungstyps (NotificationType) entsprechen.
-Anhand dieses Identifikators wird der entsprechende NotificationType über die API des Moduls Configuration bezogen.
+Als Inhalt einer Benachrichtigung wird das Feld ''title'' aus der Entität NotificationType verwendet.
+Der Name des Senders wird dem Feld ''name'' der Entität Client entnommen.
+Beide Entitäten sind Teil des Moduls Configuration.
+Die entsprechenden Daten müssen deshalb über die API des Configuration-Moduls geladen werden.
+Um dies zu ermöglichen, werden die Identifikatoren der relevanten Entitäten zusammen mit Benachrichtigung versendet.
+
+Der Endpunkt zum Bezug von Sprachdaten nimmt die zwei Parameter ''notificationTypeId'' und ''sender'' entgegen.
+Diese müssen die technischen Identifikatoren der jeweiligen Entitäten beinhalten.
+Anhand dieser Parameter werden der die benötigten Daten von der API des Configuration-Moduls geladen.
 Anschliessend wird eine Anfrage an Amazon Polly gesendet um die Textdaten als Sprache zu synthetisieren.
+Der zu synthetisierende Text setzt sich dabei aus Inhalt der Benachrichtigung und Name des Senders zusammen.
+Die beiden Werte werden dabei durch ein Komma getrennt.
+Dadurch wird eine Pause zwischen dem Vorlesen der einzelnen Werte eingefügt.
 Die von Polly gelieferten Sprachdaten können anschliessend als Resultat zurückgegeben werden.
 
 Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
-Die Sprachdaten werden dabei als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
-Der Endpunkt wird aus Endgeräten mit Http GET Anfragen angesprochen.
+Die Sprachdaten werden darin als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
+Der Endpunkt wird aus Endgeräten mit Http Get Anfragen angesprochen.
 
-\subsubsection{Sicherheit}
+\clearpage
 
-Für die Authentisierung wird derselbe Mechanismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
+\subsubsection{Security}
+
+Anfragen an die API des Moduls Speech Synthesis müssen wie alle Anfragen an die Cloudservice API authentisiert werden.
+Für die Authentisierung wird derselbe Mechanismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet.
 Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
 Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist~\cite{ip5}.
 Diese Prüfung wurde im Rahmen des Vorgängerprojektes umgesetzt und wird weiterverwendet.
@@ -117,18 +128,18 @@ Diese Prüfung wurde im Rahmen des Vorgängerprojektes umgesetzt und wird weiter
 Um die Verschlüsselung der Übertragung von Sprachdaten und Anfragen zwischen Cloudservice und Mobile Client wird für die Übertragung ausschliesslich das Protokoll HTTPS verwendet.
 Die Übertragung von Daten zwischen Cloudservice und Amazon Polly ist über Secure Sockets Layer (SSL) geschützt~\cite{aws_polly_encryption_in_transit}.
 
-\subsubsection{Anbindung Mobile Client}
+\subsubsection{Sprachsynthese in iOS App}
 
-Dieses Kapitel beschreibt wie die API des Cloudservice aus einer nativen iOS Applikation abgesprochen werden kann.
-
-Für die Integration des SpeechSynthesis Endpunkts aus dem CloudService wird die in Kapitel 7.2 beschriebene Klasse PraxisrufApi erweitert.
+In der iOS App müssen empfangene Benachrichtigungen vorgelesen werden können.
+Um dies zu ermögli-chen wird eine Anbindung an die Sprachsynthese API des Cloudservice umgesetzt.
+Dazu wird die in Kapitel 7.2 beschriebene Klasse PraxisrufApi erweitert.
 Neben dem Abfragen von JSON Daten über HTTP Schnittstellen, muss diese für die Sprachsynthese auch das Herunterladen von Dateien unterstützten.
 Dazu wird die Komponente URLSession aus der iOS Standardbibliothek verwendet.
 Diese bietet mit URLSession.downloadTask die Möglichkeit Inhalte von einer URL herunterzuladen~\cite{ios_downloadtask}.
 
-Der Service PraxisrufApi wird dementsprechend um eine Methode mit dem Namen ''download'' ergänzt.
-Diese ist dafür verantwortlich, eine Anfrage für den Download mit Credentials aus dem iOS Keystore zu ergänzen und die Abfrage zu versenden.
-Die Resultate der Abfrage und aufgetretene Fehler werden analog zu anderen Abfragen an eine Callback-Funktion übergeben.
+Der Service PraxisrufApi wird um eine Methode mit dem Namen ''download'' ergänzt.
+Diese ist dafür verantwortlich, eine Anfrage für den Download mit Credentials aus dem iOS Keystore zu ergänzen und die Anfrage zu versenden.
+Die Resultate der Anfrage und aufgetretene Fehler werden analog zu anderen Abfragen an eine Callback-Funktion übergeben.
 Heruntergeladene Dateien werden von PraxisrufApi in einem temporären Verzeichnis gespeichert.
 Das Resultat im Erfolgsfall ist deshalb nicht die heruntergeladene Datei selbst, sondern eine URL welche auf die Datei im temporären Verzeichnis zeigt.
 
@@ -140,8 +151,8 @@ Die empfangene Benachrichtigung beinhaltet mit dem ''isTextToSpeech'' Flag, die 
 Ist eine Benachrichtigung für Sprachsynthese relevant, werden die Sprachdaten dazu vom Cloudservice bezogen.
 Dazu wird ein SpeechSynthesisService implementiert, welcher PraxisrufApi verwendet, um eine Anfrage an den Cloudservice zu senden.
 Wurden die Daten erfolgreich geladen, kopiert der SpeechSynthesisService die heruntergeladenen Daten aus dem temporären Downloadverzeichnis in ein permanentes Verzeichnis.
-Die Datei wird dabei unter dem Namen ''$<$NotificationTypeId$>$''.''$<$Version$>$'' gespeichert.
-Sowohl NotificationTypeId als auch Version können der empfangenen Benachrichtigung entnommen werden.
+Die Datei wird dabei unter dem Namen $NotificationTypeId.Version.SenderId$ gespeichert.
+Sowohl NotificationTypeId als auch Version und SenderId können der empfangenen Benachrichtigung entnommen werden.
 Nachdem die Sprachdatei unter dem neuen Namen gespeichert ist, wird ihr Inhalt abgespielt.
 
 Die Namenskonvention für die gespeicherten Sprachdateien, erlaubt es ein Cache auf der Seite der iOS Applikation umzusetzen.
@@ -149,9 +160,13 @@ Bevor der SpeechSynthesisService eine Anfrage an den Cloudservice absetzt, prüf
 Ist dies der Fall, wird keine Anfrage an den Cloudservice gesendet und es wird die bereits gespeicherte Sprachdatei abgespielt.
 Dieses Cache ermöglicht es Anfragen für Sprachsynthese zu minimieren und nach Änderungen trotzdem immer die aktuellsten Daten zu erhalten.
 
+\clearpage
+
 \subsubsection{Laufzeitsicht}
 
-Dieses Kapitel fasst den Ablauf für das Senden, Empfangen und Vorlesen von Benachrichtigungen zusammen.
+Dieses Kapitel beschreibt die Prozesse für das Vorlesen von Benachrichtigungen.
+Dabei wird der Ablauf vom Versenden der Benachrichtigung bis hin zur Ausgabe der Sprachdaten auf Empfängerseite beschrieben.
+Abbildung 7.11 stellt den Ablauf dem Empfangen einer Benachrichtigung aus Systemsicht dar.
 
 Um eine Benachrichtigung zu versenden, sendet ein Mobile Client eine Anfrage an den Cloudservice.
 Dieser lädt die gespeicherte Konfiguration und findet alle für die gewünschte Benachrichtigung relevanten Empfänger.
@@ -165,15 +180,6 @@ Daraufhin wird die Benachrichtigung im internen Model einem NotificationService 
 Dieser fügt die empfangene Benachrichtigung in eine Inbox ein.
 Ab diesem Moment ist die Benachrichtigung in der Inbox des Mobile Clients ersichtlich.
 
-Nachdem eine empfangene Benachrichtigung der Inbox hinzugefügt wurde, wird geprüft ob Sprachsynthese in den lokalen Einstellungen aktiviert ist.
-Ist diese deaktiviert, endet die Verarbeitung.
-Ist die Sprachsynthese lokal aktiviert, wird geprüft ob das ''isTextToSpeech'' Flag auf der Benachrichtigung aktiviert ist.
-Nur wenn das Flag aktiviert ist, wird die Benachrichtigung an den SpeechSynthesisService übergeben.
-Der SpeechSynthesisService prüft als erstes, ob die Sprachdaten für die empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
-Dies wird gemacht in dem er überprüft, ob im Applikationsverzeichnis bereits eine Datei für Id und Version der Benachrichtigung vorhanden ist.
-Ist dies der Fall, werden die Inhalte dieser Datei abgespielt und es wird keine Anfrage an den Cloudservice versendet.
-Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden, wird eine Anfrage an den CloudService gesendet.
-
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.9\textwidth}
@@ -182,13 +188,20 @@ Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden
     \end{minipage}
 \end{figure}
 
-Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser die Inhalte der relevanten Benachrichtigung aus der Konfiguration.
+
+Nachdem eine empfangene Benachrichtigung der Inbox hinzugefügt wurde, wird geprüft ob Sprachsynthese in den lokalen Einstellungen aktiviert ist.
+Ist diese deaktiviert, endet die Verarbeitung.
+Ist die Sprachsynthese lokal aktiviert, wird geprüft ob das ''isTextToSpeech'' Flag auf der Benachrichtigung aktiviert ist.
+Nur wenn das Flag aktiviert ist, wird die Benachrichtigung an den SpeechSynthesisService übergeben.
+Der SpeechSynthesisService prüft als erstes, ob die Sprachdaten für die empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
+Dies wird gemacht in dem er überprüft, ob im Applikationsverzeichnis bereits eine Datei für Id, Version und Sender der Benachrichtigung vorhanden ist.
+Ist dies der Fall, werden die Inhalte dieser Datei abgespielt und es wird keine Anfrage an den Cloudservice versendet.
+Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden, wird eine Anfrage an den CloudService gesendet.
+
+Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser Namen des Senders und die Inhalte der Benachrichtigung aus der Konfiguration.
 Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um den Titel der Benachrichtigung als Sprachdaten zu synthetisieren.
 Die Resultate von Amazon Polly werden als Resultat der Anfrage des Mobile Clients zurückgegeben.
 Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version verknüpften NotificationType.
 Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
-
-Abbildung 7.11 Stellt den Ablauf für das Empfangen und Vorlesen von Benachrichtigungen aus Systemsicht dar.
-Die Prüfung des lokalen Cache wird dabei nicht dargestellt.
 
 \clearpage
