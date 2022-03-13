@@ -1,17 +1,17 @@
 \subsection{Resultate}
 
-Mit dieser Arbeit wurde das cloudbasiertes Praxisrufsystem aus dem Vorgängerprojekt ''IP5 Cloudbasiertes Praxisrufsystem'' erweitert.
-Das erweiterte Rufsystem erlaubt es Benachrichtigungen zu Versenden und über Sprachverbindungen zu kommunizieren.
+Mit dieser Arbeit wurde das cloudbasiertes Praxisrufsystem ''Praxisruf'' erweitert.
+Das erweiterte Rufsystem erlaubt es, Benachrichtigungen zu Versenden und über Sprachverbindungen zu kommunizieren.
 Es wurde eine native iOS App entwickelt, welche es erlaubt das Praxisrfusystem zu bedienen.
 Diese App ersetzt den Mobile Client aus dem Vorgängerprojekt und unterstützt dabei alle Funktionen des alten Clients.
 
 Mit Amazon Polly wurde ein Service für Sprachsynthese an das System angebunden.
 Diese Anbindung wird verwendet, um bei Bedarf den Inhalt empfangener Benachrichtigungen automatisch vorlesen zu lassen.
 Letztlich wurde WebRTC verwendet, um eine konfigurierbare Gegensprechanlage zu implementieren.
-Diese erlaubt es über die iOS App Sprachverbindungen über das Praxisrufsystem aufzubauen.
+Diese erlaubt es mit der iOS App Sprachverbindungen über das Praxisrufsystem aufzubauen.
 Sowohl das Vorlesen von Benachrichtigungen, als auch die Gegensprechanlage sind über eine Weboberfläche konfigurierbar.
 
-Die Meilensteine M01 bis M08 wurden erreicht.
+Die zu Projektbeginn definierten Meilensteine M01 bis M08 wurden erreicht.
 Die Funktionalen Anforderungen an das System wurden umgesetzt.
 Die bestehende Infrastruktur aus dem Vorgängerprojekt wurde für dieses Projekt weiterverwendet.
 Die Komponenten Cloudservice, Messaging Service sowie Admin UI aus dem Vorgängerprojekt wurden weiterverwendet und wo nötig angepasst.
@@ -20,7 +20,7 @@ Umgesetzt wurden die Meilensteine mit folgenden User Stories:
 \begin{itemize}
     \item U01 - Migration bestehender Funktion im Mobile Client
     \item U02 - Benachrichtigungen vorlesen
-    \item U03 - Deaktivieren von Benachrichtung vorlesen
+    \item U03 - Vorlesen von Benachrichtigungen deaktivieren
     \item U04 - Button für Sprachverbindung 1:1
     \item U05 - Button für Sprachverbindung 1:n
     \item U06 - Über Sprachverbindung in Echtzeit kommunizieren
@@ -38,26 +38,24 @@ Umgesetzt wurden die Meilensteine mit folgenden User Stories:
     \item U19 - Für Externe Services Amazon Webservices verwenden
 \end{itemize}
 
-
 Der zu Beginn definierte Projektplan konnte grösstenteils eingehalten werden.
 Setup- und Konzept-Phase wurden im geplanten Zeitraum abgeschlossen.
 Während der Umsetzung ist es hingegen zu mehreren Verzögerungen gekommen.
 Die Umsetzung und Testen der Gegensprechanlage hat deutlich mehr Zeit beansprucht, als eingeplant wurde.
 Insbesondere die Integration und effiziente Verwendung von WebRTC im nativen iOS Client war anspruchsvoller als erwartet.
-Dies ist einerseits auf die mangelhafte Dokumentation der verwendeten Bibliotheken zurückzuführen.
-Andererseits wurde schlicht zu wenig Puffer für die Implementation eingeplant.
-Die Verzögerungen während der Umsetzung hat dazu geführt, dass weniger Zeit als erhofft für Polishing und Erweiterungen aufgewendet werden konnten.
+Dies ist einerseits auf mangelhafte Dokumentation der verwendeten Bibliotheken zurückzuführen.
+Andererseits wurde schlicht zu wenig Puffer für die Implementation und unerwartete Probleme eingeplant.
+Die Verzögerungen während der Umsetzung hat dazu geführt, dass weniger Zeit als geplant für Polishing und Erweiterungen aufgewendet werden konnten.
 Dementsprechend konnte der Meilenstein M09 nicht vollständig erreicht werden.
 Das entwickelte System hat in den Bereichen Stabilität und Benutzerfreundlichkeit noch Lücken.
-Diese Werden in Kapitel 8.x beschrieben.
 
-Der Meilenstein M10 betrifft Abschluss und Abgabe des Projektes.
+Der Meilenstein M10 betrifft Abschluss und Abgabe der Projektvereinbarung.
 Er ist mit dem Abschluss dieses Projektes erfüllt.
 
 \subsubsection{Native iOS Applikation}
 
-Dieses Kapitel beschreibt das umgesetzte cloudbasierte Praxisrufsystem anhand der Ansichten der iOS Applikation.
-Sämtliche in diesem Kapitel dargestellten Ansichten wurden als Screenshots auf einem iPad 9. Generation erstellt.
+Dieses Kapitel beschreibt das umgesetzte Praxisrufsystem anhand der Ansichten der iOS Applikation.
+Sämtliche in diesem Kapitel dargestellten Ansichten wurden als Screenshots auf einem iPad 9.\ Generation erstellt.
 
 \subsubsection*{Anmeldung und Konfiguration}
 
@@ -90,9 +88,9 @@ Bis sich der Benutzer manuell abmeldet wird bei allen zukünftigen Starts der Ap
 Nach der Anmeldung und Konfigurationsauswahl wird der Benutzer auf die Hauptansicht der App weitergeleitet.
 Über eine Navigationsleiste am unteren Bildschirmrand kann zwischen den Bereichen Home, Inbox und Einstellungen
 Der Bereich Home ist in zwei Teile gegliedert und beinhaltet Buttons über welche Benachrichtigungen versendet und Sprachverbindungen gestartet werden können.
-Welche Buttons zur Verfügung stehen werden durch die gewählte Zimmerkonfiguration vorgegeben und wurden im Vorfeld vom Praxisadministrator konfiguriert.
+Welche Buttons zur Verfügung stehen werden durch die gewählte Zimmerkonfiguration vorgegeben und wurden im Vorfeld von Praxisadministrierenden konfiguriert.
 Der Bereich Inbox zeigt eine Liste von empfangenen Benachrichtigungen sowie verpassten und vergangenen Anrufen.
-Einträge in dieser Liste können durch eine Wischgeste (Swipe right) entfernt werden.
+Einträge in dieser Liste können durch eine Wischgeste (Swipe left) quittiert und damit entfernt werden.
 
 \begin{figure}[h]
     \centering
@@ -108,11 +106,17 @@ Einträge in dieser Liste können durch eine Wischgeste (Swipe right) entfernt w
     \label{fig:MobileClient-Screens2}
 \end{figure}
 
+Ein Hintergrundprozess prüft in regelmässigen Abständen, ob es unquittierte Elemente in der Inbox gibt.
+Ist dies der Fall wird eine Push-Benachrichtigung angezeigt und der Benachrichtigungston abgespielt.
+Diese Benachrichtigung ist in Abbildung 8.4 zu sehen.
+Eine Ausnahme bilden Elemente für eingehende Anrufe die erfolgreich empfangen wurden.
+Diese werden in der Inbox angezeigt, müssen aber nicht quittiert werden.
+
 \clearpage
 
 \subsubsection*{Einstellungen und Aktive Anrufe}
 
-Im Bereich Einstellungen werden Informationen zur gewählten Zimmerkonfiguration und dem angemeldeten Benutzer angezeigt.
+Im Bereich Einstellungen (Abbildung 8.5) werden Informationen zur gewählten Zimmerkonfiguration und dem angemeldeten Benutzer angezeigt.
 Weiter können lokale Einstellungen vorgenommen werden.
 Das Vorlesen von empfangenen Benachrichtigungen sowie das Empfangen von Anrufen kann hier deaktiviert werden.
 Über einen Button kann der Benutzer sich zudem von der App abmelden.
@@ -131,12 +135,12 @@ Das Vorlesen von empfangenen Benachrichtigungen sowie das Empfangen von Anrufen 
     \label{fig:MobileClient-Screens3}
 \end{figure}
 
-Die Ansicht ''Aktive Anruf'' wird angezeigt, nachdem ein Anruf gestartet wurde.
-Entweder, der Anruf durch antippen des Buttons in der Home Ansicht gestartet wurde oder weil ein Anruf von einem anderen Client empfangen wird.
-In dieser Ansicht wird der Titel des gestarteten Anrufes bzw. Name des Zimmer des Gesprächspartners angezeigt.
+Die Ansicht ''Aktive Anruf'' (Abbildung 8.6) wird angezeigt, nachdem ein Anruf gestartet wurde.
+Entweder durch antippen eines Buttons in der Home Ansicht oder beim Empfang eines Anrufes von einem anderen Endgerät.
+In dieser Ansicht wird der Titel des gestarteten Anrufes bzw.\ Name des Zimmer des Gesprächspartners angezeigt.
 Wenn mehr als ein Gesprächspartner am Anruf beteiligt ist, wird zudem eine Liste der Teilnehmer zusammen mit deren Verbindungsstatus angezeigt.
-Allen Gesprächsteilnehmern stehen Buttons zur Stummschaltung des eigenen Lautsprechers und Microphons zur Verfügung.
-Zudem können alle Gesprächsteilehmmer die Unterhaltung durch den roten Auflegen Button beenden.
+Allen Gesprächsteilnehmern stehen Buttons zur Stummschaltung des eigenen Lautsprechers und Mikrofons zur Verfügung.
+Zudem können alle Gesprächsteilnehmenden die Unterhaltung durch den roten Auflegen Button beenden.
 
 \clearpage
 
@@ -165,7 +169,6 @@ Ein nicht verfügbarer Client wird über Hintergrundbenachrichtigungen auf verpa
 Fehler in der Applikation werden dem Benutzer in einem einfachen Dialogfenster angezeigt.
 Abbildung 8.x zeigt eine Fehlermeldung, die bei der Auswahl der Zimmerkonfiguration auftreten kann.
 Wenn die Wahl der Konfiguration bestätigt wird, ohne dass eine Konfiguration ausgewählt wurde, wird eine entsprechende Fehlermeldung angezeigt.
-
 
 \clearpage
 
