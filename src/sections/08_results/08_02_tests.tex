@@ -7,7 +7,7 @@ Die iOS Applikation wurde auf zwei Physische iPads installiert.
 Während den Benutzertests wurde folgendes getestet:
 
 \begin{enumerate}
-    \item Anmeldung und Konfigurationsauswahl im Mobile Client funktioniert wie mit dem alten Mobile Client.
+    \item Anmeldung und Konfigurationsauswahl funktioniert wie im Vorgängerprojekt.
     \item Benachrichtigungen können zwischen Mobile Clients versendet werden.
     \item Empfangene Benachrichtigungen werden dem Benutzer vorgelesen.
     \item Sprachverbindungen können über Buttons hergestellt werden.
@@ -19,17 +19,18 @@ Während den Benutzertests wurde folgendes getestet:
 Der Kunde hat während den Tests folgende Verbesserungswünsche eingebracht:
 
 \begin{enumerate}
-    \item Das Quittieren von Einträgen in der Inbox sollte diese direkt löschen.
+    \item Das Quittieren von Einträgen in der Inbox soll diese direkt löschen.
     \item Das Quittieren von Einträgen in der Inbox soll durch eine Wischgeste möglich sein.
-    \item Die Töne für Benachrichtigungen sollten konfigurierbar sein.
-    \item Icon und Name der App sollten ansprechend sein.
+    \item Die Töne für Benachrichtigungen und eingehende Anrufe sollen konfigurierbar sein.
+    \item Icon und Name der App sollen angepasst werden.
     \item Bei eingehenden Sprachverbindungen soll ein Benachrichtigungston erklingen.
-    \item Status von Verbindungsteilnehmern soll als Icon dargestellt werden
+    \item Status von Verbindungsteilnehmern soll als Icon dargestellt werden.
 \end{enumerate}
 
 Dieses Feedback konnte grösstenteils umgesetzt werden.
 Punkt 3.\ konnte aus Zeitgründen nicht umgesetzt werden.
-Die Benachrichtigungstöne für empfangene Benachrichtigungen und eingehende Sprachverbindungen sind fest definiert und können nicht konfiguriert werden.
+Für eingehende Benachrichtigungen wird der im System als Standard konfiguriert Benachrichtigungston verwendet.
+Der Benachrichtigungston für eingehende Sprachverbindungen ist fest definiert und kann nicht durch den Benutzer konfiguriert werden.
 
 \clearpage
 
@@ -58,9 +59,9 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2
         \hline
         S04         & Fehler beim Versenden anzeigen.  & +\\
         \hline
-        S05         & Wiederholen im Fehlerfall bestätigen.  & tbd\\
+        S05         & Wiederholen im Fehlerfall bestätigen.  & +\\
         \hline
-        S06         & Wiederholen im Fehlerfall abbrechen.  & tbd\\
+        S06         & Wiederholen im Fehlerfall abbrechen.  & +\\
         \hline
         S07         & Audiosignal bei Benachrichtigung.   & +\\
         \hline
@@ -96,7 +97,7 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2
         \hline
         S23         & Benachrichtigung verwalten - Relevanz Sprachsynthese kann im Admin UI aktiviert / deaktiviert werden  & +\\
         \hline
-        S24         & Benachrichtigung empfangen - Änderung an Typ in Admin UI wird sofort angewendet   & +\\
+        S24         & Benachrichtigung empfangen - Änderung an Inhalt einer Benachrichtigung in Admin UI wird sofort angewendet   & +\\
         \hline
         S25         & Gegensprechanlage Buttons nach Anmeldung anzeigen & +\\
         \hline
@@ -119,27 +120,27 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2
         \hline
         \textbf{Szenario} & \textbf{Beschreibung} & \textbf{Resultat} \\
         \hline
-        S30         & Verbindungsaufbau - Automatische Annahme & tbd\\
+        S30         & Verbindungsaufbau - Automatische Annahme & +\\
         \hline
-        S31         & Unterhaltung 1:1 - Unterhaltung in Echtzeit möglich & tbd\\
+        S31         & Unterhaltung 1:1 - Unterhaltung in Echtzeit möglich & +\\
         \hline
-        S32         & Unterhaltung 1:n - Unterhaltung in Echtzeit möglich & tbd\\
+        S32         & Unterhaltung 1:n - Unterhaltung in Echtzeit möglich & +\\
         \hline
-        S33         & Verbindungsaufbau 1:n & tbd\\
+        S33         & Verbindungsaufbau 1:n & +\\
         \hline
-        S34         & Inbox - Vergangene Sprachverbindungen & tbd\\
+        S34         & Inbox - Vergangene Sprachverbindungen & +\\
         \hline
-        S35         & Inbox - Verpasste Sprachverbindungen & tbd\\
+        S35         & Inbox - Verpasste Sprachverbindungen & +\\
         \hline
-        S36         & Inbox - Abgelehnte Unterhaltungen & tbd\\
+        S36         & Inbox - Abgelehnte Unterhaltungen & +\\
         \hline
-        S37         & Verbindung trennen durch Empfänger & tbd\\
+        S37         & Verbindung trennen durch Empfänger & +\\
         \hline
-        S38         & Verbindung durch Initiator & tbd\\
+        S38         & Verbindung trennen durch Initiator & +\\
         \hline
-        S39         & Austreten aus Gruppenunterhaltung & tbd\\
+        S39         & Austreten aus Gruppenunterhaltung & +\\
         \hline
-        S40         & Konfiguration über Admin UI & tbd\\
+        S40         & Konfiguration über Admin UI & +\\
         \hline
     \end{tabular}\label{tab:funktion_testplan_2}
 \end{table}
@@ -148,7 +149,7 @@ Alle Testszenarien konnten mit einem positiven Resultat abgeschlossen werden.
 
 Neben Szenarien für Funktionstests, wurden einfache Tests zur Messung der Performance des Systems definiert.
 Dazu wurden die Performancekriterien P01 bis P07 definiert.
-Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2022:
+Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2022.
 
 \begin{table}[h]
     \centering
@@ -156,19 +157,19 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2
         \hline
         \textbf{Kriterium} & \textbf{Beschreibung} & \textbf{Resultat} \\
         \hline
-        P01         & Zeit bis Benachrichtigung ankommt im Schnitt < 5s & tbd\\
+        P01         & Zeit bis Benachrichtigung ankommt im Schnitt $<$ 5s & +\\
         \hline
-        P02         & Vorlesen von Benachrichtigung < 5s nach Benachrichtigungston (ohne Cache) & tbd\\
+        P02         & Vorlesen von Benachrichtigung $<$ 5s nach Benachrichtigungston (ohne Cache) & +\\
         \hline
-        P03         & Vorlesen von Benachrichtigung < 1s nach Benachrichtigungston (mit Cache) & tbd\\
+        P03         & Vorlesen von Benachrichtigung $<$ 5s nach Benachrichtigungston (mit Cache) & +\\
         \hline
-        P04         & Verbindungsaufbau Sprachverbindung < 5s  & tbd\\
+        P04         & Verbindungsaufbau Sprachverbindung $<$ 5s  & +\\
         \hline
-        P05         & Verzögerung bei Sprachverbindung klein um kurze Gespräche zu führen & tbd\\
+        P05         & Verzögerung bei Sprachverbindung klein um kurze Gespräche zu führen & +\\
         \hline
-        P06         & Ressourcenverbrauch der Applikation bleibt über Zeit konstant & tbd\\
+        P06         & Ressourcenverbrauch der Applikation bleibt über Zeit konstant & +\\
         \hline
-        P07         & Übertragungsqualität von Sprachverbindungen ist ausreichend für normale Unterhaltungen & tbd\\
+        P07         & Übertragungsqualität von Sprachverbindungen ist ausreichend für normale Unterhaltungen & +\textbackslash- \\
         \hline
     \end{tabular}\label{tab:testplan_performance}
 \end{table}
@@ -176,8 +177,9 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am xx.03.2
 Die Performancekriterien P01 bis P06 sind vollständig erfüllt.
 Das Kriterium P07 wird mit Einschränkungen erfüllt.
 Die Qualität der Sprachverbindungen ist grundsätzlich ausreichend für eine Gegensprechanlage.
+Es ist problemlos Möglich Unterhaltungen über die aufgebaute Sprachverbindung zu führen.
 Probleme können entstehen, wenn eine Sprachverbindung zwischen zwei Endgeräten im selben Raum aufgebaut wird.
-In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem schrillen Pfeifton führt.
+In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem starken Echo und schrillem Pfeifton führt.
 Dieses Problem ist durch eine entsprechende Ausrichtung der Geräte vermeidbar.
 Es schränkt aber ein, wie die Endgeräte des Systems in einer Praxis installiert werden können.
 
