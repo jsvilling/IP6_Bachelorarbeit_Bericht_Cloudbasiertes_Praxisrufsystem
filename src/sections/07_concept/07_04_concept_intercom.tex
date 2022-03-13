@@ -90,7 +90,7 @@ Wenn dies nicht der Fall ist oder wenn das Senden des Signals fehlschlägt, ist 
 Nicht erreichbare Empfänger werden mit Benachrichtigungen über verpasste Signale informiert.
 Dazu wird eine Benachrichtigung über die API des Moduls Notification versendet.
 
-Die Schnittestelle der Signaling Instanz im Cloudservice wird mit Websockets umgesetzt.
+Die Schnittstelle der Signaling Instanz im Cloudservice wird mit Websockets umgesetzt.
 Dazu wird die Bibliothek Spring-Boot-Starter-Websocket verwendet.
 Es wird ein WebsocketHandler implementiert, welcher unter dem Pfad ''$<$serverUrl$>$/signaling'' erreichbar ist.
 Etablierte Verbindungen müssen eindeutig einem Client zugeordnet werden können.
@@ -98,21 +98,25 @@ Diese Identifikation wird als Query Parameter bei Verbindungsaufbau mitgegeben.
 Der WebsocketHandler definiert Methoden die beim Öffnen und Schliessen von Verbindungen sowie beim Empfang von Signalen aufgerufen werden.
 Die Verarbeitung dieser Signale und Verbindungen wird an den SignalingService delegiert.
 
-\subsubsection{Sicherheit}
+\subsubsection{Sicherheit für Signaling}
 
-Der Zugriff auf den Signaling Service darf nur für Berechtigte möglich sein.
+Der Zugriff auf die Signaling Instanz und die darüber ausgetauschten Signale darf nur für Berechtigte möglich sein.
 Um dies sicherzustellen, wird der Verbindungsaufbau nur erlaubt, wenn die Anfrage dazu authentisiert ist.
-Für die Authentisierung wird derselbe Mechanismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet werden.
+Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen der Cloudservice API verwendet.
 Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
-Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist.
-Wenn kein gültiges Token vorhanden ist, wird eine entsprechende Fehlermeldung zurückgegeben.
+Mit dieser Prüfung wird sichergestellt, dass eine gültige Authentifizierungsdaten im Header der Anfrage vorhanden sind.
+Ist dies nicht der Fall, wird eine entsprechende Fehlermeldung zurückgegeben.
+Bei der Prüfung von Http-Anfragen durch den Cloudservice werden weiter die Rollen, welche dem Aufrufer zugeteilt sind ausgelesen.
+
+Die Prüfung der Authentifizierung wird auch für die Http-Anfragen, welche zum Aufbau einer Websocketverbindung nötig sind ausgeführt.
+Beinhaltet eine Anfrage zum Aufbau einer Websocketverbindung keine gültige Authentifizierung, wird eine Fehlermeldung zurückgegeben.
 Der Aufbau der Websocketverbindung wird abgebrochen.
 
-Mit der Klasse HttpSessionHandshakeInterceptor kann vor dem Aufbau einer Websocketverbindung geprüft werden, dass der Http Request für den Verbindungsaufbau authentifiziert wurde.
-Mit der Verarbeitung des Http Requests durch die SecurityConfig des Cloudservices wurden die Rollen, welche dem Aufrufer zugeteilt ausgelesen.
-Im HttpSessionHandshakeInterceptor können diese Informationen ausgewertet und geprüft werden, dass ein Benutzer für den Austausch von Signalmeldungen authorisiert ist.
-Ist er dies nicht, wird der Aufbau der Websocketverbindung wird abgebrochen und eine Fehlermeldung zurückgegeben.
-Das Praxisrufsystem kennt die zwei Rollen ''ADMIN'' und ''USER''.
+Die Prüfung der ausgelesenen Rollen wird mit der Klasse HttpSessionHandshakeInterceptor verwendet.
+Diese wird, nachdem eine Anfrage zum Aufbau einer Websocketverbindung eingegangen ist, aufgerufen.
+Der HttpSessionHandshakeInterceptor erlaubt es die Anfrage zum Verbindungsaufbau auszulesen.
+Dies erlaubt es hier zu verifizieren, dass der Request authentifiziert wurde und nur die zugeteilten Rollen zu überprüfen.
+Praxisruf kennt die zwei Rollen ''ADMIN'' und ''USER''.
 Beide Rollen sind berechtigt, dass Rufsystem über den Mobile Client zu verwenden und dürfen damit Signalmeldungen austauschen.
 
 Für den Aufbau von Websockets wird das ausschliesslich das Protokoll Secure WebSockets (WSS) verwendet.
@@ -122,8 +126,9 @@ Der Austausch von Signalmeldungen ist damit verschlüsselt.
 
 \subsubsection{Signalmeldungen}
 
-Dieses Kapitel beschreibt die Signalmeldungen, welche für Sprachverbindungen verwendet werden.
-Abbildung 7.14 zeigt, wie Signalmeldungen im Mobile Client modeliert werden.
+Dieses Kapitel beschreibt die Signalmeldungen, welche in Praxisruf verwendet werden.
+Dabei wird beschrieben wie diese aufgebaut sind und welchen Rolle sie im System erfüllen.
+Abbildung 7.16 zeigt, wie Signalmeldungen im Mobile Client modelliert werden.
 
 \begin{figure}[h]
     \centering
@@ -134,52 +139,57 @@ Abbildung 7.14 zeigt, wie Signalmeldungen im Mobile Client modeliert werden.
 \end{figure}
 
 Alle Signalmeldungen beinhalten Identifikation von Sender und Empfänger.
-Diese werden vom Signalingserver verwendet, um die Signale korrekt weiterzuleiten.
-Type, Payload und Description werden im Mobile Client verwendet, um das Signal korrekt zu verarbeiten und Verbindungen aufzubauen.
+Diese werden von der Signaling Instanz verwendet, um die Signale korrekt weiterzuleiten.
+Die Werte Type, Payload und Description werden im Mobile Client verwendet, um das Signal korrekt zu verarbeiten und Verbindungen aufzubauen.
 Das Flag notificationOnFailedDelivery wird im Cloudservice ausgewertet.
-Wenn ein Signal nicht zugestellt werden kann und dieses Flag TRUE ist, wird der Empfänger mit einer asynchrone Benachrichtigung darüber informiert.
-Dazu wird das bestehende Notification Modul des Cloudservices verwendet.
-Für die Verwaltung von Sprachverbindungen werden die folgenden sechs Typen von Signalmeldungen definiert.
-\\ \\
+Wenn ein Signal nicht zugestellt werden kann und dieses Flag aktiviert ist, wird der Empfänger mit einer Benachrichtigung darüber informiert.
+Dazu wird die API des Notification Moduls des Cloudservices verwendet.
+
+Praxisruf verwendet sechs Typen von Signalmeldungen.
+Folgende Übersicht beschreibt pro Typ welche Daten die Meldung beinhaltet und welche Rolle sie erfüllt.
+\\
 \begin{tabbing}
     Left \= Middle \= Right \= Right \kill
     Offer
-    \> \> \> Ein Offer wird vom Initiator der Sprachverbindung an die Empfänger gesendet. Es
-    \\\> \> \> beinhaltet die Informationen des Initiators. \\ \\
+    \> \> \> Wird vom Initiator der Sprachverbindung an die Empfänger gesendet. Ein Offer
+    \\\> \> \> beinhaltet die SDP Informationen des Initiators und initiiert eine Verbindung. \\ \\
 
     Answer
-    \> \> \> Eine Answer wird vom Empfänger eines Offers an den Initiator der Sprachverbindung
-    \\\> \> \> gesendet. Es beinhaltet SDP Informationen des Empfängers. \\ \\
+    \> \> \> Wird vom Empfänger eines Offers an den Initiator der Sprachverbindung gesendet.
+    \\\> \> \> Es beinhaltet SDP Informationen des Empfängers und bestätigt eine Verbindung. \\ \\
 
     Ice Candidate
-    \> \> \> Ice Candidate Signal Beinhaltet Informatinoen eines ICE Candidates, die für den Ver-
-    \\ \> \> \> bindungsaufbau verwendet werden. Nach Verarbeitung von Offer und Answer
-    \\ \> \> \> tauschen Initiator und Empfänger solange Ice Candidate Signale aus, bis sie sich auf
-    \\ \> \> \> einen Kandidaten geeinigt haben.\\ \\
+    \> \> \> Beinhaltet Informatinoen eines ICE Candidates, die für den Verbindungsaufbau ver-
+    \\ \> \> \> wendet werden. Nach Verarbeitung von Offer und Answer tauschen Initiator und
+    \\ \> \> \> Empfänger solange Ice Candidate Signale aus, bis sie sich auf einen Kandidaten
+    \\ \> \> \> geeinigt haben.
+    \\ \> \> \> \\
 
     End
-    \> \> \> Wird von Empfänger oder Initiator versendet, nachdem die Verbindung durch tippen des
-    \\ \> \> \> Auflegen-Button in der Applikation beendet wurde. Empfang dieses Signal führt dazu,
-    \\ \> \> \> dass offene Sprachverbindungen zum Sender dieses Signals beendet werden.\\ \\
+    \> \> \> Wird versendet, nachdem die Verbindung durch tippen des Auflegen-Button in der
+    \\ \> \> \> Applikation beendet wurde. Empfang dieses Signal führt dazu, dass offene Sprach-
+    \\ \> \> \> verbindungen zum Sender dieses Signals beim Empfänger beendet werden.\\ \\
 
     Unavailable
-    \> \> \> Wenn der Signalingserver ein Signal nicht zustellen kann, wird das Ziel über eine Benach-
-    \\ \> \> \> richtigung informiert. Zudem wird ein Unavailable Signal zurück an den Sender gesendet.
-    \\ \> \> \> Es wird angezeigt, dass der gewünschte gesprächspartner nicht verfügbar ist. \\ \\
+    \> \> \> Wenn der Signalingserver ein Signal nicht zustellen kann, wird ein Unavailable-
+    \\ \> \> \> Signal zurück an den Sender gesendet. Der Sender ist so informiert, dass die Ver-
+    \\ \> \> \> bindung zum Gesprächspartner nicht aufgebaut wurde. \\ \\
 
     Decline
-    \> \> \> Wird ein Signal empfangen während die Gegensprechanlage in den lokalen Einstellungen
-    \\ \> \> \> deaktiviert ist, sendet der Mobile Client ein Decline Signal zurück. Es wird angezeigt,
-    \\ \> \> \>  dass der gewünschte gesprächspartner nicht verfügbar ist.
+    \> \> \> Wird ein Offer empfangen während die Gegensprechanlage in den lokalen Einstel-
+    \\ \> \> \> lungen deaktiviert ist, sendet der Mobile Client ein Decline Signal zurück. Der Sen-
+    \\ \> \> \>  der ist so informiert, dass die Verbindung zum Gesprächspartner abgelehnt wurde.
 \end{tabbing}
 
 \subsubsection{Anmeldung und Registrierung}
 
-Der Ablauf von Anmeldung und Registrierung funktioniert mit dem neuen nativen Mobile Client grundsätzlich gleich wie zuvor.
+Dieses Kapitel beschreibt, wie die Anmelde und Registrierungsprozesse im Mobile Client ablaufen, um eine Verbindung zu der Signaling Instanz zu ermöglichen.
+
+Der Ablauf von Anmeldung und Registrierung funktioniert mit dem neuen nativen Mobile Client nach demselben Ablauf wie im Vorgängerprojekt.
 Praxismitarbeitende öffnen die Applikation und geben ihr Benutzername und Passwort ein.
 Der Mobile Client verwendet diese um sich über Basic Authentication beim Cloudservice anzumelden.
-Als Antowrt auf die Anmeldung gibt der Cloudservice ein JWT Token zurück.
-Dieses wird für die Authentifizierung aller weiteren Anfragen an den Cloudservice verwendet.
+Als Antwort auf die Anmeldung gibt der Cloudservice ein Json Web Token (JWT) zurück.
+Dieses wird für die Authorisierung aller weiteren Anfragen an den Cloudservice verwendet.
 Nachdem die Anmeldung erfolgt ist, wird eine Liste der verfügbaren Konfigurationen geladen.
 Der Benutzer wählt die gewünschte Konfiguration aus und bestätigt.
 
@@ -207,16 +217,17 @@ Dazu wird wie in Kapitel 7.4.6 beschrieben eine Websocketverbindung geöffnet.
 
 Praxismitarbeitende können Sprachverbindungen zu anderen Clients aufbauen indem sie auf den entsprechenden Button in der Praxisruf App tippen.
 Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client noch nicht, zu welchen Clients diese Verbindung aufgebaut werden soll.
-Als erstes muss deshalb beim Cloudservice angefragt werden, welche Clients mit dem betätigten Button angesprochen werden sollen.
-Der Cloudservice bietet dazu einen Endpoint an über den der vollständige CallType des verwendeten Buttons hinterlegt sind geladen werden können.
-Nachdem diese Informationen geladen sind, können Sprachverbindungen zu allen relevanten Clients aufgebaut werden.
+Als Erstes muss deshalb beim Cloudservice angefragt werden, zu welchen Clients eine Sprachverbindung aufgebaut werden soll.
+Der Cloudservice bietet dazu einen Endpoint an, über den der vollständige CallType des verwendeten Buttons geladen werden kann.
+Nachdem diese Informationen geladen sind, können Sprachverbindungen zu allen Empfängern aufgebaut werden.
 Dazu müssen Offer, Answer und Ice Candidate Signale ausgetauscht werden.
-Der auslösende Client initialisiert die Peer to Peer Verbindung auf seiner Seite und sendet für jeden Gesprächspartner ein Offer.
-Der Cloudservice findet die Verbindung der relevanten Empfänger und leitet die Signale über die jeweilige Verbindung weiter.
-Die Verbindung auf Empfängerseite wird nach Eingang des Offers initialisiert.
-Danach wird eine Answer zurück an den Initiator gesendet, welche über den Signalingserver zugestellt wird,
+Der auslösende Client initialisiert die Peer-to-Peer Verbindung auf seiner Seite und sendet für jeden Gesprächspartner ein Offer.
+Der Cloudservice findet die Verbindung der jeweiligen Empfänger und leitet die Signale über deren Verbindung weiter.
+
+Nach Eingang des Offer-Signals wird die Verbindung auf Empfängerseite initialisiert und eine Answer zurück an den Initiator gesendet.
+Diese wird gleich wie das Offer-Signal über die Signaling Instanz zugestellt.
 Der Initiator empfängt die Antwort Signale und ergänzt die notwendigen Verbindungsinformationen.
-Abbildung 7.15 visualisiert diesen Ablauf.
+Abbildung 7.18 visualisiert diesen Ablauf.
 
 \begin{figure}[h]
     \centering
@@ -227,28 +238,30 @@ Abbildung 7.15 visualisiert diesen Ablauf.
 \end{figure}
 
 Nachdem die Offer und Answer Meldungen ausgetauscht sind, müssen Ice Candidate Meldungen ausgetauscht werden.
-Dieser Austausch ist der um die Übersichtlichkeit zu wahren nicht in Abbildung 7.15 dargestellt.
-Er verläuft nach demselben Prinzip wie der Austausch von Offer und Answer.
-Sobald sich die Clients auf die Verbindungsinformationen geeinigt haben, besteht die Sprachverbindung.
+Der Austausch von Ice Candidate Meldungen wird so lange wiederholt, bis sich beide Seiten einer Verbindung auf Verbindungsdetails geinigt haben.
+Sobald dieser Austausch beendet ist, besteht die Verbindung und es können Sprachdaten ausgetauscht werden.
 
 \clearpage
 
 \subsubsection{Anbindung Mobile Client an Singaling Instanz}
 
-Für den Aufbau von Sprachverbindungen zwischen Mobile Clients müssen mehrere Signalmeldungen ausgetauscht werden.
-Der Cloud Service wird im Rahmen dieses Projektes um eine Schnittstelle erweitert, welche dies ermöglicht.
-Als Technologie für diese Schnittstelle werden Websockets verwendet.
-Der Service PraxisrufApi wird dementsprechend erweitert, um Websocket Verbindungen zu ermöglichen.
-Dies beinhaltet den Auf- und Abbau von Websocket Verbindungen, sowie das Senden und Empfangen von Meldungen über diese Verbindung.
-Die Verbindung zur Signaling Instanz konstant offen gehalten und im Fehlerfall erneut aufgebaut werden können.
+Dieses Kapitel beschreibt, wie Websockeverbindungen zum Austausch von Signalmeldungen in den nativen Mobile client integriert werden.
+
+In Kapitel 7.2 wird die Klasse PraxisrufApi beschrieben.
+Diese implementiert die Anbindung and die Http-API des Cloudservice.
+Um Signalmeldungen über die Signaling Instanz des Cloudservice auszutauschen, müssen Websockets verwendet werden.
+Damit die Anbindung an alle Schnittstellen des Cloudservice einheitlich bleibt, wird PraxisrufApi erweitert, um auch Websocketverbindungen zu unterstützen.
+Dies beinhaltet den Auf- und Abbau von Verbindungen, sowie das Senden und Empfangen von Meldungen über diese Verbindung.
+Weiter müssen Verhalten beim Empfang von Fehlermeldungen und dem unerwarteten Schliessen der Verbindung definiert werden.
 
 Der Austausch von Signalmeldungen ist der einzige Anwendungsfall in Praxisruf, der Websocketverbindungen benötigt.
-Deshalb wird auf eine generische Integration von Verbindungen analog von Http Verbindungen verzichtet.
-Es werden die Extension PraxisrufApi+Signaling und das Protokoll PraxisrufApiSignalingDelegate definiert, wie in Abbildung 7.17 dargestellt implementiert.
+Deshalb wird auf eine generische Integration von Websockets verzichtet.
+Zur Erweiterung von PraxisrufApi werden die Extension PraxisrufApi+Signaling und das Protokoll definiert.
+Diese setzen die Anbindung von Websockets für den Austausch von Signalmeldungen um.
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.9\textwidth}
+    \begin{minipage}[b]{0.6\textwidth}
         \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signaling_Connection}}
         \caption{Klassendiagramm - Signaling Schnittstelle in Mobile Client}
     \end{minipage}
@@ -256,40 +269,39 @@ Es werden die Extension PraxisrufApi+Signaling und das Protokoll PraxisrufApiSig
 
 Die Extension PraxisrufApi+Signaling ist für die Verbindung zu der Signaling Instanz verantwortlich.
 Für die Integration dieser Extension in den Rest der Applikation wird das Protokoll PraxisrufApiSignalingDelegate definiert.
-
-Die Verbindung zu der Signaling Instanz wird direkt nach der Anmeldung im Mobile Client aufgebaut.
-Dazu wird die Methode connectSignalingServer verwendet.
+Zum Aufbau der Verbindung zu der Signaling Instanz wird die Methode connectSignalingServer definiert.
 Die Identifikation des Clients wird bei dieser Abfrage als Parameter mitgegeben.
 So kann die Verbindung von der Signaling Instanz eindeutig einem Client zugeordnet werden.
-Nachdem die Verbindung geöffnet ist, dürfen Signale empfangen und verarbeitet werden.
+Nachdem die Verbindung geöffnet ist, können Signale empfangen und verarbeitet werden.
 Dies wird durch die Methode listenForSignal initialisiert.
 Darin wird der Websocketverbindung signalisiert, dass der Client bereit ist die nächste Meldung zu empfangen.
-Sobald eine Meldung empfangen wird, wird diese über PraxisrufApiSignalingDelegate verarbeitet.
-
-Für die Verarbeitung von Meldungen wird die entsprechende Methode des PraxisrufApiSignalingDelegate verwendet.
+Sobald eine Meldung empfangen wird, wird diese über den PraxisrufApiSignalingDelegate verarbeitet.
 Wurde eine gültige Signalmeldung empfangen, wird diese über die Methode onSignalReceived verarbeitet.
 Wurde hingegen eine ungültige Signalmeldung oder eine Fehlermeldung empfangen wird die Methode onErrorReceived aufgerufen.
 Im Fehlerfall wird zudem überprüft ob die Verbindung noch offen verwendbar ist.
 Sollte die Verbindung nicht mehr verwendbar sein, wird die Methode onConnectionLost des Delegates aufgerufen.
 
 PraxisrufApi+Signaling definiert weiter Methoden um Signal- und Pingmeldungen zu versenden.
-Pingmeldungen werden in Regelmässigen Abständen gesendet um sicherzustellen, dass die Verbindung zu der Signaling Instanz stabil ist.
-Vor dem Senden einer Meldung wird geprüft, ob die Verbindung zur Signaling Instanz verwendbar ist.
+Pingmeldungen werden in Regelmässigen Abständen gesendet um sicherzustellen, dass die Verbindung zu der Signaling Instanz geöffnet bleibt.
+Vor dem Senden jeder Meldung wird geprüft, ob die Verbindung zur Signaling Instanz verwendbar ist.
 Ist dies nicht der Fall, wird die Methode onConnectionLost des Delegates aufgerufen und anschliessend versucht die Meldung zu versenden.
-Schlägt das Senden fehl, wird onErrorReceived auf dem Delegate aufgerufen.
+Schlägt das Senden fehl, wird die Methode onErrorReceived auf dem Delegate aufgerufen.
 
 Die Methoden des Protokolls CallClientDelegate werden durch die Klasse CallService implementiert.
-Der CallService vermittelt Anfragen zwischen Signaling Instanz, Benutzeroberfläche und der Integration der Peer-To-Peer Verbindungen im Mobile Client.
+Der CallService vermittelt Anfragen zwischen Signaling Instanz, Benutzeroberfläche und Peer-To-Peer Verbindungen im Mobile Client.
 Er ist dafür verantwortlich Signale an die Peer-To-Peer Verbindung weiterzuleiten, geschlossene Verbindungen wieder zu öffnen und Fehlermeldungen anzuzeigen.
-Das Wiederöffnen der Verbindung im Fehlerfall wird über die PraxsirufApi+Signaling Extension gemacht.
-Der entsprechende Aufruf wird aber im CallService implementiert.
-Dadurch können allfällige Fehlermeldungen angezeigt und Benutzerinteraktionen ermöglicht werden.
+Empfangene Signalmeldungen werden über die Methode onSignalReceived an die Komponente CallClient übergeben (Siehe Kapitel 7.4.8).
+Die Methoden onConnectionLost und onErrorReceived werden verwendet, um Fehlermeldungen anzuzeigen und geschlossene Verbindungen erneut zu öffnen.
+Nachdem die Verbindung zur Signaling Instanz verloren gegangen ist, wird bis zu zehnmal versucht, die Verbindung erneut zu öffnen.
+Wenn die Verbindung dadurch nicht repariert werden kann, wird sie permanent geschlossen und dem Benutzer eine Fehlermeldung angezeigt.
+
 
 \subsubsection{Sprachverbindungen im Mobile Client}
 
-Der Mobile Client muss Signale verarbeiten und die Peer-To-Peer Sprachverbindungen über die WebRTC Bibliothek verwalten.
+Dieses Kapitel beschreibt wie WebRTC-Komponenten in den Mobile Client integriert werden, um Sprachverbindungen zu ermöglichen.
+
 Für die Integration der WebRTC-Komponenten wird eine Klasse CallClient und ein Protokoll CallClientDelegate erstellt.
-Diese sind für das Verwalten von Sprachverbindungen verantwortlich.
+Der CallClient verwaltet Sprachverbindungen, während der Delegate zur Integration mit der restlichen Applikation dient.
 Abbildung 7.18 zeigt das Klassendiagramm beider Komponenten.
 
 \begin{figure}[h]
@@ -302,18 +314,31 @@ Abbildung 7.18 zeigt das Klassendiagramm beider Komponenten.
 
 Für den Aufbau von ausgehenden Verbindungen wird eine RTCPeerConnection im CallClient des Senders initialisiert.
 Es werden die SDP Informationen für Beschreibung der Verbindung erstellt und mit einem Offer-Signal an den Empfänger gesendet.
+Dieses Offer-Signal wird über den CallClientDelegate versendet, welcher das Signal an die Signaling Instanz zustellt.
+
+Für den Aufbau von eingehenden Verbindungen wird das Offer-Signal über die Methode receive empfangen.
+Dabei wird die Verbindung nicht direkt initialisiert.
+Stattdessen wird das Signal zwischengespeichert und die Methode onIncommingCallPending des Delegates aufgerufen.
+Die Implementation des CallClientDelegate zeigt darauf die Ansicht für aktive Anrufe an und meldet dem CallClient über die Methode acceptPending, dass die Verbindung initialisiert werden soll.
+Der CallClient initialisiert darauf eine RTCPeerConnection und sender ein Answer Signal über die send Methode.
+
 Das Offer-Signal wird über die Signaling Instanz an den Empfänger zugestellt.
 Der CallClient des Empfängers erstellt bei Empfang des Offer-Signals eine RTCPeerConnection anhand der darin enthaltenen SDP Informationen.
 Anschliessend erstellt er ein Answer-Signal und sendet dieses zurück an den Verbindungspartner.
 Das Answer-Signal wird vom Initiator der Verbindung verarbeitet, um die Verbindung zu bestätigen.
 Signale werden im CallClient durch die Methode receive empfangen und über die Methode send des CallClientDelegates versendet.
 
+Ein Answer-Signal wird ebenfalls über die receive Methode im CallClient empfangen.
+Beim Empfang einer Answer werden die SDP Informationen auf der lokalen RTCPeerConnection ergänzt.
+
 Neben dem Austausch von Offer- und Answer-Signalen müssen Ice Candidate Signale ausgetauscht werden können.
 Sobald ein Ice Candidate zur Verfügung steht, erstellt der CallClient ein entsprechendes Signal und sendet es an den Empfänger.
-Damit dies möglich ist, muss der CallClient über verfügbare Ice Candidates informeirt werden.
+Damit dies möglich ist, muss der CallClient über verfügbare Ice Candidates informiert werden.
 Die WebRTC Bibliothek bietet dazu das Protokoll RTCPeerConnectionDelegate.
 Dieses kann auf der RTCPeerConnection registriert werden und wird aufgerufen, sobald ein neuer Ice Candidate verfügbar ist.
 Der CallClient implementiert dieses Protokoll und registriert sich auf allen RTCPeerConnections.
+
+
 
 Sprachverbindungen müssen über die Benutzeroberfläche verwaltet werden können.
 Der CallClient bietet deshalb Methoden an, um eine Verbindung zu starten und beenden.
@@ -333,6 +358,14 @@ Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert 
 Der CallService selbst wird in den View Komponenten der Applikation verwendet.
 Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und PraxisrufApi+Signaling.
 Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
+\clearpage
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Caller_Signaling.drawio}}
+        \caption{Sequenzdiagramm - Senden Offer-Signal im Mobile Client}
+    \end{minipage}
+\end{figure}
 
 Abbildung 7.19 zeigt die Kommunikation zwischen den beteiligten Komponenten beim Signalaustausch zum Aufbau einer Sprachverbindung.
 Dabei wird der Ablauf von Benutzerinteraktion des Senders bis zum Senden des Offer-Signals dargestellt.
@@ -341,15 +374,7 @@ Diese initialisiert den Anruf über den CallService.
 Der CallService ruft dazu als Erstes den CallClient auf.
 Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt ein Signal, um den Empfänger zu informieren.
 Dieses Signal gibt er an den CallService weiter.
-Der CallService leitet das Signal an den PraxisrufApi+Signaling weiter, welcher das Versenden an den Cloud Service übernimmt.
-
-\begin{figure}[h]
-    \centering
-    \begin{minipage}[b]{0.9\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Caller_Signaling.drawio}}
-        \caption{Sequenzdiagramm - Senden Offer-Signal im Mobile Client}
-    \end{minipage}
-\end{figure}
+Der CallService leitet das Signal an den PraxisrufApi+Signaling weiter, welcher das Versenden an den Cloudservice übernimmt.
 
 Das versendete Signal wird über das Signaling Modul des Cloudservice an den Empfänger übermittelt.
 Dieser empfängt das Signal über die Komponente PraxisrufApi+Signaling.
