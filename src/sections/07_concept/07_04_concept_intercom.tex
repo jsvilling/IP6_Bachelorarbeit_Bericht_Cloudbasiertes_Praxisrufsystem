@@ -303,6 +303,8 @@ Dieses Kapitel beschreibt wie WebRTC-Komponenten in den Mobile Client integriert
 Für die Integration der WebRTC-Komponenten wird eine Klasse CallClient und ein Protokoll CallClientDelegate erstellt.
 Der CallClient verwaltet Sprachverbindungen, während der Delegate zur Integration mit der restlichen Applikation dient.
 Abbildung 7.18 zeigt das Klassendiagramm beider Komponenten.
+Die Methoden des CallClientDelegate-Protokolls werden von der Klasse CallService implementiert.
+Da diese Klasse auch das Protokoll SignalingDelegate implementiert, kann sie verwendet werden um Signalmeldungen zwischen CallClient und PraxusrufApi zu vermitteln.
 
 \begin{figure}[h]
     \centering
@@ -319,16 +321,10 @@ Dieses Offer-Signal wird über den CallClientDelegate versendet, welcher das Sig
 Für den Aufbau von eingehenden Verbindungen wird das Offer-Signal über die Methode receive empfangen.
 Dabei wird die Verbindung nicht direkt initialisiert.
 Stattdessen wird das Signal zwischengespeichert und die Methode onIncommingCallPending des Delegates aufgerufen.
-Die Implementation des CallClientDelegate zeigt darauf die Ansicht für aktive Anrufe an und meldet dem CallClient über die Methode acceptPending, dass die Verbindung initialisiert werden soll.
+Die Implementation des CallClientDelegate navigiert darauf zu der Ansicht für aktive Anrufe und meldet dem CallClient über die Methode acceptPending, dass die Verbindung initialisiert werden soll.
 Der CallClient initialisiert darauf eine RTCPeerConnection und sender ein Answer Signal über die send Methode.
 
-Das Offer-Signal wird über die Signaling Instanz an den Empfänger zugestellt.
-Der CallClient des Empfängers erstellt bei Empfang des Offer-Signals eine RTCPeerConnection anhand der darin enthaltenen SDP Informationen.
-Anschliessend erstellt er ein Answer-Signal und sendet dieses zurück an den Verbindungspartner.
-Das Answer-Signal wird vom Initiator der Verbindung verarbeitet, um die Verbindung zu bestätigen.
-Signale werden im CallClient durch die Methode receive empfangen und über die Methode send des CallClientDelegates versendet.
-
-Ein Answer-Signal wird ebenfalls über die receive Methode im CallClient empfangen.
+Answer-Signal werden ebenfalls über die receive Methode im CallClient empfangen.
 Beim Empfang einer Answer werden die SDP Informationen auf der lokalen RTCPeerConnection ergänzt.
 
 Neben dem Austausch von Offer- und Answer-Signalen müssen Ice Candidate Signale ausgetauscht werden können.
@@ -337,8 +333,6 @@ Damit dies möglich ist, muss der CallClient über verfügbare Ice Candidates in
 Die WebRTC Bibliothek bietet dazu das Protokoll RTCPeerConnectionDelegate.
 Dieses kann auf der RTCPeerConnection registriert werden und wird aufgerufen, sobald ein neuer Ice Candidate verfügbar ist.
 Der CallClient implementiert dieses Protokoll und registriert sich auf allen RTCPeerConnections.
-
-
 
 Sprachverbindungen müssen über die Benutzeroberfläche verwaltet werden können.
 Der CallClient bietet deshalb Methoden an, um eine Verbindung zu starten und beenden.
@@ -351,23 +345,23 @@ Der CallClientDelegate definiert dazu Methoden über welche der CallClient diese
 Peer-To-Peer Sprachverbindungen werden über die Komponenten CalService, CallClient und PraxisrufApi+Signaling in den Mobile Client integriert.
 Dieses Kapitel beschreibt den Kommunikationsablauf zwischen diesen Komponenten anhand des Austauschs von Offer- und Answer-Signalen.
 
-CallClient und PraxisrufApi+Signaling definieren je ein Delegate-Protokoll.
+Die Klassen CallClient und PraxisrufApi+Signaling definieren je ein Delegate-Protokoll.
 Diese Protokolle definieren die Funktionen, über welche die Komponenten Informationen weitergeben können.
-Die Serviceklasse CallService implementiert beide Delegate-Protokolle.
+Die Klasse CallService implementiert beide Delegate-Protokolle.
 Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert sich anschliessend bei beiden als Delegate.
 Der CallService selbst wird in den View Komponenten der Applikation verwendet.
 Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und PraxisrufApi+Signaling.
 Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
-\clearpage
+
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.9\textwidth}
+    \begin{minipage}[b]{0.85\textwidth}
         \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Caller_Signaling.drawio}}
         \caption{Sequenzdiagramm - Senden Offer-Signal im Mobile Client}
     \end{minipage}
 \end{figure}
 
-Abbildung 7.19 zeigt die Kommunikation zwischen den beteiligten Komponenten beim Signalaustausch zum Aufbau einer Sprachverbindung.
+Abbildung 7.21 zeigt die Kommunikation zwischen den beteiligten Komponenten bei der Initialisierung einer Sprachverbindung auf Empfängerseite.
 Dabei wird der Ablauf von Benutzerinteraktion des Senders bis zum Senden des Offer-Signals dargestellt.
 Sobald Praxismitarbeitende einen Anruf startet, wird die View für aktive Anrufe geladen.
 Diese initialisiert den Anruf über den CallService.
