@@ -32,10 +32,10 @@ Dabei sind die Teile, die für die Konfiguration von Sprachverbindungen ergänzt
     \end{minipage}
 \end{figure}
 
-Das Admin UI wird mit Ansichten erweitert, um CallTypes zu erstellen, anzeigen, bearbeiten und löschen.
+Das Admin UI wird mit Ansichten erweitert, über welche CallTypes erstellt, angezeigt, bearbeitet und gelöscht werden können.
 Gleichzeitig wird der Cloudservice um Rest Endpunkte für das Lesen, Erstellen, Aktualisieren und Löschen von CallTypes erweitert.
 Die Ansichten für ClientConfigurations im Admin UI werden so erweitert, dass CallTypes darauf angezeigt, hinzugefügt und entfernt werden können.
-Die bestehenden Endpunkte für ClientConfiguration werden entsprechend erweitert.
+Die API des Cloudservice wird erweitert, um die Erweiterungen an der Konfiguration persistieren zu können.
 
 \clearpage
 
@@ -45,15 +45,6 @@ Mit WebRTC werden Peer-To-Peer Verbindungen aufgebaut~\cite{webrtc}.
 Damit diese Verbindungen aufgebaut werden können, müssen die beteiligten Geräte Signalmeldungen austauschen können.
 Dazu ist eine Instanz notwendig, welche Signale zwischen den Endgeräten vermitteln kann.
 Diese Signaling Instanz wird als Teil des Cloudservice implementiert.
-
-%Prinzipiell ist es möglich, den Signalaustausch in dieses Modul zu integrieren.
-%Dieser Ansatz hat aber zwei grosse Probleme.
-%Erstens ist die Grösse von Medlungen, welche über den gewählten Messaging Service (Firebase Cloud Messaging) ausgetauscht werden können beschränkt.
-%Meldungen zum Aufbau von WebRTC Verbindungen können diese Grösse überschreiten.\footnote{cite}
-%Zweitens geschieht das Versenden von Benachrichtigungen über einen asynchronen Mechanismus.
-%Die Signale für Sprachverbindungen sollen aber synchron ausgetauscht werden.
-%Es soll unmittelbar beim Versuch des Verbindungsaufbau klar sein, ob die Verbindung etabliert werden kann oder nicht.
-%Diese Id entspricht der technischen Identifikation des entsprechenden Mobile Clients und muss, wenn sich der Mobile Client für eine Verbindung registriert mitgesendet werden.
 
 Der Cloudservice wird um ein neues Modul ''Signaling'' erweitert.
 Dieses soll den Austausch von Signalen zwischen Clients ermöglichen.
@@ -79,14 +70,20 @@ Diese muss verwendet werden, um ein Signal entgegenzunehmen und an relevante Emp
     \end{minipage}
 \end{figure}
 
-Die Klasse SignalingService implementiert das ClientConnector Interface.
-Der SignalingService führt eine Liste an verfügbaren Verbindungen.
-Dabei wird jede Verbindung durch eine eindeutige Id gekennzeichnet.
 Für die Verwaltung von Verbindungen wird die Komponente ConnectionRegistry implementiert.
-Diese muss Verbindungen anhand einer Id registrieren und wieder entfernen können.
-Weiter müssen Verbindungen anhand ihrer Id gefunden werden können.
+Diese führt eine Liste bekannter Verbindungen und bietet Methoden um Verbindungen zu registrieren und wieder entfernen.
+Sie bietet weiter eine Methode, um zu überprüfen, ob eine bestimmte Verbindung bekannt ist.
+Bekannte Verbindungen werden mit der Klasse ClientConnection abgebildet.
+Ein ClientConnection beinhaltet immer einen Identifikator und das technische Verbindungsobjekt.
+So können Verbindungen in der ClientConnection immer über einen eindeutigen Identifikator registriert und gefunden werden.
+
+Die Klasse SignalingService implementiert das ClientConnector Interface.
+Sie verwendet die Klasse ConnectionRegistry, um eine Liste von verfügbaren Verbindungen zu führen.
+Über die Methoden onConnectionEstablished werden neue Verbindungen in der ConnectionRegistry registriert.
+Mit der Methode onConnectionClosed werden geschlossene Verbindungen wieder entfernt.
+
 Für das Zustellen von Signalen über bekannte Verbindungen wird die Methode handleSignal implementiert.
-Jedes Signal muss die Identifikation seines Empfängers beinhalten.
+Jedes Signal beinhaltet die Identifikation seines Empfängers.
 Beim Empfang eines Signals wird kontrolliert, ob die ConnectionRegistry eine Verbindung für die Identifikation des Empfängers enthält.
 Ist dies der Fall, wird das Signal über diese Verbindung an den Empfänger übermittelt.
 Wenn dies nicht der Fall ist oder wenn das Senden des Signals fehlschlägt, ist der Empfänger nicht erreichbar.
@@ -98,9 +95,8 @@ Dazu wird die Bibliothek Spring-Boot-Starter-Websocket verwendet.
 Es wird ein WebsocketHandler implementiert, welcher unter dem Pfad ''$<$serverUrl$>$/signaling'' erreichbar ist.
 Etablierte Verbindungen müssen eindeutig einem Client zugeordnet werden können.
 Diese Identifikation wird als Query Parameter bei Verbindungsaufbau mitgegeben.
-Der WebsocketHandler definiert Methoden die beim Öffnen und Schliessen von Verbindungen aufgerufen werden.
-Diese delegieren das Verwalten der Verbindungen an den SignalingService.
-Empfangene Meldungen werden an den SignalingService übergeben und wie oben beschrieben verarbeitet.
+Der WebsocketHandler definiert Methoden die beim Öffnen und Schliessen von Verbindungen sowie beim Empfang von Signalen aufgerufen werden.
+Die Verarbeitung dieser Signale und Verbindungen wird an den SignalingService delegiert.
 
 \subsubsection{Sicherheit}
 
