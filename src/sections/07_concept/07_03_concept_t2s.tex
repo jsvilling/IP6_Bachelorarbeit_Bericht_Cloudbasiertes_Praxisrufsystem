@@ -13,7 +13,7 @@ Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Spr
 Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen ''isTextToSpeech'' erweitert.
 Dieses Flag wird beim Versenden einer Benachrichtigung mitgesendet und kann vom Empfänger überprüft werden.
 Wenn das Vorlesen von Benachrichtigungen in den lokalen Einstellungen und das Flag auf der Benachrichtigung aktiviert sind, wird die Benachrichtigungen vorgelesen.
-Abbildung 7.9 zeigt einen Ausschnitt aus dem Entity Relationship Diagramm der Domäne Configuration.
+Abbildung 7.11 zeigt einen Ausschnitt aus dem Entity Relationship Diagramm der Domäne Configuration.
 Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün markiert.
 
 \begin{figure}[h]
@@ -53,7 +53,7 @@ Der Parameter entspricht der technischen Identifikation des zu synthetisierenden
 Die InputStreamResource muss die synthetisierten Sprachdaten enthalten.
 Dieses Interface wird von der Komponente, welche die Schnittstelle nach aussen bietet verwendet.
 Um einen Anbieter für Sprachsynthese anzubinden, kann dieses Interface implementiert werden und der Schnittstelle zur Verfügung gestellt werden.
-Das Klassendiagramm in Abbildung 7.10 gibt einen Überblick über den Aufbau des Moduls Speech Synthesis.
+Das Klassendiagramm in Abbildung 7.12 gibt einen Überblick über den Aufbau des Moduls Speech Synthesis.
 
 \begin{figure}[h]
     \centering
@@ -166,7 +166,7 @@ Dieses Cache ermöglicht es Anfragen für Sprachsynthese zu minimieren und nach 
 
 Dieses Kapitel beschreibt die Prozesse für das Vorlesen von Benachrichtigungen.
 Dabei wird der Ablauf vom Versenden der Benachrichtigung bis hin zur Ausgabe der Sprachdaten auf Empfängerseite beschrieben.
-Abbildung 7.11 stellt den Ablauf dem Empfangen einer Benachrichtigung aus Systemsicht dar.
+Abbildung 7.13 stellt den Ablauf dem Empfangen einer Benachrichtigung aus Systemsicht dar.
 
 Um eine Benachrichtigung zu versenden, sendet ein Mobile Client eine Anfrage an den Cloudservice.
 Dieser lädt die gespeicherte Konfiguration und findet alle für die gewünschte Benachrichtigung relevanten Empfänger.
