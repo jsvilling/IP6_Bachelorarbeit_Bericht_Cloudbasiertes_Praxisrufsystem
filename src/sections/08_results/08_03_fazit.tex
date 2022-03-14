@@ -1,6 +1,6 @@
 \subsection{Fazit}
 
-In diesem Kapitel werden die zentralen Herausforderungen während der Projektarbeit und die Schlussfolgerungen, die daraus gezogen werden, beschrieben.
+In diesem Kapitel werden die zentralen Herausforderungen während dieser Projektarbeit und die Schlussfolgerungen, die daraus gezogen werden, beschrieben.
 
 Eine zentrale Herausforderung in diesem Projekt waren Konzept und Umsetzung der nativen iOS Applikation.
 Insbesondere die Integration von Sprachverbindungen und die effiziente Anbindung an Umsysteme waren herausfordernd.
@@ -9,34 +9,32 @@ Die Herausforderung bestand darin, diese Komponenten anzuwenden und Strukturen a
 Das Erarbeiten, Umsetzten und Dokumentieren dieser Konzepte hat mehr Zeit in Anspruch genommen als erwartet.
 Schlussendlich hat dieser Aufwand aber einen grossen Mehrwert gebracht.
 Die Anbindungen an Umsysteme und Peer-To-Peer Sprachverbindungen wurden eigenen Komponenten gekapselt, welche effizient in SwiftUI eingebunden werden können.
-Im Unterschied zur Entwicklung des Shared Platform Mobile Clients im Vorgängerprojekt, konnte der Aufwand hier mehrheitlich auf konzeptioneller Ebene gehalten werden.
-Die Anbindung der Schnittstellen und insbesondere die Verwendung von Gerätehardware und Betriebssystemfunktionen wie Pushbenachrichtigungen konnten deutlich einfacher umgesetzt werden.
-Es sind keine Probleme bezüglich Kompatibilität oder nicht unterstützten Funktionen aufgekommen.
+Im Unterschied zur Entwicklung des Shared Platform Mobile Clients im Vorgängerprojekt, konnte der Aufwand hier mehrheitlich auf konzeptioneller, fachlicher Ebene gehalten werden.
+Die Anbindung der Schnittstellen und insbesondere die Verwendung von Gerätehardware und Betriebssystemfunktionen wie Push-Benachrichtigungen konnten deutlich einfacher umgesetzt werden.
+Es sind keine Probleme bezüglich Kompatibilität oder nicht unterstützten Funktionen aufgetreten.
 
 Dieses Projekt hat gezeigt, dass die native Mobile Entwicklung mit SwiftUI die richtige Wahl für die Umsetzung einer App in einem Praxisrufsystem ist.
 Die native Entwicklung vereinfacht die Integration von Hardware- und Betriebssystemfunktionen massgeblich.
 Dabei ist es unerlässlich, dass die Konzepte zur Kommunikation mit Umsystemen klar definiert werden.
 Kommunikationsabläufe und Verantwortlichkeit der internen Komponenten müssen klar definiert werden.
-Sind diese Voraussetzungen erfüllt, kann von den vorteilen der nativen Entwicklung profitiert werden.
+Sind diese Voraussetzungen erfüllt, kann von den Vorteilen der nativen Entwicklung profitiert werden.
 
 Die grösste Herausforderung in diesem Projekt war die Umsetzung von Peer-To-Peer Sprachverbindungen mit WebRTC.\
 WebRTC bietet eine Bibliothek für native iOS Entwicklung.
 Diese implementiert den WebRTC-Standard und bietet alle Komponenten, die zum Aufbau von Sprachverbindungen notwendig sind.
 Die Bibliothek bietet allerdings keine Entwicklerdokumentation, welche die Verwendung der zur Verfügung gestellten Komponenten dokumentiert.
-Dies hat die Umsetzung dieser Lösung deutlich erschwert.
-Es existieren diverse Referenzimplementierungen und einfache Anleitungen zur Integration von WebRTC in Applikationen.
+Dies hat die Umsetzung der Lösung deutlich erschwert.
+Es existieren diverse inoffizielle Beispielanwendungen und einfache Anleitungen zur Integration von WebRTC in iOS Applikationen.
 Diese sind allerdings auf ein Minimum reduziert.
 Sie beinhalten keine Mechanismen zum Verbindungsmanagement und keine Integration in eine grössere Applikation.
 Die notwendigen Abläufe für Verbindungen konnten basierend auf dem WebRTC Standard erarbeitet werden.
-Das Konzept zur effizienten Integration eine mobile Applikation wurde mit diesem Projekt erarbeitet.
+Das Konzept zur effizienten Integration eine SwiftUI Applikation wurde mit diesem Projekt erarbeitet.
 Schlussendlich konnte so eine Lösung umgesetzt werden, die Anforderungen einer Gegensprechanlage im Praxisrufsystem erfüllt.
-Das Risiko mangelhafter Dokumentation wurde bereits bei der Evaluation der Technologie erkannt.
-WebRTC wurde trotzdem verwendet, da es Providerunabhängigkeit und maximale Flexibilität bei der Integration in das System bietet.
-Diese Vorteile konnten bei der Umsetzung genutzt werden.
-Die umgesetzte Signaling Instanz ist komplett unabhängig und kann bei einem beliebigen Provider betrieben werden.
+Durch die Verwendung von WebRTC ist die Gegensprechanlage unabhängig von spezifischen Anbietern und bietet maximale Flexibilität für den Betrieb des Systems.
+Die umgesetzte Signaling Instanz hat keine Abhängigkeiten auf Dienste ausserhalb von Praxisruf und kann bei einem beliebigen Provider betrieben werden.
 Sprachverbindungen im Mobile Client werden Peer-To-Peer zwischen beteiligten Endgeräten aufgebaut.
 
-Die Erfahrungen in diesem Projekt haben gezeigt, dass WebRTC geeignet ist um ein Praxisrufsystem umzusetzen.
+Die Erfahrungen in diesem Projekt haben gezeigt, dass WebRTC geeignet ist um Sprachverbindungen in einem Praxisrufsystem umzusetzen.
 Es ermöglicht eine massgeschneiderte Lösung ohne Bindung an einen externen Dienstleister.
 Gleichzeitig erschwert es aber die Umsetzung aufgrund mangelnder Dokumentation.
 Für die Integration von WebRTC wurde eine Open Source Bibliothek verwendet.
@@ -49,10 +47,13 @@ Im Rahmen dieser Projektarbeit konnte kein solches Konzept erstellt werden.
 Es wird empfohlen für die Weiterentwicklung des Praxisrufsystems ein solches Konzept zu erstellen.
 
 Die letzte Herausforderung, die hier erwähnt wird, betrifft die Planung des Projektes.
-Das Projekt konnte damit im Wesentlichen nach Plan ausgeführt werden.
-Die Verzögerungen während der Umsetzung haben aber dazu geführt, dass weniger Zeit für Testen und Erweiterungen als geplant aufgewendet werden konnte.
+Das Projekt konnte im Wesentlichen nach dem zu Beginn definierten Projektplan durchgeführt werden.
+Verzögerungen während der Umsetzung haben aber dazu geführt, dass weniger Zeit für Testing, Fehlerbehebung und Erweiterungen als geplant aufgewendet werden konnte.
 Regelmässige Absprache mit dem Auftraggeber hat es ermöglicht Rückmeldungen frühzeitig einzuarbeiten.
 Der Fokus konnte dabei aber nur auf die Mindestanforderungen an das System und nicht wie geplant auf Erweiterungen und Fehlerbehandlung gelegt werden.
 Für zukünftige Projekte wird empfohlen, Umsetzungsaufwände detaillierter zu planen und mehr Zeit für das Testen der Anforderungen einzuplanen.
+Weiter wird empfohlen, das umgesetzte System eingehend in einem produktionsnahen Umfeld zu testen.
+Dabei sollten Rückmeldungen von den Anwendern eingeholt werden, um Lücken und Verbesserungspotential zu finden.
+Diese Rückmeldungen können bei der Weiterentwicklung des Systems berücksichtigt werden und erlauben es, das System optimal auf seine Anwendungsgruppen zuzuschneiden.
 
 \clearpage
