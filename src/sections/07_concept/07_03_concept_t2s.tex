@@ -18,7 +18,7 @@ Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün mar
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{0.75\textwidth}
+    \begin{minipage}[b]{0.6\textwidth}
         \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_t2s_v01.drawio}}
         \caption{ERD Ausschnitt - Konfiguration Sprachsynthese}
     \end{minipage}
@@ -29,7 +29,6 @@ Das Versionsfeld beinhaltet eine Ganzzahl welche mit jeder Änderung inkrementie
 Der Inhalt dieses Felds wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet.
 Auf Client-Seite wird diese Information zur Implementierung eines Cache verwendet.
 
-\clearpage
 \subsubsection{Anbindung von Sprachsynthese in Cloudservice}
 
 Dieses Kapitel beschreibt, wie Amazon Polly an den Cloudservice angebunden wird, um das Vorlesen von Benachrichtigungen zu ermöglichen.
@@ -115,8 +114,6 @@ Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring R
 Die Sprachdaten werden darin als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
 Der Endpunkt wird aus Endgeräten mit Http Get Anfragen angesprochen.
 
-\clearpage
-
 \subsubsection{Security}
 
 Anfragen an die API des Moduls Speech Synthesis müssen wie alle Anfragen an die Cloudservice API authentisiert werden.
@@ -159,8 +156,6 @@ Die Namenskonvention für die gespeicherten Sprachdateien, erlaubt es ein Cache 
 Bevor der SpeechSynthesisService eine Anfrage an den Cloudservice absetzt, prüft er, ob bereits eine Datei mit dem entsprechenden Namen vorhanden ist.
 Ist dies der Fall, wird keine Anfrage an den Cloudservice gesendet und es wird die bereits gespeicherte Sprachdatei abgespielt.
 Dieses Cache ermöglicht es Anfragen für Sprachsynthese zu minimieren und nach Änderungen trotzdem immer die aktuellsten Daten zu erhalten.
-
-\clearpage
 
 \subsubsection{Laufzeitsicht}
 
