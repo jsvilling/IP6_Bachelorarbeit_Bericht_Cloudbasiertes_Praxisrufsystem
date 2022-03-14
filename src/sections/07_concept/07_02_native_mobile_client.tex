@@ -243,12 +243,14 @@ Sowohl die Credentials für die Basic Authentication als auch das JWT Token werd
 Das Token wird regelmässig erneuert, indem die Basic Authentication mit den gespeicherten Credentials wiederholt wird.
 Der Ablauf für Authentifizierung wird damit unverändert aus dem Vorgängerprojekt übernommen.
 
+\clearpage
+
 \subsubsection{Servicemodell}
 
 Dieses Kapitel gibt einen Überblick zu den Services welche in der nativen iOS Applikation beinhaltet werden.
 Abbildung 7.10 zeigt das vollständige Modell der implementierten Services.
 Diese Darstellung beinhaltet die Services, welche in den Kapiteln 7.2 bis 7.4 beschrieben werden.
-View- und Modell-Komponenten werden hier nicht dargestellt.
+View- und Model-Komponenten werden hier nicht dargestellt.
 
 \begin{figure}[h]
     \centering
@@ -257,5 +259,10 @@ View- und Modell-Komponenten werden hier nicht dargestellt.
         \caption{Klassendiagramm Modul SpeechSynthesis}
     \end{minipage}
 \end{figure}
+
+Die Klasse Settings wird verwendet um die Konfiguration des Benutzers zu verwalten.
+Sie bietet Getter und Setter für alle Properties.
+Nach dem setzten eines Wertes, wird dieser über die Komponente UserData aus der iOS Standardbibliothek persistiert.
+Die Verwendungen der Settings-Klasse sind in Abbildung 7.10 nicht dargestellt, um die Übersichtlichkeit zu wahren.
 
 \clearpage
