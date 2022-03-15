@@ -357,7 +357,7 @@ Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stell
     \centering
     \begin{minipage}[b]{0.85\textwidth}
         \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Caller_Signaling.drawio}}
-        \caption{Sequenzdiagramm - Senden Offer-Signal im Mobile Client}
+        \caption{Sequenzdiagramm - Initialisierung Sprachverbindung auf Senderseite }
     \end{minipage}
 \end{figure}
 
@@ -370,6 +370,15 @@ Der CallClient initialisiert die lokalen Verbindungsinformationen und erstellt e
 Dieses Signal gibt er an den CallService weiter.
 Der CallService leitet das Signal an den PraxisrufApi+Signaling weiter, welcher das Versenden an den Cloudservice übernimmt.
 
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{0.85\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_MobileClient_Receiver_Signaling.drawio.png}}
+        \caption{Sequenzdiagramm - Initialisierung Sprachverbindung auf Empfängerseite }
+    \end{minipage}
+\end{figure}
+
+Abbildung 7.22 zeigt den Ablauf bei Eingang eines Answer-Signals auf Empfängerseite.
 Das versendete Signal wird über das Signaling Modul des Cloudservice an den Empfänger übermittelt.
 Dieser empfängt das Signal über die Komponente PraxisrufApi+Signaling.
 Diese gibt das Signal über die Methode onSignalReceived an den CallService weiter.
