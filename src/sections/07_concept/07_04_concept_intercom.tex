@@ -389,3 +389,22 @@ Der CallClient initialisiert die Peer-To-Peer Verbindung und erstellt ein Answer
 Dieses Signal wird wiederum über den CallService zum PraxisrufApi+Signaling weiter zum Cloudservice versendet.
 
 \clearpage
+
+\subsubsection{Netzwerkvoraussetzungen}
+
+Praxisruf ist darauf ausgelegt innerhalb von Arztpraxen verwendet zu werden.
+Dabei wird pro Zimmer ein Gerät installiert, welches als Endpunkt für das System dient~\cite{aufgabenstellung}.
+Damit werden alle Endgeräte einer Praxis innerhalb der Praxis betrieben.
+Dies erlaubt es, die Geräte im selben lokalen Netzwerk zu betreiben.
+Ist diese Voraussetzung gegeben, kann der Verbindungsaufbau vereinfacht werden.
+Da die Geräte direkt im lokalen Netzwerk kommunizieren können ist es nicht nötig, die Protokolle STUN oder TURN zu verwenden.
+Damit wird es möglich auf den Betrieb eines ICE Servers zu verzichten.
+Die Geräte können ICE Kandidaten für direkte Kommunikation im lokalen Netzwerk austauschen.
+
+Die Integration von WebRTC in der iOS App wird unter der Voraussetzung umgesetzt, dass alle beteiligten Geräte im selben Netzwerk betrieben werden.
+Dies vereinfacht den Aufbau von Verbindungen und erlaubt es, neben der Signaling Instanz keine weitere Infrastruktur betreiben zu müssen.
+Sprachverbindungen mit Praxisruf sind deshalb nur möglich, wenn die beteiligten Geräte im selben lokalen Netzwerk betrieben werden.
+Das Versenden und Empfangen von Benachrichtigungen funktioniert wie im Vorgängerprojekt auch ausserhalb des lokalen Netzwerkes.
+Damit können auch für Empfänger, die nicht im lokalen Netzwerk sind, über verpasste Anrufe mit Benachrichtigungen informiert werden.
+
+\clearpage
