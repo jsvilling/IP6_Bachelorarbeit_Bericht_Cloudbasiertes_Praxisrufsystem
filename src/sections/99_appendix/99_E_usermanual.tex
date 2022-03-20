@@ -117,4 +117,32 @@ Um sicherzustellen, dass Daten ausgetauscht werden können, müssen Sie auf folg
     \end{itemize}
 \end{enumerate}
 
+\textbf{Benachrichtigung für verpasste Anrufe}
+
+Die Benachrichtigung für verpasste Anrufe kann im Admin UI erfasst und verändert werden.
+Eine Benachrichtigung mit Standardwerten wurde bei der Installation erfasst (vgl.\ Installationsanleitung).
+Diese kann wie folgt angepasst werden:
+
+\begin{enumerate}
+    \item Melden Sie sich im Admin UI an.
+    \item Finden Sie unter ''NotificationTypes'' die Benachrichtigung mit dem Title ''Verpasster Anruf''.
+    \item Sie können diese Benachrichtigung frei bearbeiten.
+    Die entsprechenden Änderungen werden für alle folgenden Benachrichtigungen für verpasste Anrufe angewendet.
+\end{enumerate}
+
+Sie können weiter eine beliebige andere Benachrichtigung für verpasste Anrufe verwenden.
+Dazu gehen Sie wie folgt vor:
+
+\begin{enumerate}
+    \item Melden Sie sich im Admin UI an.
+    \item Erstellen Sie einen neuen NotificationType und geben Sie die gewünschten Werte ein.
+    \item Speichern Sie den NotificationType.
+    \item Öffnen Sie die Detailansicht für den NotificationType.
+    \item Kopieren Sie die technische Id des NotificationType aus der URL im Browserfenster.
+    Die id ist der letzte Teil der URL.
+    \item Aktualisieren Sie die Konfiguration des Cloudservice und setzten den Wert der Umgebungsvariable NOTIFICATION\_TYPE\_FOR\_UNAVAILABLE auf die kopierte id.
+    \item Starten Sie den Cloudservice neu.
+    Anschliessend wird die konfigurierte Benachrichtigung für alle folgenden verpassten Anrufe verwendet.
+\end{enumerate}
+
 \clearpage
