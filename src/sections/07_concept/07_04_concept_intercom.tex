@@ -280,7 +280,7 @@ Darin wird der Websocketverbindung signalisiert, dass der Client bereit ist die 
 Sobald eine Meldung empfangen wird, wird diese über den PraxisrufApiSignalingDelegate verarbeitet.
 Wurde eine gültige Signalmeldung empfangen, wird diese über die Methode onSignalReceived verarbeitet.
 Wurde hingegen eine ungültige Signalmeldung oder eine Fehlermeldung empfangen wird die Methode onErrorReceived aufgerufen.
-Im Fehlerfall wird zudem überprüft ob die Verbindung noch offen verwendbar ist.
+Im Fehlerfall wird zudem überprüft, ob die Verbindung noch offen verwendbar ist.
 Sollte die Verbindung nicht mehr verwendbar sein, wird die Methode onConnectionLost des Delegates aufgerufen.
 
 PraxisrufApi+Signaling definiert weiter Methoden um Signal- und Pingmeldungen zu versenden.
@@ -297,6 +297,38 @@ Die Methoden onConnectionLost und onErrorReceived werden verwendet, um Fehlermel
 Nachdem die Verbindung zur Signaling Instanz verloren gegangen ist, wird bis zu zehnmal versucht, die Verbindung erneut zu öffnen.
 Wenn die Verbindung dadurch nicht repariert werden kann, wird sie permanent geschlossen und dem Benutzer eine Fehlermeldung angezeigt.
 
+\subsubsection{Verbindungsverwaltung}
+
+Dieses Kapitel beschreibt, wie im Mobile Client sichergestellt wird, dass die Verbindung zu der Signaling Instanz langfristig zur Verfügung steht.
+Abbildung 7.20 gibt einen Überblick, über die Abläufe dazu umgesetzt werden.
+Diese sind werden mit den Komponenten CallService und PraxisrufApi+Signaling implementiert.
+
+\begin{figure}[h]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/flow_connection}}
+        \caption{Flowchart - Verbindungsverwaltung}
+    \end{minipage}
+\end{figure}
+
+Die Verbindung zur Signaling Instanz wird hergestellt, sobald die Applikation gestartet wird.
+Nachdem die Verbindung hergestellt wurde, werden im Abstand von 60 Sekunden Pingmeldungen über die Verbindung gesendet.
+
+Um festzustellen, ob die eine getrennte Verbindung repariert werden kann, wird ein Fehlerzähler geführt.
+Dieser wird beim Start der Applikation mit null initialisiert und bei jedem Verbindungsfehler um eins inkrementiert.
+Ein Verbindungsfehler tritt auf, wenn eine Fehlermeldung über die Signaling Verbindung empfangen wird und wenn das Senden einer Meldung oder das Wiederherstellen der Verbindung fehlschlägt.
+
+Sobald die Fehlerzahl auf eine Zahl grösser als zehn inkrementiert wird, wird die Verbindung getrennt.
+Zudem wird ein Fehlerdialog in der Benutzeroberfläche angezeigt.
+Die Verbindung bleibt geschlossen bis die nächste Meldung versendet wird.
+Dies der Fall, wenn das Interval für die nächste Pingmeldung abgelaufen ist und wenn ein Anruf über die Benutzeroberfläche gestartet wird.
+
+Dieser Ablauf stellt sicher, dass die Verbindung zu der Signaling Instanz automatisch repariert wird.
+Wenn möglich, geschieht dies direkt nach Verbindungsverlust.
+Andernfalls werden Praxismitarbeitende informiert, dass die Gegensprechanlage aktuell nicht verwendet werden kann.
+Im Hintergrund in dieser Situation im Abstand von 60 Sekunden versucht, die Verbindung zu reparieren.
+Weiter wird die Verbindung repariert, wenn Praxismitarbeitende die Gegensprechanlage bedienen während die Verbindung getrennt ist.
+In diesem Fall kann entweder die Verbindung wiederhergestellt und die Gegensprechanlage verwendet werden oder es wird erneut der Fehlerdialog angezeigt.
 
 \subsubsection{Sprachverbindungen im Mobile Client}
 
@@ -347,14 +379,6 @@ Der CallClientDelegate definiert dazu Methoden über welche der CallClient diese
 Peer-To-Peer Sprachverbindungen werden über die Komponenten CalService, CallClient und PraxisrufApi+Signaling in den Mobile Client integriert.
 Dieses Kapitel beschreibt den Kommunikationsablauf zwischen diesen Komponenten anhand des Austauschs von Offer- und Answer-Signalen.
 
-Die Klassen CallClient und PraxisrufApi+Signaling definieren je ein Delegate-Protokoll.
-Diese Protokolle definieren die Funktionen, über welche die Komponenten Informationen weitergeben können.
-Die Klasse CallService implementiert beide Delegate-Protokolle.
-Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert sich anschliessend bei beiden als Delegate.
-Der CallService selbst wird in den View Komponenten der Applikation verwendet.
-Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und PraxisrufApi+Signaling.
-Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
-
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.85\textwidth}
@@ -363,7 +387,16 @@ Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stell
     \end{minipage}
 \end{figure}
 
-Abbildung 7.21 zeigt die Kommunikation zwischen den beteiligten Komponenten bei der Initialisierung einer Sprachverbindung auf Empfängerseite.
+
+Die Klassen CallClient und PraxisrufApi+Signaling definieren je ein Delegate-Protokoll.
+Diese Protokolle definieren die Funktionen, über welche die Komponenten Informationen weitergeben können.
+Die Klasse CallService implementiert beide Delegate-Protokolle.
+Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert sich anschliessend bei beiden als Delegate.
+Der CallService selbst wird in den View Komponenten der Applikation verwendet.
+Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und PraxisrufApi+Signaling.
+Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
+
+Abbildung 7.22 zeigt die Kommunikation zwischen den beteiligten Komponenten bei der Initialisierung einer Sprachverbindung auf Empfängerseite.
 Dabei wird der Ablauf von Benutzerinteraktion des Senders bis zum Senden des Offer-Signals dargestellt.
 Sobald Praxismitarbeitende einen Anruf startet, wird die View für aktive Anrufe geladen.
 Diese initialisiert den Anruf über den CallService.
@@ -380,7 +413,8 @@ Der CallService leitet das Signal an den PraxisrufApi+Signaling weiter, welcher 
     \end{minipage}
 \end{figure}
 
-Abbildung 7.22 zeigt den Ablauf bei Eingang eines Answer-Signals auf Empfängerseite.
+
+Abbildung 7.23 zeigt den Ablauf bei Eingang eines Answer-Signals auf Empfängerseite.
 Das versendete Signal wird über das Signaling Modul des Cloudservice an den Empfänger übermittelt.
 Dieser empfängt das Signal über die Komponente PraxisrufApi+Signaling.
 Diese gibt das Signal über die Methode onSignalReceived an den CallService weiter.
@@ -388,7 +422,6 @@ Der CallService aktiviert die Ansicht für aktive Anrufe und leitet das Signal a
 Der CallClient initialisiert die Peer-To-Peer Verbindung und erstellt ein Answer-Signal zur Bestätigung.
 Dieses Signal wird wiederum über den CallService zum PraxisrufApi+Signaling weiter zum Cloudservice versendet.
 
-\clearpage
 
 \subsubsection{Netzwerkvoraussetzungen}
 
