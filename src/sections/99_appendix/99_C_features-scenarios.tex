@@ -18,7 +18,8 @@ Diese dienen zur Verifizierung der Umsetzung der Sprachsynthese für Benachricht
     When:   \> \> \> Eine Benachrichtigung X wird empfangen \\
     Then:   \> \> \> Der Inhalt der Benachrichtigung wird vorgelesen. \\
     \\
-    Scenario S20: \> \> \> Benachrichtigung nicht vorlesen - Sprachsynthese aktiviert und Benachrichtigung nicht relevant \\ \\
+    Scenario S20: \> \> \> Benachrichtigung nicht vorlesen - Sprachsynthese aktiviert und Benachrichtigung nicht \\
+    \> \> \> relevant \\ \\
     Given:  \> \> \> Sprachsynthese für eine Benachrichtigung X ist deaktiviert \\
     And:  \> \> \> Sprachsynthese in den App Einstellungen ist aktiviert \\
     When:   \> \> \> Eine Benachrichtigung X wird empfangen \\
@@ -36,15 +37,20 @@ Diese dienen zur Verifizierung der Umsetzung der Sprachsynthese für Benachricht
     When:   \> \> \> Eine Benachrichtigung X wird empfangen \\
     Then:   \> \> \> Der Inhalt der Benachrichtigung wird vorgelesen. \\
     \\
-    Scenario S23: \> \> \> Benachrichtigung verwalten - Relevanz Sprachsynthese kann im Admin UI aktiviert / deaktiviert werden \\ \\
+    Scenario S23: \> \> \> Benachrichtigung verwalten - Relevanz Sprachsynthese kann im Admin UI aktiviert \\
+    \> \> \>  / deaktiviert werden \\ \\
     Given:  \> \> \> Sprachsynthese für eine Benachrichtigung X ist aktiviert/deaktiviert \\
     When:   \> \> \> Sprachsynthese für die Benachrichtigung X wird über das Admin UI aktiviert/deaktiviert. \\
     Then:   \> \> \> Konfiguration von Benachrichtigung X wird bei Empfang korrekt angewendet. \\
-    \\
+    \clearpage
+\end{tabbing}
+\begin{tabbing}
+    Left \= Middle \= Right \= Right \kill
     Scenario S24: \> \> \> Benachrichtigung empfangen - Änderung an Typ in Admin UI wird sofort angewendet \\ \\
     Given:  \> \> \> Sprachsynthese für eine Benachrichtigung X ist aktiviert \\
     When:   \> \> \> Inhalt der Benachrichtigung wird im Admin UI angepasst\\
-    Then:   \> \> \> Bei Empfang der Benachrichtigung, wird der angepasste Inhalt der Benachrichtigung vorgelesen.\\
+    Then:   \> \> \> Bei Empfang der Benachrichtigung, wird der angepasste Inhalt der Benachrichtigung  \\
+    \> \> \> vorgelesen.\\
     \\
 \end{tabbing}
 \subsubsection*{F03 - Gegensprechanlage}
@@ -58,9 +64,11 @@ Diese dienen zur Verifizierung der Umsetzung der Sprachsynthese für Benachricht
     \\
     Scenario S26: \> \> \> Verbindungsaufbau - Gegenüber ist Verfügbar \\ \\
     Given:  \> \> \> Ziel der Sprachverbindung ist beim Signaling Server registriert. \\
-    And:  \> \> \> Ziel der Sprachverbindung hat das Empfangen von Anrufen in der lokalen Konfiguration aktiviert. \\
+    And:  \> \> \> Ziel der Sprachverbindung hat das Empfangen von Anrufen in der lokalen Konfiguration \\
+    \> \> \> aktiviert. \\
     When:   \> \> \> Button für Sprachverbindung wird aktiviert \\
-    Then:   \> \> \> Die Sprachverbindung wird aufgebaut und die Ansicht für Aktive Anrufe auf beiden Clients angezeigt.\\
+    Then:   \> \> \> Die Sprachverbindung wird aufgebaut und die Ansicht für Aktive Anrufe auf beiden \\
+    \> \> \> Clients angezeigt.\\
     \\
     Scenario S27: \> \> \> Verbindungsaufbau - Gegenüber ist nicht Verfügbar \\ \\
     Given:  \> \> \> Ziel der Sprachverbindung ist nicht beim Signaling Server registriert\\
@@ -122,6 +130,9 @@ Diese dienen zur Verifizierung der Umsetzung der Sprachsynthese für Benachricht
     When:   \> \> \> Es wird versucht eine Sprachverbindung zum Ziel aufzubauen.\\
     Then:   \> \> \> Es ist ein Eintrag für die verpasste Verbindung in der Inbox zu sehen.\\
     \\
+\end{tabbing}
+\begin{tabbing}
+    Left \= Middle \= Right \= Right \kill
     Scenario S37: \> \> \> Verbindung trennen durch Empfänger \\ \\
     Given:  \> \> \> Eine Sprachverbindung zwischen beliebig vielen Teilnehmern wurde aufgebaut. \\
     When:   \> \> \> Das Ziel der Verbindung beendet die Verbindung. \\
@@ -129,7 +140,7 @@ Diese dienen zur Verifizierung der Umsetzung der Sprachsynthese für Benachricht
     \\
     Scenario S38: \> \> \> Verbindung durch Initiator \\ \\
     Given:  \> \> \> Eine Sprachverbindung zwischen zwei Teilnehmern wurde aufgebaut. \\
-    When:   \> \> \> Der Initiator der Verbindung beendet die Verbindung.
+    When:   \> \> \> Der Initiator der Verbindung beendet die Verbindung. \\
     Then:   \> \> \> Die Verbindung wird auf beiden Seiten beendet.\\
     \\
     Scenario S39: \> \> \> Austreten aus Gruppenunterhaltung \\ \\
