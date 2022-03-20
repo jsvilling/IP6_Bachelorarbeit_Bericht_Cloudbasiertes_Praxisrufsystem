@@ -247,7 +247,7 @@ Sobald dieser Austausch beendet ist, besteht die Verbindung und es können Sprac
 
 \subsubsection{Anbindung Mobile Client an Singaling Instanz}
 
-Dieses Kapitel beschreibt, wie Websockeverbindungen zum Austausch von Signalmeldungen in den nativen Mobile client integriert werden.
+Dieses Kapitel beschreibt, wie Websockeverbindungen zum Austausch von Signalmeldungen in den nativen Mobile Client integriert werden.
 
 In Kapitel 7.2 wird die Klasse PraxisrufApi beschrieben.
 Diese implementiert die Anbindung and die Http-API des Cloudservice.
@@ -256,9 +256,9 @@ Damit die Anbindung an alle Schnittstellen des Cloudservice einheitlich bleibt, 
 Dies beinhaltet den Auf- und Abbau von Verbindungen, sowie das Senden und Empfangen von Meldungen über diese Verbindung.
 Weiter müssen Verhalten beim Empfang von Fehlermeldungen und dem unerwarteten Schliessen der Verbindung definiert werden.
 
-Der Austausch von Signalmeldungen ist der einzige Anwendungsfall in Praxisruf, der Websocketverbindungen benötigt.
+Der Austausch von Signalmeldungen ist der einzige Anwendungsfall für Websockets in Praxisruf.
 Deshalb wird auf eine generische Integration von Websockets verzichtet.
-Zur Erweiterung von PraxisrufApi werden die Extension PraxisrufApi+Signaling und das Protokoll definiert.
+Zur Erweiterung von PraxisrufApi werden die Extension PraxisrufApi+Signaling und das Protokoll PraxisrufApiSignalingDelegate definiert.
 Diese setzen die Anbindung von Websockets für den Austausch von Signalmeldungen um.
 
 \begin{figure}[h]
@@ -292,16 +292,16 @@ Schlägt das Senden fehl, wird die Methode onErrorReceived auf dem Delegate aufg
 Die Methoden des Protokolls CallClientDelegate werden durch die Klasse CallService implementiert.
 Der CallService vermittelt Anfragen zwischen Signaling Instanz, Benutzeroberfläche und Peer-To-Peer Verbindungen im Mobile Client.
 Er ist dafür verantwortlich Signale an die Peer-To-Peer Verbindung weiterzuleiten, geschlossene Verbindungen wieder zu öffnen und Fehlermeldungen anzuzeigen.
-Empfangene Signalmeldungen werden über die Methode onSignalReceived an die Komponente CallClient übergeben (Siehe Kapitel 7.4.8).
+Empfangene Signalmeldungen werden über die Methode onSignalReceived an die Komponente CallClient übergeben (Siehe Kapitel 7.4.9).
 Die Methoden onConnectionLost und onErrorReceived werden verwendet, um Fehlermeldungen anzuzeigen und geschlossene Verbindungen erneut zu öffnen.
 Nachdem die Verbindung zur Signaling Instanz verloren gegangen ist, wird bis zu zehnmal versucht, die Verbindung erneut zu öffnen.
-Wenn die Verbindung dadurch nicht repariert werden kann, wird sie permanent geschlossen und dem Benutzer eine Fehlermeldung angezeigt.
+Wenn die Verbindung dadurch nicht repariert werden kann, wird sie geschlossen und dem Benutzer eine Fehlermeldung angezeigt.
 
 \subsubsection{Verbindungsverwaltung}
 
 Dieses Kapitel beschreibt, wie im Mobile Client sichergestellt wird, dass die Verbindung zu der Signaling Instanz langfristig zur Verfügung steht.
 Abbildung 7.20 gibt einen Überblick, über die Abläufe dazu umgesetzt werden.
-Diese sind werden mit den Komponenten CallService und PraxisrufApi+Signaling implementiert.
+Diese werden mit den Komponenten CallService und PraxisrufApi+Signaling implementiert.
 
 \begin{figure}[h]
     \centering
@@ -319,16 +319,18 @@ Dieser wird beim Start der Applikation mit null initialisiert und bei jedem Verb
 Ein Verbindungsfehler tritt auf, wenn eine Fehlermeldung über die Signaling Verbindung empfangen wird und wenn das Senden einer Meldung oder das Wiederherstellen der Verbindung fehlschlägt.
 
 Sobald die Fehlerzahl auf eine Zahl grösser als zehn inkrementiert wird, wird die Verbindung getrennt.
-Zudem wird ein Fehlerdialog in der Benutzeroberfläche angezeigt.
+In der Benutzeroberfläche wird ein Fehlerdialog angezeigt.
 Die Verbindung bleibt geschlossen bis die nächste Meldung versendet wird.
-Dies der Fall, wenn das Interval für die nächste Pingmeldung abgelaufen ist und wenn ein Anruf über die Benutzeroberfläche gestartet wird.
+Dies der Fall, wenn das Interval für die nächste Pingmeldung abgelaufen ist oder wenn ein Anruf über die Benutzeroberfläche gestartet wird.
 
-Dieser Ablauf stellt sicher, dass die Verbindung zu der Signaling Instanz automatisch repariert wird.
+Dieser Ablauf stellt sicher, dass die Verbindung zu der Signaling Instanz geöffnet bleibt und wenn nötig repariert wird.
 Wenn möglich, geschieht dies direkt nach Verbindungsverlust.
-Andernfalls werden Praxismitarbeitende informiert, dass die Gegensprechanlage aktuell nicht verwendet werden kann.
-Im Hintergrund in dieser Situation im Abstand von 60 Sekunden versucht, die Verbindung zu reparieren.
-Weiter wird die Verbindung repariert, wenn Praxismitarbeitende die Gegensprechanlage bedienen während die Verbindung getrennt ist.
-In diesem Fall kann entweder die Verbindung wiederhergestellt und die Gegensprechanlage verwendet werden oder es wird erneut der Fehlerdialog angezeigt.
+Andernfalls werden Praxismitarbeitende informiert, dass die Verbindung nicht hergestellt werden konnte.
+Im Hintergrund wird in dieser Situation regelmässig versucht, die Verbindung zu reparieren.
+Die Bedienelemente für die Gegensprechanlage bleiben während dieser Zeit aktiviert und können weiter verwendet werden.
+Wenn Praxismitarbeitende einen Anruf starten und die Verbindung immer noch getrennt ist, wird die sie frühzeitig wiederhergestellt.
+Ist dies erfolgreich, wird der Anruf gestartet.
+Andernfalls wird erneut ein Fehlerdialog angezeigt.
 
 \subsubsection{Sprachverbindungen im Mobile Client}
 
