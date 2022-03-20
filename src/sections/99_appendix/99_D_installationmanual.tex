@@ -1,5 +1,183 @@
 \section{Installationsanleitung}
 
-Lorem ipsum.
+In diesem Kapitel wird beschrieben wie Praxisruf mit Amazon Webservices betrieben werden kann.
+Die hier aufgeführten Anleitungen sind aus dem Projektbericht ''IP5 Cloudbasiertes Praxisrufsystem''~\cite{ip5} übernommen und wo nötig ergänzt.
+Sämtliche Anleitungen behandeln ausschliesslich eine Neuinstallation des Systems und beinhalten keine Migrationsanleitng auf Basis des Vorgängerprojekts.
+
+\subsubsection*{Firebase Messaging}
+
+Im Folgenden wird beschrieben wie Firebase Cloud Messaging konfiguriert werden muss, um Benachrichtigungen in Praxisruf zu ermöglichen.
+Die Konfiguration von Firebase Cloud Messaging muss vor Installation von Cloudservice und Mobile Client vorgenommen werden.
+Diese Anleitung hat sich im Vergleich zum Vorgängerprojekt nicht verändert und ist direkt aus dem Anhang D des Projektberichts ''IP5 Cloudbasiertes Praxisrufsystem''~\cite{ip5} übernommen.
+
+\begin{enumerate}
+    \item Öffnen Sie die \href{https://console.firebase.google.com/}{\textit{Firebase Console}} und erstellen Sie ein neues Projekt.
+    \item Navigieren Sie in das Menü ``Project Settings''.
+    \item Navigieren Sie zum Tab ``Service Accounts''.
+    \item Klicken Sie den Button ``Generate new private Key'' und bestätigen Sie die Eingabe.
+    \item Speichern Sie die generierte Datei an einem Ort Ihrer Wahl.
+    \item Kopieren Sie den Dateiinhalt und Benutzen Sie ein Werkzeug Ihrer Wahl\footnote{z.B. \url{https://www.base64decode.org/}} um den Inhalt mit Base64 zu kodieren.
+    \item Speichern Sie den Base64 kodierten Dateiinhalt an einem Ort Ihrer Wahl. Sie werden diesen Wert für die Konfiguration des Cloud Services benötigen.
+    \item Öffnen Sie erneut die \href{https://console.firebase.google.com/}{\textit{Firebase Console}}
+    \item Navigieren Sie in das Menü ``Project Settings''.
+    \item Erstellen Sie für die gewünschte Plattform (iOS, Android oder Web app) eine Anwendung via ``Add App''.
+    \item Verwenden Sie für den Android package name bzw.\ die iOS bundle ID den package\_name des Mobile Clients. (ch.fhnw.ip5.praxisintercom.client)
+    \item Vergeben Sie einen beliebigen App-Nickname.
+    \item Laden Sie nach dem Registrieren die Konfigurationsdatei GoogleService-Info.plist (iOS) oder google-services.json (Android) herunter.
+    \item Legen Sie die Konfigurationsdatei in einem Verzeichnis Ihrer Wahl ab.
+\end{enumerate}
+
+Mehr Informationen zu Firebase und der Integration von Firebase Projekten finden Sie in der \href{https://firebase.google.com/docs/projects/learn-more#setting_up_a_firebase_project_and_registering_apps}{offiziellen Dokumentation.}\cite{understand-firebase}
+
+\subsubsection*{Cloud Service}
+
+Im Folgenden wird beschrieben wie die Cloud Service Applikation mit AWS betrieben werden kann.
+Diese Anleitung wurde im Vergleich zum Vorgängerprojekt erweitert um die Konfiguration von Gegensprechanlage und Sprachsynthese zu erweitert.
+Dazu wurde die Anleitung aus dem Anhang D des Projektberichts ''IP5 Cloudbasiertes Praxisrufsystem''~\cite{ip5} erweitert.
+
+\begin{enumerate}
+    \item Stellen Sie sicher, dass der Quellcode der Cloud Service Applikation in einem Git Repository bei einem der Anbieter Github, Gitlab, BitBucket oder AWS CodeCommit zur Verfügung steht.
+    \item Erstellen Sie einen mit AWS ein Elastic Beanstalk Environment.
+    \begin{enumerate}
+        \item Folgen Sie dazu der \href{https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/GettingStarted.CreateApp.html}{\textit{offiziellen Anleitung}}\cite{aws-elastic}
+        \item Wählen Sie unter Plattform ``Java'' und die dazugehörigen Standardeinstellungen.
+        \item Wählen Sie unter Application Code ``Sample Application''.
+    \end{enumerate}
+    \item Erstellen Sie mit AWS RDS eine Datenbank für die Cloud Service Applikation
+    \begin{enumerate}
+        \item Öffnen Sie die Beanstalk Console.
+        \item Folgen Sie der \href{https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.managing.db.html}{\textit{offiziellen Anleitung}}\cite{aws-elastic-rds} um eine Relationale Datenbank an das Beanstalk Environment anzubinden.
+        \item Wählen Sie als Datenbank Engine ``postgres'' in der Version 13.3.
+        \item Wenn sie oben genannter Anleitung folgen, ist keine weitere Konfiguration für die Datenbankanbindung im Cloud Service nötig.
+        Sollten Sie wählen, die Datenbank auf eine andere Art zu Betreiben müssen in Schritt 4 die Umgebungsvariablen RDS\_HOSTNAME, RDS\_PORT, RDS\_DB\_NAME, RDS\_USERNAME und RDS\_PASSWORD mit den entsprechenden Werten konfiguriert werden.
+    \end{enumerate}
+    \item Um die Anbindung an Amazon Polly nutzen zu können, muss ein Benutzer für den Zugriff definiert und berechtigt werden.
+    \begin{enumerate}
+        \item Erstellen Sie einen IAM Benutzer für den Zugriff auf Amazon Polly. Folgen Sie dazu der \href{https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/}{\textit{Offiziellen Anleitung}}.
+        \item Stellen Sie sicher, dass der Benutzer die Rolle \textit{AmazonPollyFullAccess} zugewiesen hat.
+        \item Erstellen Sie einen Access Key für den erstellten Benutzer. Folgen Sie dazu der \href{https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/}{\textit{Offiziellen Anleitung}}.
+        \item Speichern Sie den generierten Access Key ID und Access Secret Key an einem sicheren Ort. Sie werden für die weitere Konfiguration benötigt.
+    \end{enumerate}
+
+    \item Definieren Sie die nötigen Umgebungsvariablen für die Cloud Service Applikation:
+    \begin{enumerate}
+        \item Folgen Sie der \href{https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html}{\textit{offiziellen Anleitung}}\cite{aws-elastic-env} um die nötigen Umgebungsvariablen zu setzen:
+        \item Name: FCM\_CREDENTIALS, Wert: Firebase Credentials mit Base 64 Encoded\footnote{Siehe Installationsanleitung Firebase Messaging}
+        \item Name: SPRING\_PROFILES\_ACTIVE, Wert: aws.
+        \item Name: ADMIN\_ORIGIN, Wert: Admin UI Domain
+        \item Name: JWT\_SECRET\_KEY, Wert: Zufälliger 64 Bit String\footnote{\url{https://www.grc.com/passwords.htm}}
+        \item Name: AWS\_ACCESS\_KEY, Wert: Access Key ID, welcher in Schritt 4 erstellt wurde.
+        \item Name: AWS\_SECRET\_KEY, Wert: Access Secret Key, welcher in Schritt 4 erstellt wurde.
+        \item Name: NOTIFICATION\_TYPE\_FOR\_UNAVAILABLE, Wert: '63d530ab-48af-4597-a9fd-2fb4c9700c55'. Oder die ID des NotificationTypes, welcher für verpasste Anrufe verwendet werden soll.
+    \end{enumerate}
+    \item Konfigurieren Sie AWS CodeBuild um die Cloud Service Applikation mit AWS bauen zu können.
+    \begin{enumerate}
+        \item Öffnen Sie die AWS Console und wählen Sie unter Services ``Code Pipeline'' aus.
+        \item Wählen Sie die Option ``Create build project''.
+        \item Geben Sie unter Project Configuration einen passenden Namen ein.
+        \item Wählen Sie unter Source den gewünschten Anbieter und geben Sie die Repository URl sowie die gewünschte Version (Branch Name) ein.
+        \item Wählen Sie unter Buildspec ``Use a buildspec file''. Die projektspezifische Build Konfiguration ist in der Cloud Service Applikation bereits enthalten.
+        \item Bestätigen Sie die Eingaben.
+    \end{enumerate}
+    \item Konfigurieren Sie AWS CodePipeline um die Cloud Service Applikation zu installieren:
+    \begin{enumerate}
+        \item Öffnen Sie die AWS Console und wählen Sie unter Services ``Code Pipeline'' aus.
+        \item Wählen Sie die Option ``Create New Pipeline''.
+        \item Geben Sie in Schritt 1 einen Namen für die Pipeline an und wählen Sie ``Next''.
+        \item Wählen Sie in Schritt 2 gewünschten Anbieter und folgen sie dem Wizard um das Git Repository des Cloud Services anzubinden.
+        \item Wählen Sie in Schritt 3 AWS CodeBuild und das CodeBuild Projekt welches Sie in Schritt 3 erstellt haben.
+        \item Wählen Sie in Schritt 4 AWS Elastic Beanstalk und die in Schritt 2 definierten Instanzen.
+        \item Bestätigen Sie die Eingaben.
+    \end{enumerate}
+    \item Stellen Sie sicher, dass die installierte Cloud Service Applikation über HTTPS erreichbar ist. Dies ist für die Kommunikation mit Mobile Client Instanzen zwingend notwendig.
+    \begin{enumerate}
+        \item Folgen Sie dazu der offiziellen Anleitung\href{https://aws.amazon.com/premiumsupport/knowledge-center/elastic-beanstalk-https-configuration/}{\textit{offiziellen Anleitung}}\cite{aws-elastic-https}.
+        \item Am Cloud Service sind dabei keine Änderungen nötig.
+    \end{enumerate}
+    \item Stellen Sie sicher, dass die in Schritt 7 konfigurierte Pipeline erfolgreich ausgeführt wurde.
+    Durch das erste Starten der Applikation wird das Datenbankschema automatisch initialisiert.
+    \item Als letzter Schritt müssen zwei Scripts manuell auf der Datenbank ausgeführt werden.
+    Gehen Sie dazu wie folgt vor:
+    \begin{enumerate}
+        \item Richten Sie den Datenbankzugriff auf die in Schritt 3 erstellte Datenbank gemäss der \href{https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToPostgreSQLInstance.html}{\textit{offiziellen Anleitung}}\cite{aws-elastic-rds-access}. ein.
+        \item Wählen Sie ein Passwort
+        \item Erstellen Sie ein Hash des gewählten Passwort mit dem "bcrypt"-Algorithmus.\footnote{\url{https://bcrypt-generator.com/}}
+        \item Passen Sie die Parameter in folgenden Script an und führen es auf der Datenbank aus:
+        \lstinputlisting[caption=createadmin.sql,language=sql,label={lst:createadmin.sql}]{listings/createadmin.sql}
+        \item Erstellen Sie die Konfiguration für Benachrichtigung bei verpassten Anrufen in der Gegensprechanlage, indem Sie folgendes Script ausführen:
+        \lstinputlisting[caption=missedcallnotification.sql,language=sql,label={lst:missedcallnotification.sql}]{listings/missedcallnotification.sql}
+    \end{enumerate}
+
+\end{enumerate}
+
+\subsubsection*{Admin UI}
+
+Im Folgenden wird beschrieben wie die Admin UI Applikation mit AWS betrieben werden kann.
+Diese Anleitung hat sich im Vergleich zum Vorgängerprojekt nicht verändert und ist direkt aus dem Anhang D des Projektberichts ''IP5 Cloudbasiertes Praxisrufsystem''~\cite{ip5} übernommen.
+
+\begin{enumerate}
+    \item AWS Amplify Service aufsetzen:
+    \begin{enumerate}
+        \item Amazon Webservice unterstützt die Anbindung von Github, Gitlab, BitBucket und AWS CodeCommit. Stellen Sie sicher, dass der Quellcode der Admin UI Applikation in einem Git Repository zur Verfügung steht.
+        \item Folgen Sie den Schritten in der \href{https://docs.aws.amazon.com/amplify/latest/userguide/getting-started.html}{\textit{offiziellen Anleitung}}.\cite{aws-amplify}
+    \end{enumerate}
+    \item Verbindung zum Cloud Service konfigurieren:
+    \begin{enumerate}
+        \item Öffnen sie die AWS Amplify Konsole für die in Schritt 1 erstellte Applikation.
+        \item Wählen Sie den Menüpunkt ``Environment Variables''
+        \item Erstellen Sie eine neue Variable mit dem Namen REACT\_APP\_BACKEND\_BASE\_URI. Setzten Sie als Wert dafür die Domain, unter welcher der Cloud Service erreichbar ist.
+    \end{enumerate}
+    \item Konfigurieren Sie eine Domain für die Admin UI Applikation.
+    \begin{enumerate}
+        \item Folgen Sie dazu den Schritten in der \href{https://docs.aws.amazon.com/amplify/latest/userguide/custom-domains.html}{\textit{offiziellen Anleitung}}.\cite{aws-amplify-domain} folgen.
+    \end{enumerate}
+\end{enumerate}
+
+\clearpage
+
+\subsubsection*{Mobile Client}
+
+Dieses Kapitel beschreibt wie die native iOS Applikation auf Geräten installiert werden kann.
+
+Mit dem Quellquode des Mobile Clients ist ein deploybares Image veröffentlicht.
+Dieses beinhaltet die Credentials und Konfigurationen für die Infrastruktur die während diese Projektarbeit aufgebaut wurden.
+Solange diese Infrastruktur besteht und verwendet wird, kann das veröffentlichte Image verwendet werden, um Praxisruf zu betreiben.
+
+Das veröffentlichte Image und Images die neu gebaut werden, können wie folgt installiert werden:
+
+\textit{Installation eines bestehenden Image}
+
+\begin{enumerate}
+    \item Öffnen Sie das Projekt \textit{praxisruf-ios-mobile-client} in die XCode Entwicklungsumgebung.
+    \item Öffnen Sie die Deviceliste innerhalb von Xcode. (cmd + shift + 2)
+    \item Installieren Sie das .ipa File des Images via Drag and Drop auf dem IPad.
+\end{enumerate}
+
+\textit{Mobile Client Image bauen}
+
+Die Integration von Firebase Cloud Messaging in den Mobile Client muss zur Buildzeit passieren.
+Dies bedeutet, dass die Applikation neu gebaut werden muss.
+Dazu gehen Sie wie folgt vor:
+
+\begin{enumerate}
+    \item Öffnen Sie das Projekt \textit{praxisruf-ios-mobile-client} in die XCode Entwicklungsumgebung.
+    \item Öffnen Sie die Projekteinstellungen (Doppelklick auf das Topverzeichnis \textit{praxisruf-ios-mobile-client} in XCode)
+    \item Navigieren Sie zu Build Settings > User Defined
+    \item Setzten Sie den Wert für BASE\_URL\_HTTPS auf die URL unter welcher die HTTP API des Cloudservice erreichbar ist. Dies entspricht standardmässig $<$serverUrl$>$/api
+    \item Setzten Sie den Wert für BASE\_URL\_WSS unter welcher die Websocket API des Cloudservice erreichbar ist. Dies entspricht standardmässig $<$serverUrl$>$
+    \item Wenn Sie die Instanz des Cloudservice unter ''www.praxisruf.ch'' verwenden, müssen Sie die Werte nicht anpassen.
+    \item Kopieren Sie die Konfigurationsdatei aus Schritt 13 der Firebase Cloud Messaging Installationsanleitung im XCode Projekt unter praxisruf-ios-mobile-client/Resources/GoogleService-Info.plist ab.
+    \item Führen Sie den Build der Applikation aus. (shift + command + R).
+    \item Wählen Sie in der Top Menüleiste von XCode Product $>$ Archive.
+    \item Warten Sie bis die Aktion beendet hat und der Dialog \textit{Archives} sich öffnet.
+    \item Wählen Sie im Dialog \textit{Distribute App}
+    \item Wählen Sie die Option\textit{Ad Hoc} und fahren mit \textit{next} fort.
+    \item Aktivieren Sie die Option \textit{Rebuild from Bitcode} deaktivieren Sie alle anderen Optionen und fahren mit \textit{next} fort.
+    \item Wählen Sie \textit{Automatically manage signing} und fahren mit \textit{next} fort.
+    \item Bestätigten Sie mit \textit{Export}
+    \item Geben Sie das Verzeichnis, an in welches die Applikation exportiert werden soll.
+    \item Die in diesem Verzeichnis abgelegte .ipa Datei kann nun, wie in \textit{Installation eines bestehenden Image} beschrieben, auf Geräten installiert werden.
+\end{enumerate}
+
 
 \clearpage
