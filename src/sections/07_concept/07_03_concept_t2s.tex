@@ -25,7 +25,7 @@ Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün mar
 \end{figure}
 
 Neben dem Feld isTextToSpeech, wird die NotificationType Entity um ein weiteres Feld ''version'' erweitert.
-Das Versionsfeld beinhaltet eine Ganzzahl welche mit jeder Änderung inkrementiert wird.
+Das Versionsfeld beinhaltet eine Ganzzahl, welche mit jeder Änderung inkrementiert wird.
 Der Inhalt dieses Felds wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet.
 Auf Client-Seite wird diese Information zur Implementierung eines Cache verwendet.
 
@@ -112,12 +112,12 @@ Die von Polly gelieferten Sprachdaten können anschliessend als Resultat zurück
 
 Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
 Die Sprachdaten werden darin als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
-Der Endpunkt wird aus Endgeräten mit Http Get Anfragen angesprochen.
+Der Endpunkt wird kann über Http-Get-Anfragen angesprochen werden.
 
 \subsubsection{Security}
 
-Anfragen an die API des Moduls Speech Synthesis müssen wie alle Anfragen an die Cloudservice API authentisiert werden.
-Für die Authentisierung wird derselbe Mechanismus wie für Http Anfragen in den anderen Cloudservice Domänen verwendet.
+Anfragen an die API des Moduls Speech Synthesis müssen, wie alle Anfragen an die Cloudservice API, authentisiert werden.
+Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen in den anderen Cloudservice Domänen verwendet.
 Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
 Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist~\cite{ip5}.
 Diese Prüfung wurde im Rahmen des Vorgängerprojektes umgesetzt und wird weiterverwendet.
