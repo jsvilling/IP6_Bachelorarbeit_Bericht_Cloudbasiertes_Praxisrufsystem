@@ -10,7 +10,7 @@ Die wichtigsten Protokolle im WebRTC Umfeld sind das Session Description Protoco
 Das Session Description Protocol (SDP) dient als Beschreibung einer Verbindung über welche Multimediadaten wie Audio oder Video übertragen werden~\cite{rfc_4566_sdp}.
 Diese Beschreibung beinhaltet Metainformationen zu einer Verbindung.
 Dazu gehören unter anderem Auflösung, Format sowie Verschlüsselung und Codierung der zu übertragenden Daten~\cite{mozilla_webRTC_protocols}.
-WebRTC verwendet SDP, um zu Beschreiben, welche Art von Daten mit einer Verbindung übertragen werden und wie diese verarbeitet werden können~\cite{webrtc_spec}.
+WebRTC verwendet SDP, um zu Beschreiben welche Art von Daten mit einer Verbindung übertragen werden und wie diese verarbeitet werden können~\cite{webrtc_spec}.
 Um eine Verbindung mit WebRTC aufzubauen, müssen die Teilnehmer der Verbindung SDP Informationen austauschen.
 Dieser Austausch bildet den ersten Teil an Signalmeldungen, welche über die Signaling Instanz ausgetauscht werden müssen.
 
@@ -66,10 +66,10 @@ Dieser Prozess wird wiederholt, bis sich beide Teilnehmer auf einen ICE Candidat
 Der Aufbau von Peer-To-Peer Sprachverbindungen mit WebRTC erfordert das Austauschen on Signalmeldungen.
 Dabei sind wie in Kapitel 6.2 beschrieben mindestens die drei Signale Offer, Answer und Ice Candidate notwendig.
 Um diesen Austausch zu ermöglichen ist eine zentrale Signaling Instanz notwendig.
-Diese muss Signale entgegennehmen und an relevante Empfänger weiterleiten können.
+Diese muss Signale entgegennehmen und an relevante Empfänger weiterleiten können~\cite{webrtc_spec}.
 
 Der WebRTC Standard schreibt nicht, vor wie eine Signaling Instanz umgesetzt werden muss.
-Er definiert einzig, welchen Inhalt Signale für den Verbindungsaufbau beinhalten müssen und wie dieser Inhalt verarbeitet werden muss.
+Er definiert einzig, welchen Inhalt Signale für den Verbindungsaufbau beinhalten müssen und wie dieser Inhalt verarbeitet werden muss~\cite{webrtc_spec}.
 Konzept und Funktionsweise der Signaling Instanz und Signalmeldungen in Praxisruf werden in Kapitel 7 beschrieben.
 
 \subsection{Sicherheit}
@@ -79,14 +79,14 @@ Erstens muss der Kanal, über welchen Signalmeldungen ausgetauscht werden gesich
 Nur Berechtigte dürfen Signalmeldungen versenden und empfangen.
 Dazu muss die Identität der Teilnehmer, die Signalmeldungen austauschen verifiziert werden.
 Aussenstehende und nicht Berechtigte dürfen den Inhalt von Signalmeldungen nicht lesen können~\cite{rfc_8827_webRTC_SecurityArchitecture}.
-Die Implementierung dieser Mechanismen muss vom Anbieter der Signaling Instanz umgesetzt werden.
+Die Implementierung dieser Mechanismen muss vom Anbieter der Signaling Instanz umgesetzt werden~\cite{webrtc_spec}.
 
 Zweitens muss die Verbindung über welche Echtzeitdaten ausgetauscht werden gesichert sein.
 Diese Datenverbindungen werden über das Protokoll Datagram Transport Layer Security (DTLS) verschlüsselt.
 Bevor Daten über eine Verbindung ausgetauscht werden, wird pro Übertragungskanal ein DTLS-Handshake ausgeführt.
 Über diesen Handshake werden die nötigen Schlüsselinformationen ausgetauscht.
 Diese Schlüssel werden anschliessend für sichere Datenübertragung über das Protokoll ''Secure Real-Time Transport'' verwendet~\cite{rfc_8827_webRTC_SecurityArchitecture}.
-Die Implementierung dieser Mechanismen, muss gemäss WebRTC Standard, vom Anbieter der den Standard implementiert umgesetzt werden~\cite{webrtc_spec}.
+Die Implementierung dieser Mechanismen muss von der Bibliothek, welcher den Standard implementiert umgesetzt werden~\cite{webrtc_spec}.
 
 \subsection{Unicast, Multi-Cast, Broadcast}
 
@@ -99,7 +99,7 @@ Aus der Sicht von WebRTC sind damit ausschliesslich Unicast Verbindungen möglic
 
 Um Multi- und Broadcast Signale zu erlauben, muss auf Applikationsstufe eingegriffen werden.
 Es ist mit WebRTC nicht möglich, eine Verbindung zwischen mehr als zwei Teilnehmern aufzubauen.
-Es ist hingegen möglich, mehrere Verbindungen gleichzeitig aufzubauen und mit allen Teilnehmern gleichzeitig zu kommunizieren.
+Es ist hingegen möglich, mehrere Verbindungen gleichzeitig aufzubauen und mit allen Teilnehmern gleichzeitig zu kommunizieren~\cite{webrtc_mesh}.
 Dies bedeutet, dass der Verbindungsaufbau wie in Kapitel 6.2 beschrieben für jedes Ziel einzeln ausgeführt werden muss.
 
 Verbindung zu mehreren und/oder allen Teilnehmern können als 1:n Verbindungen umgesetzt werden.
