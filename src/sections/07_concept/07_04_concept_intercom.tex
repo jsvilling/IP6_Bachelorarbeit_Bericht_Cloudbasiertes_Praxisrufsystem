@@ -102,25 +102,27 @@ Die Verarbeitung dieser Signale und Verbindungen wird an den SignalingService de
 
 Der Zugriff auf die Signaling Instanz und die darüber ausgetauschten Signale darf nur für Berechtigte möglich sein.
 Um dies sicherzustellen, wird der Verbindungsaufbau nur erlaubt, wenn die Anfrage dazu authentisiert ist.
-Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen der Cloudservice API verwendet.
-Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
-Mit dieser Prüfung wird sichergestellt, dass eine gültige Authentifizierungsdaten im Header der Anfrage vorhanden sind.
+Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen der Cloudservice-API verwendet.
+Durch die Konfiguration des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
+Mit dieser Prüfung wird sichergestellt, dass gültige Authentifizierungsdaten im Header der Anfrage vorhanden sind.
 Ist dies nicht der Fall, wird eine entsprechende Fehlermeldung zurückgegeben.
 Bei der Prüfung von Http-Anfragen durch den Cloudservice werden weiter die Rollen, welche dem Aufrufer zugeteilt sind ausgelesen.
 
-Die Prüfung der Authentifizierung wird auch für die Http-Anfragen, welche zum Aufbau einer Websocketverbindung nötig sind ausgeführt.
+Diese Prüfung der Authentifizierung wird auch für die Http-Anfragen, welche zum Aufbau einer Websocketverbindung nötig sind ausgeführt.
 Beinhaltet eine Anfrage zum Aufbau einer Websocketverbindung keine gültige Authentifizierung, wird eine Fehlermeldung zurückgegeben.
 Der Aufbau der Websocketverbindung wird abgebrochen.
 
-Die Prüfung der ausgelesenen Rollen wird mit der Klasse HttpSessionHandshakeInterceptor verwendet.
+Die Prüfung der ausgelesenen Rollen wird mit der Klasse HttpSessionHandshakeInterceptor implementiert.
 Diese wird, nachdem eine Anfrage zum Aufbau einer Websocketverbindung eingegangen ist, aufgerufen.
 Der HttpSessionHandshakeInterceptor erlaubt es die Anfrage zum Verbindungsaufbau auszulesen.
 Dies erlaubt es hier zu verifizieren, dass der Request authentifiziert wurde und nur die zugeteilten Rollen zu überprüfen.
 Praxisruf kennt die zwei Rollen ''ADMIN'' und ''USER''.
 Beide Rollen sind berechtigt, dass Rufsystem über den Mobile Client zu verwenden und dürfen damit Signalmeldungen austauschen.
+Hat der Aufrufer keine dieser Rollen, wird der Verbindungsaufbau abgebrochen.
 
-Für den Aufbau von Websockets wird das ausschliesslich das Protokoll Secure WebSockets (WSS) verwendet.
-Der Austausch von Signalmeldungen ist damit verschlüsselt.
+Für Websocketverbindungen wird ausschliesslich das Protokoll Secure WebSockets (WSS) verwendet.
+Die Http-Anfragen für den Verbindungsaufbau werden ausschliesslich über Https versendet.
+Der Verbindungsaufbau und Austausch von Signalmeldungen über das Siganling Modul sind damit verschlüsselt.
 
 \clearpage
 
