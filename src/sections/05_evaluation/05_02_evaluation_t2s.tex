@@ -32,10 +32,9 @@ Amazon Polly kann damit sowohl direkt in native mobile Applikationen als auch in
 Die iOS Library von Amazon Polly ermöglicht es, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren~\cite{aws_polly_ios}.
 Diese Lösung kann für zukünftige Android Clients analog mit der Android Library für Aws Polly umgesetzt werden.
 Die starke Bindung zu Apple als Dienstleister für Sprachsynthese entfällt durch diese Lösung.
-Es wird allerdings eine starke bindung zu Amazon Polly als Dienstleister geschaffen.
+Es wird allerdings eine starke Bindung zu Amazon Polly als Dienstleister geschaffen.
 Ein Wechsel des Anbieters bleibt auch in dieser Variante aufwändig.
-Insbesondere, wenn in Zukunft Clients auf für mehr Plattformen als iOS angeboten werden.
-%Weiter bringt auch diese Variante den Nachteil, dass der Mobile Client komplexer wird, weil er mit einer zusätzlichen Instanz kommunizieren muss.
+Insbesondere, wenn in Zukunft Clients für weitere Plattformen angeboten werden.
 
 Mit der Java Bibliothek von Amazon Polly kann die Anbindung des Sprachsyntheseproviders im Cloudservice vorgenommen werden.
 Dadurch ist es möglich im Cloudservice eine Schnittstelle zu implementieren, welche den Bezug von Sprachdaten für Benachrichtigungen erlaubt.
@@ -59,10 +58,12 @@ Die Integration von Amazon Polly über AWS Lambda kann für Praxisruf in zwei Ve
 In einem ersten Schritt werden die zu synthetisierenden Daten geladen und an Amazon Polly gesendet.
 Anschliessend werden die Resultate, die Amazon Polly liefert persistiert.
 Die Abfrage von Sprachdaten kann in diesem Fall ebenfalls in die API des Cloudservices integriert werden.
-Dazu müssen die persistierten Sprachdaten geladen und zurückgegeben werden.
-Die Verwendung von AWS Lambda hat damit den Nachteil, dass die synthetisierten Sprachdaten zwingend ausserhalb des Mobile Clients persistiert werden müssen.
-Weiter bedeutet diese Anbindung eine stärkere Bindung an Amazon als Dienstleister, weil die Anbindung der Sprachsynthese über proprietäre Funktionalität von Amazon implementiert wird.
-Gleichzeitig bietet es den Vorteil, dass weniger Infrastruktur benötigt wird, da die Abfrage an AWS Polly ohne dedizierten Server abgesetzt werden kann.
+Dazu muss der Cloudservice auf die persistierten Sprachdaten zugreifen und einen Endpunkt anbieten, um diese abzufragen.
+Dieser Ansatz bringt zwei Nachteile mit sich.
+Erstens müssen die synthetisierten Sprachdaten zwingend ausserhalb des Mobile Clients persistiert werden.
+Zweitens wird eine stärkere Bindung an Amazon als Dienstleister geschaffen, weil die Anbindung der Sprachsynthese über proprietäre Funktionalität von Amazon implementiert wird.
+Gleichzeitig bietet der Ansatz den Vorteil, dass weniger Infrastruktur benötigt wird, da die Abfrage an AWS Polly ohne dedizierten Server abgesetzt werden kann.
+Um eine einheitliche API zu bieten, muss das System aber auch in diesem Fall erweitert werden, um eine entsprechende Schnittstelle anbieten zu können.
 
 \subsubsection{Entscheidung}
 
