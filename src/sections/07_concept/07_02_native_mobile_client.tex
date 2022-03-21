@@ -101,8 +101,8 @@ Ausgehende Anrufe können auch getätigt werden, wenn diese Option aktiviert ist
 \subsubsection{Anbindung Cloudservice API}
 
 Der Mobile Client muss an die API des Cloudservices angebunden werden.
-Es wird eine Anbindung an die Domäne Configuration zur Anmeldung und Auswahl des gewünschten Zimmers und an die Domäne Notification zum Versenden von Benachrichtigungen benötigt.
-Die Schnittstellen dieser Domänen stehen als Http Endpunkte zur Verfügung.
+Es wird eine Anbindung an das Modul Configuration zur Anmeldung und Auswahl des gewünschten Zimmers und an das Modul Notification zum Versenden von Benachrichtigungen benötigt.
+Die Schnittstellen dieser Module stehen als Http-Endpunkte zur Verfügung.
 In diesem Unterkapitel wird beschrieben, wie Http-Anfragen an die Cloudservice API in den nativen iOS Client integriert werden.
 Das Abrufen von Sprachdaten und die Anbindung an die Signaling Instanz werden in den Kapiteln 7.3 und 7.4 beschrieben.
 
@@ -110,8 +110,8 @@ Die Basisbibliothek für iOS Entwicklung bietet die Klasse URLSession, über wel
 Über URLSession.shared steht eine Standard-Instanz zur Verfügung, über welche Netzwerkanfragen verarbeitet werden können~\cite{ios_urlsession}.
 Die Klasse UrlRequest ermöglicht es, Http-Request für eine URL mit Header und Body zu erstellen~\cite{ios_urlrequest}.
 Um die Integration dieser Klassen in die Applikation zu vereinfachen, wird ein zentraler Service mit dem Namen PraxisrufApi erstellt.
-Dieser kapselt das Erstellen, Befüllen und Absetzten der nötigen UrlRequest Instanzen.
-Er bietet öffentliche Methoden für die Http Verben Get, Post und Delete an.
+Dieser kapselt das Erstellen, Befüllen und Absetzten der nötigen UrlRequest-Instanzen.
+Er bietet öffentliche Methoden für die Http-Verben Get, Post und Delete an.
 Über diese können Http-Requests mit der jeweiligen Methode abgesetzt werden.
 Zur Darstellung von Fehlern wird die Enum PraxisrufApiError erstellt.
 Diese definiert Fehlerkategorien und wird von PraxisrufApi verwendet, um Aufrufern das Fehlschlagen einer Anfrage mitzuteilen.
@@ -131,7 +131,7 @@ Alle öffentlichen Methoden von PraxisrufApi nehmen einen Parameter ''subUrl'' a
 Dieser String wird der Basis-URL angehängt.
 Die Methoden Post nimmt zudem einen optionalen Parameter von Typ Data entgegen.
 Dieser definiert den Inhalt des Request Bodies.
-Mit diesen Informationen kann der Http Request erstellt und versendet werden.
+Mit diesen Informationen können Http-Requests erstellt und versendet werden.
 
 Sämtliche öffentlichen Methoden des PraxisrufApi Service nehmen weiter einen Parameter mit dem Namen completion entgegen.
 Dabei handelt es sich um eine Funktion, welche beim Erfolg oder Fehlschlagen der Http-Anfragen ausgeführt wird.
@@ -143,7 +143,7 @@ Zur Darstellung dieser Daten wird der generische Typ T verwendet.
 Der Typ wird vom Aufrufer von PraxisrufApi definiert und kann grundsätzlich beliebig sein.
 Er muss aber das Protokoll Decodable aus der iOS Standardbibliothek implementieren.
 Decodable Instanzen können von einer JSON-String-Repräsentation in ein Swift-Objekt konvertiert werden~\cite{ios_decodable}.
-So kann das Resultat im Erfolgsfall aus der Response generiert und an, dass Callback übergeben werden.
+So kann das Resultat im Erfolgsfall aus der Response generiert und an, die completion-Funktion übergeben werden.
 Dadurch kann die Konvertierung generisch in im PraxisurfApi-Service behandelt werden.
 
 Anhand des Inhalts der Result-Instanz kann geprüft werden, ob die Anfrage erfolgreich war.
@@ -154,7 +154,7 @@ Der Api Service behandelt damit ausschliesslich die technische Anbindung an die 
 Er muss keine fachliche Logik implementieren und kann generisch für alle Anwendungen wiederverwendet werden.
 
 Requests die über den PraxisrufApi-Service erstellt werden, werden automatisch authentisiert.
-Dazu lädt der Service die hinterlegten Credentials aus dem KeyStore von iOS.
+Dazu lädt der Service das im KeyStore von iOS hinterlegte JWT Token.
 Das Token wird verwendet, um einen entsprechenden Authorization-Header zu generieren.
 Der generierte Authorization Header wird der Http-Anfrage angefügt.
 Ist kein Token vorhanden, wird keine Anfrage abgesetzt.
@@ -164,14 +164,14 @@ Mit dieser Lösung steht ein Service zur Verfügung, über welchen Http-Anfragen
 Dank der generischen Methoden im PraxisrufApi-Service können neue Calls einfach hinzugefügt werden, ohne das Boilerplate-Code wiederholt werden muss.
 Durch die completion-Funktionen kann die fachliche Verarbeitung von Http-Anfragen vom Aufrufer definiert werden.
 
-Um die Verwendung der Cloudservice API weiter zu vereinfachen, wird der PraxisrufApi Service um sprechende Methoden für die nötigen Abfragen erweitert.
-Dazu wird pro Domäne eine Extension-Klasse erstellt.
-Diese fügt Methoden mit sprechenden Namen für die angesprochene Funktionalität hinzu und kapseln die Verwendung der Get, Post und Delete Methoden.
+Um die Verwendung der Cloudservice API weiter zu vereinfachen, wird der PraxisrufApi-Service um spezifische Methoden für benötigte Abfragen erweitert.
+Dazu werden mehrere Extension-Klassen erstellt.
+Diese definieren Methoden mit sprechenden Namen für die benötigte Funktionalität und kapseln die Verwendung der Get, Post und Delete Methoden.
 
-Der PraxisrufApi-Service ermöglicht es Abfragen an die Cloudservice API abzusetzen.
+Der PraxisrufApi-Service ermöglicht es, Abfragen an die Cloudservice API abzusetzen.
 Die Resultate dieser Abfragen müssen in der Benutzeroberfläche angezeigt werden können.
-Es wird pro Domäne ein weiterer Service geschrieben, welche den Aufruf des API Services kapselt.
-Dieser Service bietet Methoden, über welche der PraxisrufApi Service angesprochen werden kann.
+Es wird pro Domäne ein weiterer Service geschrieben, welche den Aufruf des PraxisrufAPI-Services kapselt.
+Dieser Service bietet Methoden, über welche der PraxisrufApi-Service angesprochen werden kann.
 View-Komponenten können diese Services nutzen, um durch Benutzereingaben ausgelöste Anfragen an die Cloudservice Api zu senden.
 Resultate und Fehler aus Anfragen an den Cloudservice werden in diesen Services als Instanzvariablen gehalten.
 Die View-Komponenten können lesend auf diese Variablen zugreifen, um die entsprechenden Resultate oder Fehler anzuzeigen.
@@ -181,14 +181,12 @@ Die View-Komponenten können lesend auf diese Variablen zugreifen, um die entspr
 Um Benachrichtigungen empfangen zu können, muss Firebase Cloud Messaging an die native iOS Applikation angebunden werden.
 Firebase bietet eine Bibliothek mit welcher Firebase Cloud Messaging in iOS Clients integriert werden kann~\cite{firebase_ios}.
 Diese Integration kann allerdings nicht mit dem Mitteln von SwiftUI implementiert werden.
-Dies liegt daran, dass für das Empfangen von Benachrichtigungen und das Anzeigen von Push-Benachrichtigungen Integration mit dem Benachrichtigungszenter des Betriebssystem notwendig ist.
+Dies liegt daran, dass für das Empfangen von Benachrichtigungen und das Anzeigen von Push-Benachrichtigungen Integration mit dem Benachrichtigungszenter des Betriebssystems notwendig ist.
 Diese Integration kann bis heute nur über AppDelegates umgesetzt werden.
-SwiftUI Applikationen können oft ohne AppDelegates implementiert werden.
-Sobald aber Integration mit dem Betriebssystem notwendig ist, müssen AppDelegates verwendet werden.
-Dazu können AppDelegates bei der Initialisierung der Applikation registriert werden.
-
 Zur Anbindung von Firebase Cloud Messaging wird dementsprechend ein AppDelegate implementiert.
-Die Logik des Delegates wird dabei auf das minimal Nötige reduziert.
+Dieser muss bei Initialisierung der SwiftUI Applikation registriert werden.
+
+Die Logik des AppDelegates wird auf das minimal Nötige reduziert.
 Der AppDelegate selbst ist für die direkte Kommunikation mit Firebase verantwortlich und muss empfangene Daten an Betriebssystem und SwiftUI Applikation übergeben.
 Fachliche Logik wird nicht im AppDelegate, sondern in der SwiftUI Applikation ausgeführt.
 Dies ermöglicht es die Anbindung des Messaging Service im AppDelegate zu kapseln.
@@ -209,7 +207,7 @@ Sobald die Applikation wieder in den Vordergrund tritt, müssen die Daten an die
 \subsubsection{Benachrichtigungen prüfen}
 
 Der bestehende Mobile Client prüft in regelmässigen Abständen, ob ungelesene Benachrichtigungen in der Inbox vorhanden sind.
-Wenn ungelesene Benachrichtigungen gefunden werden, wird ein Benachrichtigungston abgespielt.
+Wenn ungelesene Benachrichtigungen gefunden werden, wird eine Benachrichtigung angezeigt und ein Ton abgespielt.
 Im Mobile Client der Vorgängerlösung findet diese Prüfung nur statt, wenn die Applikation in Vordergrund aktiv ist.
 Diese Funktion wird in der nativen iOS Applikation übernommen.
 
@@ -235,19 +233,22 @@ In einem Praxisrufsystem muss die sichere Übertragung von Daten gewährleistet 
 Die dazu definierten Konzepte werden aus dem Vorgängerprojekt übernommen.
 
 Alle Daten zwischen den Services müssen über verschlüsselte Verbindungen ausgetauscht werden.
-HTTP Anfragen CloudService API erfolgen ausschliesslich über HTTPS\@.
+Http-Anfragen CloudService API erfolgen ausschliesslich über Https\@.
 Alle Anfragen an die API des Cloudservice müssen zudem mit einem Json Web Token (JWT) authentifiziert sein.
 Praxismitarbeitende werden durch den Cloudservice mittels Basic Authentication authentifiziert.
 Bei der Anmeldung mit Benutzername und Passwort liefert der Cloudservice ein JWT, welches vom Client für weitere Anfragen verwendet wird.
 Sowohl die Credentials für die Basic Authentication als auch das JWT Token werden durch die iOS Applikation im Keystore des Betriebssystems gespeichert~\cite{ip5}.
-Das Token wird regelmässig erneuert, indem die Basic Authentication mit den gespeicherten Credentials wiederholt wird.
-Der Ablauf für Authentifizierung wird damit unverändert aus dem Vorgängerprojekt übernommen.
+Das vom Cloudservice ausgestellte Token hat eine Gültigkeitsdauer von 24h und wird alle 12h erneuert.
+Dazu wird die Basic Authentication mit den gespeicherten Credentials wiederholt.
+Die dazu nötige Http-Anfrage wird über eine weitere Timer-Instanz auf der Hauptansicht für angemeldete Benutzer ausgelöst.
+Der Ablauf für Authentifizierung und Authorisierung wird damit unverändert aus dem Vorgängerprojekt übernommen.
+Die entsprechenden Abläufe sind in dem Kapiteln 5.3.6 und 5.3.7 im Projektbericht ''IP5 Cloudbasiertes Praxisrufsystem'' dokumentiert~\cite{ip5}.
 
 \clearpage
 
 \subsubsection{Servicemodell}
 
-Dieses Kapitel gibt einen Überblick zu den Services welche in der nativen iOS Applikation beinhaltet werden.
+Dieses Kapitel gibt einen Überblick zu den Services welche in der nativen iOS Applikation implementiert werden.
 Abbildung 7.10 zeigt das vollständige Modell der implementierten Services.
 Diese Darstellung beinhaltet die Services, welche in den Kapiteln 7.2 bis 7.4 beschrieben werden.
 View- und Model-Komponenten werden hier nicht dargestellt.
