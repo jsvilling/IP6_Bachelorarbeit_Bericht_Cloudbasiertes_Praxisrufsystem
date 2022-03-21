@@ -117,10 +117,11 @@ Der Endpunkt wird kann über Http-Get-Anfragen angesprochen werden.
 \subsubsection{Security}
 
 Anfragen an die API des Moduls Speech Synthesis müssen, wie alle Anfragen an die Cloudservice API, authentisiert werden.
-Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen in den anderen Cloudservice Domänen verwendet.
-Über die SecurityConfig des Cloudservices wird die Authentifizierung aller Http Requests überprüft.
+Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen in allen Cloudservice Modulen verwendet.
+Über die Konfiguration des App Modules des Cloudservices wird die Authentifizierung aller Http-Requests überprüft.
 Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist~\cite{ip5}.
 Diese Prüfung wurde im Rahmen des Vorgängerprojektes umgesetzt und wird weiterverwendet.
+Die entsprechenden Abläufe sind in dem Kapiteln 5.3.6 und 5.3.7 im Projektbericht ''IP5 Cloudbasiertes Praxisrufsystem'' dokumentiert~\cite{ip5}.
 
 Um die Verschlüsselung der Übertragung von Sprachdaten und Anfragen zwischen Cloudservice und Mobile Client wird für die Übertragung ausschliesslich das Protokoll HTTPS verwendet.
 Die Übertragung von Daten zwischen Cloudservice und Amazon Polly ist über Secure Sockets Layer (SSL) geschützt~\cite{aws_polly_encryption_in_transit}.
@@ -128,7 +129,7 @@ Die Übertragung von Daten zwischen Cloudservice und Amazon Polly ist über Secu
 \subsubsection{Sprachsynthese in iOS App}
 
 In der iOS App müssen empfangene Benachrichtigungen vorgelesen werden können.
-Um dies zu ermögli-chen wird eine Anbindung an die Sprachsynthese API des Cloudservice umgesetzt.
+Um dies zu ermögli-chen wird eine Anbindung an die Sprachsynthese-API des Cloudservice umgesetzt.
 Dazu wird die in Kapitel 7.2 beschriebene Klasse PraxisrufApi erweitert.
 Neben dem Abfragen von JSON Daten über HTTP Schnittstellen, muss diese für die Sprachsynthese auch das Herunterladen von Dateien unterstützten.
 Dazu wird die Komponente URLSession aus der iOS Standardbibliothek verwendet.
@@ -193,7 +194,7 @@ Dies wird gemacht in dem er überprüft, ob im Applikationsverzeichnis bereits e
 Ist dies der Fall, werden die Inhalte dieser Datei abgespielt und es wird keine Anfrage an den Cloudservice versendet.
 Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden, wird eine Anfrage an den CloudService gesendet.
 
-Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser Namen des Senders und die Inhalte der Benachrichtigung aus der Konfiguration.
+Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser den Namen des Senders und die Inhalte der Benachrichtigung aus der Konfiguration.
 Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um den Titel der Benachrichtigung als Sprachdaten zu synthetisieren.
 Die Resultate von Amazon Polly werden als Resultat der Anfrage des Mobile Clients zurückgegeben.
 Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version verknüpften NotificationType.
