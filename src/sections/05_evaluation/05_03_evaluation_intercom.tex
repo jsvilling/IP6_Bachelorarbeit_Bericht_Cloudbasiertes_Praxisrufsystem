@@ -8,7 +8,7 @@ Der zweite Ansatz verzichtet auf die Integration eines Anbieters und setzt Sprac
 
 \subsubsection{Amazon Chime}
 
-Eine Möglichkeit um Sprachverbindungen in Praxisruf zu implementieren, ist die Integration einer bestehenden Business-Kommunikationslösung, wie Webex oder Microsoft Teams.
+Eine Möglichkeit um Sprachverbindungen in Praxisruf zu implementieren, ist die Integration einer bestehenden Business-Kommunikationslösung wie Webex oder Microsoft Teams.
 Auch für die Integration von Sprachverbindungen gilt, dass für Infrastruktur und Dienstleistungen wo möglich Amazon Webservices verwendet wird\footnote{Siehe Anforderung U19 in Kapitel 3.1.3}.
 Mit Amazon Chime bietet Amazon einen Dienst für Telefonie, Chats und Videokonferenzen~\cite{aws_chime}.
 Chime bietet einerseits Web- und Mobile Applikationen für Anrufe und Meetings.
@@ -25,7 +25,7 @@ Amazon Chime unterstützt deutlich mehr Funktionen als in einem Praxisrufsystem 
 Ein Rufsystem muss als Gegensprechanlage verwendet werden können und kurze Gespräche zwischen Teilnehmern erlauben.
 Dies bedeutet einerseits, dass Chime garantiert alle Funktionen bietet welche benötigt werden.
 Es bedeutet aber andererseits auch, dass nur ein kleines Subset der vorhandenen Möglichkeiten ausgenutzt wird.
-Ein Nachteil daran ist, dass eine starke Bindung an Amazon und die Abläufe, die Amazon Chime zum Verbindungsaufbau vorsieht, stattfindet.
+Ein Nachteil daran ist, dass eine starke Bindung an Amazon als Telefonieanbieter und die Infrastruktur, die Amazon Chime zum Verbindungsaufbau anbietet, stattfindet.
 Gleichzeitig kann von vielen Vorteilen von Amazon Chime nicht profitiert werden, weil die entsprechenden Funktionen für ein Praxisrufsystem nicht relevant sind.
 
 \subsubsection{WebRTC}
@@ -47,7 +47,7 @@ Neben der Signaling Instanz ist keine weitere Infrastruktur notwendig.
 Sämtliche Daten werden direkt über die Peer-To-Peer Verbindungen zwischen Clients ausgetauscht.
 
 Dies hat den Vorteil, dass die Abhängigkeit zu externen Umsystemen minimiert werden kann.
-Der Signaling Service kann auf die eigenen Anforderungen zugeschnitten werden.
+Die Signaling Instanz kann auf die eigenen Anforderungen zugeschnitten werden.
 Die Technologie über welche Signale ausgetauscht werden, kann frei gewählt werden.
 Signaling für Sprachverbindungen im Praxisrufsystem kann damit in den Cloudservice integriert werden.
 So kann notwendige Infrastruktur, die als Teil des Praxisrufsystems betrieben werden muss, schlank gehalten werden.
@@ -64,7 +64,7 @@ Dieser wird wiederum bei einem Cloud-Provider betrieben.
 Für diesen Betrieb können Verträge definiert werden, die Verfügbarkeit und Support im Fehlerfall bieten.
 Andererseits können lokale Netzwerkprobleme auftreten, welche Endgeräte unerreichbar machen.
 Dieses Problem besteht unabhängig davon, wie Sprachübertragung implementiert wird.
-Im Fall des Praxisrufsystems kann das Problem dadurch adressiert werden, dass nicht erreichbare Endgeräte durch asynchrone Benachrichtigungen über verpasste Verbindungen informiert werden.
+Im Fall von Praxisruf kann das Problem dadurch adressiert werden, dass nicht erreichbare Endgeräte durch Benachrichtigungen über verpasste Verbindungen informiert werden.
 
 Die Gegensprechanlage in einem Praxisrufsystem muss Verbindung mit mehreren Teilnehmern gleichzeitig erlauben.
 Verbindungen müssen deshalb als zwischen zwei Teilnehmern als 1:1 Verbindungen, aber auch zwischen mehreren Teilnehmern als 1:n Verbindungen umgesetzt werden.
