@@ -90,7 +90,8 @@ Die Implementierung dieser Mechanismen muss von der Bibliothek, welcher den Stan
 
 \subsection{Unicast, Multi-Cast, Broadcast}
 
-Dieses Kapitel beschreibt, der Verbindungsaufbau von Peer-To-Peer Verbindungen mit WebRTC als \\Uni-, Multi- und Broadcast in einem cloudbasierten Praxisrufsystem umgesetzt werden kann.
+Dieses Kapitel beschreibt, wie der Verbindungsaufbau von Peer-To-Peer Verbindungen mit WebRTC als \\Uni-, Multi- und Broadcast in einem cloudbasierten Praxisrufsystem umgesetzt werden kann.
+Dabei wird davon ausgegangen, dass wie in Kapitel 4 entschieden, keine Multipoint Conferencing Unit eingesetzt wird.
 
 WebRTC unterstützt ausschliesslich Peer-To-Peer Verbindungen.
 Einzelne Verbindungen können mit WebRTC immer nur zwischen genau zwei Teilnehmern bestehen.
@@ -101,6 +102,8 @@ Um Multi- und Broadcast Signale zu erlauben, muss auf Applikationsstufe eingegri
 Es ist mit WebRTC nicht möglich, eine Verbindung zwischen mehr als zwei Teilnehmern aufzubauen.
 Es ist hingegen möglich, mehrere Verbindungen gleichzeitig aufzubauen und mit allen Teilnehmern gleichzeitig zu kommunizieren~\cite{webrtc_mesh}.
 Dies bedeutet, dass der Verbindungsaufbau wie in Kapitel 6.2 beschrieben für jedes Ziel einzeln ausgeführt werden muss.
+Sowohl für Multi- als auch für Broadcast Verbindungen müssen die relevanten Ziele vor dem Verbindungsaufbau identifiziert werden.
+Im Fall eines cloudbasierten Praxisrufsystems kann dies über die zentrale Konfigurationsverwaltung gelöst werden.
 
 Verbindung zu mehreren und/oder allen Teilnehmern können als 1:n Verbindungen umgesetzt werden.
 Dazu müssen die relevanten Teilnehmer durch die Applikation vor Verbindungsaufbau identifiziert werden.
