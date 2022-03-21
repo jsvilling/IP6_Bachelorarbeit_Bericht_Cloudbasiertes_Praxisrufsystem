@@ -1,15 +1,15 @@
 \subsection{Gegensprechanlage}
 
-Mit dem Einbau von synchroner Sprachübertragung wird das Praxisrufsystem um die Funktion Gegensprechanlage erweitert.
-Die gewählte Technologie WebRTC erlaubt es Peer-to-Peer Sprachverbindungen zwischen Clients aufzubauen.
-Dieses Kapitel beschreibt wie das Praxisrufsystem erweitert wird, um eine konfigurierbare Gegensprechanlage mit WebRTC zu integrieren.
+Mit der Integration von synchroner Sprachübertragung wird das Praxisrufsystem um die Funktion Gegensprechanlage erweitert.
+Die gewählte Technologie WebRTC erlaubt es, Sprachverbindungen zwischen Clients aufzubauen.
+Dieses Kapitel beschreibt wie das Praxisrufsystem erweitert wird, um eine konfigurierbare Gegensprechanlage mit WebRTC zu implementieren.
 
 \subsubsection{Konfiguration}
 
 Die Gegensprechanlage wird in den nativen Mobile Client integriert.
 Praxismitarbeitende können über Buttons Sprachverbindungen zu anderen Clients aufbauen.
 Welche Buttons und damit welche Sprachverbindungen zur Verfügung stehen, wird durch Praxisadministrierende über das Admin UI konfiguriert.
-Damit dies möglich ist, sind Änderungen an der Domäne Configuration des Cloudservice sowie am Admin UI notwendig.
+Damit dies möglich ist, sind Änderungen an de Configuration-Modul des Cloudservice sowie am Admin UI notwendig.
 
 Die Konfiguration von Mobile Clients wird in der Domäne Configuration abgebildet.
 Zentral sind dabei die beiden Entities Client und ClientConfiguration.
@@ -35,7 +35,7 @@ Dabei sind die Teile, die für die Konfiguration von Sprachverbindungen ergänzt
 Das Admin UI wird mit Ansichten erweitert, über welche CallTypes erstellt, angezeigt, bearbeitet und gelöscht werden können.
 Gleichzeitig wird der Cloudservice um Rest Endpunkte für das Lesen, Erstellen, Aktualisieren und Löschen von CallTypes erweitert.
 Die Ansichten für ClientConfigurations im Admin UI werden so erweitert, dass CallTypes darauf angezeigt, hinzugefügt und entfernt werden können.
-Die API des Cloudservice wird erweitert, um die Erweiterungen an der Konfiguration persistieren zu können.
+Die API des Cloudservice wird erweitert, um die erweiterte Konfiguration verwalten zu können.
 
 \clearpage
 

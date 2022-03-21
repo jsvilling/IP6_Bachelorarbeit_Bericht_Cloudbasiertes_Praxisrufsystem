@@ -187,7 +187,7 @@ Ab diesem Moment ist die Benachrichtigung in der Inbox des Mobile Clients ersich
 
 Nachdem eine empfangene Benachrichtigung der Inbox hinzugefügt wurde, wird geprüft ob Sprachsynthese in den lokalen Einstellungen aktiviert ist.
 Ist diese deaktiviert, endet die Verarbeitung.
-Ist die Sprachsynthese lokal aktiviert, wird geprüft ob das ''isTextToSpeech'' Flag auf der Benachrichtigung aktiviert ist.
+Andernfalls wird geprüft, ob das ''isTextToSpeech'' Flag auf der Benachrichtigung aktiviert ist.
 Nur wenn das Flag aktiviert ist, wird die Benachrichtigung an den SpeechSynthesisService übergeben.
 Der SpeechSynthesisService prüft als erstes, ob die Sprachdaten für die empfangene Benachrichtigung bereits lokal zur Verfügung stehen.
 Dies wird gemacht in dem er überprüft, ob im Applikationsverzeichnis bereits eine Datei für Id, Version und Sender der Benachrichtigung vorhanden ist.
