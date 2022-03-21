@@ -111,7 +111,10 @@ Es beinhaltet Domänenobjekte, Services und Schnittstellen für die Signalvermit
 
 Weiter werden die zwei Module Commons und App definiert.
 Komponenten, welche in mehr als einer Domäne verwendet werden, werden in ein zusätzliches Commons Modul verlegt.
-Dazu gehören Data Transfer Objects für Schnittstellen zwischen den Modulen, geteilte Clients um Abfragen auf andere Module abzusetzen sowie Komponenten für Security und Fehlerhandling.
+Dazu gehören Data Transfer Objects für Schnittstellen zwischen den Modulen, geteilte Clients um Abfragen auf andere Module abzusetzen sowie Komponenten Fehlerhandling.
+Das Modul App hat eine Abhängigkeit auf alle Domänen Module und bietet ein Modul, über welches diese als einzelne Applikation gestartet werden können.
+Das Modul beinhaltet weiter die globale Security Konfiguration des Systems.
+Dadurch kann sichergestellt werden, dass diese für alle Systemteile angewendet wird.
 
 Der Cloudservice wird weiterhin als monolithische Applikation betrieben.
 Die Modularisierung garantiert dabei eine strikte Trennung der Domänen.
@@ -124,7 +127,7 @@ In Zukunft können einzelne Module aus dem Cloudservice ausgelöst und als eigen
 Das Domänenmodell Cloudservices wird für die Integration von Sprachsynthese und Gegensprechanlage erweitert.
 Abbildung 7.2 zeigt das vollständige Domänenmodell der Domänen Configuration und Notification.
 Dabei sind Felder und Entitäten die in diesem Projekt hinzugefügt werden grün markiert.
-Die neuen Domänen Speech Synthesis und Signaling führen keine persistierten Daten.
+Die neuen Domänen Speech Synthesis und Signaling führen keine persistenten Daten.
 Die Services und Komponenten dieser Domänen sind in den Kapiteln 7.3 und 7.4 beschrieben.
 
 \begin{figure}[h]
