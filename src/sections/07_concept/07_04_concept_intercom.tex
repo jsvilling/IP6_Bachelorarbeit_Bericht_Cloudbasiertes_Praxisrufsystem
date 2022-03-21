@@ -122,7 +122,7 @@ Hat der Aufrufer keine dieser Rollen, wird der Verbindungsaufbau abgebrochen.
 
 Für Websocketverbindungen wird ausschliesslich das Protokoll Secure WebSockets (WSS) verwendet.
 Die Http-Anfragen für den Verbindungsaufbau werden ausschliesslich über Https versendet.
-Der Verbindungsaufbau und Austausch von Signalmeldungen über das Siganling Modul sind damit verschlüsselt.
+Der Verbindungsaufbau und Austausch von Signalmeldungen über das Signaling Modul sind damit verschlüsselt.
 
 \clearpage
 
@@ -130,9 +130,12 @@ Der Verbindungsaufbau und Austausch von Signalmeldungen über das Siganling Modu
 
 Dieses Kapitel beschreibt, wie die Anmelde und Registrierungsprozesse im Mobile Client ablaufen, um eine Verbindung zu der Signaling Instanz zu ermöglichen.
 
-Der Ablauf von Anmeldung und Registrierung funktioniert mit dem neuen nativen Mobile Client nach demselben Ablauf wie im Vorgängerprojekt.
+Der Ablauf von Anmeldung und Registrierung wird in Abbildung 7.16 dargestellt.
+Anmeldung und Registrierung für Benachrichtigungen funktionieren mit dem neuen Mobile Client nach demselben Ablauf wie im Vorgängerprojekt.
+Die Registrierung für Sprachverbindungen beim Signaling Modul des Cloudservice wird mit diesem Projekt hinzugefügt.
+
 Praxismitarbeitende öffnen die Applikation und geben ihr Benutzername und Passwort ein.
-Der Mobile Client verwendet diese um sich über Basic Authentication beim Cloudservice anzumelden.
+Der Mobile Client verwendet diese, um sich über Basic Authentication beim Cloudservice anzumelden.
 Als Antwort auf die Anmeldung gibt der Cloudservice ein Json Web Token (JWT) zurück.
 Dieses wird für die Authorisierung aller weiteren Anfragen an den Cloudservice verwendet.
 Nachdem die Anmeldung erfolgt ist, wird eine Liste der verfügbaren Konfigurationen geladen.
