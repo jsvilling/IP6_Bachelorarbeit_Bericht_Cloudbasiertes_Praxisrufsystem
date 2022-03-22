@@ -318,17 +318,27 @@ Dieser Ablauf ist mit den Komponenten CallService und PraxisrufApi+Signaling die
     \end{minipage}
 \end{figure}
 
-Die Verbindung zur Signaling Instanz wird hergestellt, sobald die Applikation gestartet wird.
-Nachdem die Verbindung hergestellt wurde, werden im Abstand von 10 Sekunden Pingmeldungen über die Verbindung gesendet.
-
-Um festzustellen, ob die eine getrennte Verbindung repariert werden kann, wird ein Fehlerzähler geführt.
+Um festzustellen, ob die eine getrennte Verbindung repariert werden kann, wird im CallService ein Fehlerzähler geführt.
 Dieser wird beim Start der Applikation mit null initialisiert und bei jedem Verbindungsfehler um eins inkrementiert.
 Ein Verbindungsfehler tritt auf, wenn eine Fehlermeldung über die Signaling Verbindung empfangen wird und wenn das Senden einer Meldung oder das Wiederherstellen der Verbindung fehlschlägt.
 
-Sobald die Fehlerzahl auf eine Zahl grösser als zehn inkrementiert wird, wird die Verbindung getrennt.
+Die Verbindung zur Signaling Instanz wird hergestellt, sobald die Applikation gestartet wird.
+Nachdem die Verbindung hergestellt wurde, werden im Abstand von zehn Sekunden Pingmeldungen über die Verbindung gesendet.
+Dadurch wird sichergestellt, dass die Verbindung geöffnet bleibt.
+Vor dem Versenden jeder Meldung wird der Fehlerzähler zurückgesetzt und es wird überprüft, ob die Verbindung verwendet werden kann.
+Ist die Verbindung fehlerhaft, werden bis zu zehn Versuche unternommen, sie wiederherzustellen.
+Anschliessend wird versucht, die Meldung zu versenden.
+Wenn die Meldung erfolgreich versendet wurde, wird der Fehlerzähler zurückgesetzt und zehn Sekunden gewartet, bis die nächste Pingmeldung versendet wird.
+Andernfalls wird die Fehlerzahl um eins erhöht.
+Ist die Fehlerzahl danach grösser als zehn, wird die Verbindung getrennt.
 In der Benutzeroberfläche wird ein Fehlerdialog angezeigt.
 Die Verbindung bleibt geschlossen bis die nächste Meldung versendet wird.
 Dies der Fall, wenn das Interval für die nächste Pingmeldung abgelaufen ist oder wenn ein Anruf über die Benutzeroberfläche gestartet wird.
+
+Bei Start eines Anrufes aus der Benutzeroberfläche werden dieselben Prüfungen, wie vor dem Versenden von Pingmeldungen ausgeführt.
+So werden geschlossene Verbindungen zur Signaling Instanz frühzeitig repariert.
+Weiter wird nach Empfang jedes Fehlers über die Signaling Verbindung geprüft, ob diese noch offen ist.
+Ist dies nicht der Fall, werden auch hier bis zu zehn Versuche unternommen, die Verbindung wiederherzustellen.
 
 Dieser Ablauf stellt sicher, dass die Verbindung zu der Signaling Instanz geöffnet bleibt und wenn nötig repariert wird.
 Wenn möglich, geschieht dies direkt nach Verbindungsverlust.
