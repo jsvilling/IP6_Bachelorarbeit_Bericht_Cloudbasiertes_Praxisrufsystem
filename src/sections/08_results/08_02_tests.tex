@@ -185,7 +185,11 @@ Weiter verwendet die Benutzeroberfläche des Admin UI ausschliesslich technische
 Für die Weiterentwicklung des Systems sollten sprechende Begriffe in der Benutzeroberfläche verwendet werden.
 Die Konfiguration des Systems sollte vereinfacht werden, so dass keine doppelten Konfigurationen vorgenommen werden müssen.
 
-\clearpage
+Das System bringt noch diverse Lücken aus dem Vorgängerprojekt mit sich und hat Potential sich in den Bereichen Benutzerfreundlichkeit und Stabilität zu verbessern.
+Trotz dieser Lücken werden alle Mindestanforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden erfüllt.
+Die Funktionstests sind dadurch mit einem positiven Resultat abgeschlossen.
+Das System kann in der aktuellen Form eingesetzt werden.
+Für den langfristigen Erfolg des Systems, sollten die bekannten Lücken allerdings bei der Weiterentwicklung adressiert werden.
 
 \subsubsection{Performancetests}
 
@@ -219,6 +223,8 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2
 \end{table}
 
 Die Performancekriterien P01 bis P06 sind vollständig erfüllt.
+Die Performance des Systems ist allerdings noch nicht optimal.
+Dies wurde insbesondere bei den Tests für die Kriterien P07 und P08 ersichtlich.
 
 Das Kriterium P07 wird mit Einschränkungen erfüllt.
 Die Qualität der Sprachverbindungen ist grundsätzlich ausreichend für eine Gegensprechanlage.
@@ -232,11 +238,21 @@ Das Kriterium P08 ist grundsätzlich erfüllt.
 Wenn die Verbindung zur Signaling Instanz verloren geht, wird eine Fehlermeldung angezeigt.
 Die Verbindung wird danach sobald möglich automatisch wiederhergestellt.
 Dies wurde mehrmals über einen Zeitraum von 12h getestet und hat zuverlässig funktioniert.
-Dabei ist es in einzelfällen dazu gekommen, dass die Fehlermeldung angezeigt wird, obwohl es keinen ersichtlichen Grund gibt, dass die Verbindung getrennt wurde.
+Dabei ist es in Einzelfällen dazu gekommen, dass die Fehlermeldung angezeigt wird, obwohl es keinen ersichtlichen Grund gibt, dass die Verbindung getrennt wurde.
 Nach Bestätigung des Dialogs, konnte die Verbindung in jedem Fall wiederhergestellt werden.
 Versuche dieses Verhalten gezielt zu reproduzieren waren nicht erfolgreich.
 Da die Verbindung in jedem Fall wiederhergestellt werden konnte, wird das Kriterium P08 als erfüllt betrachtet.
 Für die Weiterentwicklung des Systems, sollte die Verbindungsverwaltung in einem produktionsnahen Umfeld getestet werden.
 Dabei können weitere Performancemetriken gesammelt werden und wenn nötig Korrekturen an der Verwaltung vorgenommen werden.
+
+Letztlich haben Installationstests des Releases für die Praxisruf-App gezeigt, dass die initiale Installation des Systems unzuverlässig sein kann.
+In einzelnen Testdurchläufen konnten direkt nach der Installation keine Sprachverbindungen aufgebaut werden.
+Dieses Problem konnte darauf zurückgeführt werden, dass die Berechtigungen, welche für Netzwerkverbindungen benötigt werden, nicht korrekt angefordert wurden.
+In der Installationsanleitung (Anhang d) wird beschrieben, wie dieses Problem bei der Installation gelöst werden kann.
+Für die Weiterentwicklung des Systems wäre es wünschenswert, dass alle Berechtigungen automatisch und zwingend beim Start der Applikation angefordert werden.
+
+Die Performancetests konnten mit einem positiven Resultat abgeschlossen werden.
+Das System kann trotz der bekannten Lücken effizient bedient und als Praxisrufsystem verwendet werden.
+Die bekannten Lücken sollten aber mit Weiterentwicklung von Praxisruf geschlossen werden.
 
 \clearpage
