@@ -379,7 +379,7 @@ Stattdessen wird das Signal zwischengespeichert und die Methode onIncommingCallP
 Die Implementation des CallClientDelegate navigiert darauf zu der Ansicht für aktive Anrufe und meldet dem CallClient über die Methode acceptPending, dass die Verbindung initialisiert werden soll.
 Der CallClient initialisiert darauf eine RTCPeerConnection und sender ein Answer Signal über die send Methode.
 
-Answer-Signal werden ebenfalls über die receive Methode im CallClient empfangen.
+Answer-Signale werden ebenfalls über die receive Methode im CallClient empfangen.
 Beim Empfang einer Answer werden die SDP Informationen auf der lokalen RTCPeerConnection ergänzt.
 
 Neben dem Austausch von Offer- und Answer-Signalen müssen Ice Candidate Signale ausgetauscht werden können.
@@ -387,7 +387,7 @@ Sobald ein Ice Candidate zur Verfügung steht, erstellt der CallClient ein entsp
 Damit dies möglich ist, muss der CallClient über verfügbare Ice Candidates informiert werden.
 Die WebRTC Bibliothek bietet dazu das Protokoll RTCPeerConnectionDelegate.
 Dieses kann auf der RTCPeerConnection registriert werden und wird aufgerufen, sobald ein neuer Ice Candidate verfügbar ist.
-Der CallClient implementiert dieses Protokoll und registriert sich auf allen RTCPeerConnections.
+Der CallClient implementiert dieses Protokoll und registriert sich auf allen RTCPeerConnections als Delegate.
 
 Sprachverbindungen müssen über die Benutzeroberfläche verwaltet werden können.
 Der CallClient bietet deshalb Methoden an, um eine Verbindung zu starten und beenden.
@@ -415,7 +415,7 @@ Die Klasse CallService implementiert beide Delegate-Protokolle.
 Er erstellt Instanzen von CallClient und PraxisrufApi+Signaling und registriert sich anschliessend bei beiden als Delegate.
 Der CallService selbst wird in den View Komponenten der Applikation verwendet.
 Er nimmt Benutzereingaben entgegen und delegiert die entsprechende Funktionalität an den CallClient und PraxisrufApi+Signaling.
-Er nimmt ausserdem Informationen von CallClient und Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
+Er nimmt ausserdem Informationen von CallClient und PraxisrufApi+Signaling entgegen und stellt Anzeigeinformationen für die Benutzeroberfläche zur Verfügung.
 
 Abbildung 7.22 zeigt die Kommunikation zwischen den beteiligten Komponenten bei der Initialisierung einer Sprachverbindung auf Empfängerseite.
 Dabei wird der Ablauf von Benutzerinteraktion des Senders bis zum Senden des Offer-Signals dargestellt.
@@ -448,10 +448,10 @@ Dieses Signal wird wiederum über den CallService zum PraxisrufApi+Signaling wei
 
 Praxisruf ist darauf ausgelegt innerhalb von Arztpraxen verwendet zu werden.
 Dabei wird pro Zimmer ein Gerät installiert, welches als Endpunkt für das System dient~\cite{aufgabenstellung}.
-Damit werden alle Endgeräte einer Praxis innerhalb der Praxis betrieben.
-Dies erlaubt es, die Geräte im selben lokalen Netzwerk zu betreiben.
+Damit werden alle Endgeräte innerhalb derselben Praxis betrieben.
+Dies erlaubt es, die Geräte über ein lokales Netzwerk zu verbinden.
 Ist diese Voraussetzung gegeben, kann der Verbindungsaufbau vereinfacht werden.
-Da die Geräte direkt im lokalen Netzwerk kommunizieren können ist es nicht nötig, die Protokolle STUN oder TURN zu verwenden.
+Da die Geräte direkt im lokalen Netzwerk kommunizieren können, ist es nicht nötig, die Protokolle STUN oder TURN zu verwenden.
 Damit wird es möglich auf den Betrieb eines ICE Servers zu verzichten.
 Die Geräte können ICE Kandidaten für direkte Kommunikation im lokalen Netzwerk austauschen.
 
