@@ -4,6 +4,7 @@
 
 Am 11.01.2022 wurden zusammen mit dem Auftraggeber Benutzertests durchgeführt.
 Die iOS Applikation wurde auf zwei Physische iPads installiert.
+Eine dritte Instanz der Applikation wurde auf einem Simulator gestartet.
 Während den Benutzertests wurde folgendes getestet:
 
 \begin{enumerate}
@@ -21,6 +22,7 @@ Der Kunde hat während den Tests folgende Verbesserungswünsche eingebracht:
 \begin{enumerate}
     \item Das Quittieren von Einträgen in der Inbox soll diese direkt löschen.
     \item Das Quittieren von Einträgen in der Inbox soll durch eine Wischgeste möglich sein.
+    \item Die Töne für Benachrichtigungen und eingehende Anrufe von den Tönen anderer Apps unteschieden werden können.
     \item Die Töne für Benachrichtigungen und eingehende Anrufe sollen konfigurierbar sein.
     \item Icon und Name der App sollen angepasst werden.
     \item Bei eingehenden Sprachverbindungen soll ein Benachrichtigungston erklingen.
@@ -28,9 +30,19 @@ Der Kunde hat während den Tests folgende Verbesserungswünsche eingebracht:
 \end{enumerate}
 
 Dieses Feedback konnte grösstenteils umgesetzt werden.
-Punkt 3.\ konnte aus Zeitgründen nicht umgesetzt werden.
-Für eingehende Benachrichtigungen wird der im System als Standard konfiguriert Benachrichtigungston verwendet.
-Der Benachrichtigungston für eingehende Sprachverbindungen ist fest definiert und kann nicht durch den Benutzer konfiguriert werden.
+Elemente können per Wischgeste quittiert werden und werden dabei direkt aus der Inbox gelöscht.
+Icon und Name der App wurden angepasst.
+
+Bei eingehenden Sprachverbindungen ertönt ein Benachrichtigungston bevor die Verbindung geöffnet wird.
+Nachdem die Verbindung geöffnet wird, wird der Status aller Teilnehmenden mit einem einfachen Icon dargestellt.
+Es werden unterschiedliche Töne für Benachrichtigungen, Erinnerungen an unquittierte Nachrichten und den Eingang von Sprachverbindungen verwendet.
+Dabei werden keine Systemtöne von iOS verwendet.
+Dadurch können Praxismitarbeitende die Bedeutung eines Tons aus der Praxisruf-App eindeutig erkennen.
+Damit sind die Anforderungen aus Punkten 1.\ bis 3.\ sowie 5.\ bis 7.\ erfüllt.
+
+Der Punkt 4.\ konnte aus Zeitgründen nicht umgesetzt werden.
+Alle Töne sind allerdings fest definiert und können nicht durch den Benutzer konfiguriert werden.
+Eine Änderung der Töne ist nur über Änderungen am Quellcode möglich.
 
 \clearpage
 
@@ -43,7 +55,7 @@ Dadurch kann sichergestellt werden, dass alle Funktionen aus dem Vorgängerproje
 Die Testszenarien S19 bis S40 behandeln die Funktionen Sprachsynthese und Gegensprechanlage.
 Die detaillierte Definition mit Ausgangslage, Testschritten und erwartetem Resultat sind im Anhang C aufgeführt.
 
-Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2022:
+Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2022:
 
 \begin{table}[h]
     \centering
@@ -146,6 +158,36 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2
 \end{table}
 
 Alle Testszenarien konnten mit einem positiven Resultat abgeschlossen werden.
+Das System erfüllt damit die Mindestanforderungen an ein Praxisrufsystem.
+Es weist aber durchaus noch Lücken und Potential zur Weiterentwicklung auf.
+
+Das Empfangen von Anrufen ist nur möglich, wenn die Praxisruf-App aktiv ist.
+Ist die App nicht aktiv, werden Empfänger über Benachrichtigungen auf verpasste Anrufe hingewiesen.
+Das Antippen dieser Benachrichtigungen öffnet die Praxisruf-App.
+Es wird dabei aber kein Anruf entgegengenommen.
+Für die Weiterentwicklung des Systems wäre es ideal, wenn das Öffnen einer Benachrichtigung für verpasste Anrufe einen direkten Rückruf ermöglicht.
+
+Das Quittieren von Benachrichtigungen ist mit dem aktuellen System nur lokal auf dem Empfängergerät möglich.
+Für die Weiterentwicklung des Systems wäre es wünschenswert, dass ein Sender über die Quittierung von Benachrichtigungen informiert wird.
+So kann er sicher sein, dass die Benachrichtigung empfangen und gelesen wurde.
+
+Die Benutzeroberflächen des Mobile Clients erlaubt eine effiziente Bedienung des Systems.
+Design und User Expecience der Applikationen können aber weiter verbessert werden.
+Für die Weiterentwicklung der App sollte die Applikation zusammen mit Praxismitarbeitenden getestet werden.
+So können diese Rückmeldung zur Bedienung der App geben.
+Basierend darauf kann die App für Bedürfnisse der Anwendenen optimiert werden.
+
+Das Admin UI ermöglicht heute die Konfiguration des Systems.
+Die Konfiguration des Systems könnte aber weiter optimiert werden.
+Heute ist es nicht möglich, die Konfiguration für ein Zimmer mehrfach zu verwenden.
+Dies bedeutet, dass Praxisadministrierende manche Konfigurationen mehrfach erfassen müssen.
+Weiter verwendet die Benutzeroberfläche des Admin UI ausschliesslich technische Begriffe für die Konfigurationseinheiten.
+Für die Weiterentwicklung des Systems sollten sprechende Begriffe in der Benutzeroberfläche verwendet werden.
+Die Konfiguration des Systems sollte vereinfacht werden, so dass keine doppelten Konfigurationen vorgenommen werden müssen.
+
+\clearpage
+
+\subsubsection{Performancetests}
 
 Neben Szenarien für Funktionstests, wurden einfache Tests zur Messung der Performance des Systems definiert.
 Dazu wurden die Performancekriterien P01 bis P07 definiert.
@@ -171,10 +213,13 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2
         \hline
         P07         & Übertragungsqualität von Sprachverbindungen ist ausreichend für normale Unterhaltungen & +\textbackslash- \\
         \hline
+        P08         & Verbindung zur Signaling Instanz bleibt geöffnet & +\textbackslash- \\
+        \hline
     \end{tabular}\label{tab:testplan_performance}
 \end{table}
 
 Die Performancekriterien P01 bis P06 sind vollständig erfüllt.
+
 Das Kriterium P07 wird mit Einschränkungen erfüllt.
 Die Qualität der Sprachverbindungen ist grundsätzlich ausreichend für eine Gegensprechanlage.
 Es ist problemlos Möglich Unterhaltungen über die aufgebaute Sprachverbindung zu führen.
@@ -182,5 +227,14 @@ Probleme können entstehen, wenn eine Sprachverbindung zwischen zwei Endgeräten
 In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem starken Echo und schrillem Pfeifton führt.
 Dieses Problem ist durch eine entsprechende Ausrichtung der Geräte vermeidbar.
 Es schränkt aber ein, wie die Endgeräte des Systems in einer Praxis installiert werden können.
+
+Das Kriterium P08 ist grundsätzlich erfüllt.
+Wenn die Verbindung zur Signaling Instanz verloren geht, wird eine Fehlermeldung angezeigt.
+Die Verbindung wird danach sobald möglich automatisch wiederhergestellt.
+Dies wurde mehrmals über einen Zeitraum von 12h getestet und hat zuverlässig funktioniert.
+Dabei ist es in einzelfällen dazu gekommen, dass die Fehlermeldung angezeigt wird, obwohl es keinen ersichtlichen Grund gibt, dass die Verbindung getrennt wurde.
+Nach Bestätigung des Dialogs, konnte die Verbindung in jedem Fall wiederhergestellt werden.
+Versuche dieses Verhalten gezielt zu reproduzieren waren nicht erfolgreich.
+Da die Verbindung in jedem Fall wiederhergestellt werden konnte, wird das Kriterium P08 als erfüllt betrachtet.
 
 \clearpage
