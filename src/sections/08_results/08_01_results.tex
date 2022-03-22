@@ -60,10 +60,11 @@ Sämtliche in diesem Kapitel dargestellten Ansichten wurden als Screenshots auf 
 \subsubsection*{Anmeldung und Konfiguration}
 
 Der Mobile Client bietet eine einfaches Verfahren zur Anmeldung und Konfiguration.
-In einem ersten Schritt gibt der Praxismitarbeitende Benutzername und Passwort ein.
-Anschliessend kann er auf einer zweiten Ansicht, die gewünschte Zimmerkonfiguration wählen.
-Benutzer und Zimmerkonfiguration werden dabei gespeichert.
-Bis sich der Benutzer manuell abmeldet wird bei allen zukünftigen Starts der App die gespeicherte Kombination von Benutzer und Zimmerkonfiguration wiederverwendet.
+In einem ersten Schritt gibt der Praxismitarbeitende in der Login-Ansicht Benutzername und Passwort ein (Abbildung 8.1).
+Anschliessend kann er auf einer zweiten Ansicht, die gewünschte Zimmerkonfiguration wählen (Abbildung 8.2).
+Benutzer, Passwort und die gewählte Konfiguration werden dabei auf dem Gerät gespeichert.
+Bis sich der Benutzer manuell abmeldet, erfolgt die Anmeldung bei allen zukünftigen Starts der App automatisch.
+Dabei wird die gespeicherte Kombination von Benutzer und Konfiguration wiederverwendet.
 
 \begin{figure}[h]
     \centering
@@ -86,12 +87,16 @@ Bis sich der Benutzer manuell abmeldet wird bei allen zukünftigen Starts der Ap
 \subsubsection*{Startseite und Inbox}
 
 Nach der Anmeldung und Konfigurationsauswahl wird der Benutzer auf die Hauptansicht der App weitergeleitet.
-Über eine Navigationsleiste am unteren Bildschirmrand kann zwischen den Bereichen Home, Inbox und Einstellungen
-Der Bereich Home ist in zwei Teile gegliedert und beinhaltet Buttons über welche Benachrichtigungen versendet und Sprachverbindungen gestartet werden können.
+Über eine Navigationsleiste am unteren Bildschirmrand kann zwischen den Bereichen Home, Inbox und Einstellungen navigiert werden.
+Der Bereich Home (Abbildung 8.3) ist in zwei Teile gegliedert.
+Diese beinhalten Buttons, über welche Benachrichtigungen versendet und Sprachverbindungen gestartet werden können.
 Welche Buttons zur Verfügung stehen werden durch die gewählte Zimmerkonfiguration vorgegeben und wurden im Vorfeld von Praxisadministrierenden konfiguriert.
-Der Bereich Inbox zeigt eine Liste von empfangenen Benachrichtigungen sowie verpassten und vergangenen Anrufen.
+Der Bereich Inbox (Abbildung 8.4) zeigt eine Liste von empfangenen Benachrichtigungen sowie verpassten und vergangenen Anrufen.
 Einzelne Einträge in dieser Liste können durch eine Wischgeste (Swipe left) quittiert und damit entfernt werden.
 Weiter können mit der Schaltfläche ''Inbox leeren'' am unteren Ende der Liste alle Einträge gleichzeitig quittiert werden.
+Das quittieren von Inboxelementen geschieht ausschliesslich lokal auf dem Gerät des Empfängers.
+Der Sender von Benachrichtigungen wird nicht über die Quittierung informiert.
+Damit wurde das Quittieren von Elementen analog zum Vorgängerprojekt umgesetzt.
 
 \begin{figure}[h]
     \centering
@@ -110,8 +115,9 @@ Weiter können mit der Schaltfläche ''Inbox leeren'' am unteren Ende der Liste 
 Ein Hintergrundprozess prüft in regelmässigen Abständen, ob es unquittierte Elemente in der Inbox gibt.
 Ist dies der Fall wird eine Push-Benachrichtigung angezeigt und der Benachrichtigungston abgespielt.
 Diese Benachrichtigung ist in Abbildung 8.4 zu sehen.
-Eine Ausnahme bilden Elemente für eingehende Anrufe die erfolgreich empfangen wurden.
-Diese werden in der Inbox angezeigt, müssen aber nicht quittiert werden.
+Eine Ausnahme bilden Elemente für eingehende Anrufe, die erfolgreich empfangen wurden.
+Diese werden in der Inbox angezeigt und können quittiert werden.
+Sie werden aber bei der Prüfung auf nicht quittierte Elemente ignoriert.
 
 \clearpage
 
@@ -120,6 +126,12 @@ Diese werden in der Inbox angezeigt, müssen aber nicht quittiert werden.
 Im Bereich Einstellungen (Abbildung 8.5) werden Informationen zur gewählten Zimmerkonfiguration und dem angemeldeten Benutzer angezeigt.
 Weiter können lokale Einstellungen vorgenommen werden.
 Das Vorlesen von empfangenen Benachrichtigungen sowie das Empfangen von Anrufen kann hier deaktiviert werden.
+Ist das Vorlesen von Benachrichtigungen deaktiviert, wird der Inhalt von Benachrichtigungen nie vorgelesen.
+Benachrichtigungen können aber weiterhin empfangen und versendet werden.
+Ist der Empfang von Anrufen deaktiviert, werden alle eingehenden Anrufe automatisch abgelehnt.
+Dem Empfänger wird dabei eine Benachrichtigung angezeigt, die über den verpassten Anruf informiert.
+Der Anrufer wird über eine Signalmeldung informiert, dass die Verbindung nicht hergestellt werden konnte.
+Der Status des Empfängers wird in der Ansicht für Aktive Anrufe auf Senderseite entsprechend dargestellt.
 Über einen Button kann der Benutzer sich zudem von der App abmelden.
 
 \begin{figure}[h]
@@ -140,8 +152,14 @@ Die Ansicht ''Aktive Anruf'' (Abbildung 8.6) wird angezeigt, nachdem ein Anruf g
 Entweder durch antippen eines Buttons in der Home Ansicht oder beim Empfang eines Anrufes von einem anderen Endgerät.
 In dieser Ansicht wird der Titel des gestarteten Anrufes bzw.\ Name des Zimmer des Gesprächspartners angezeigt.
 Wenn mehr als ein Gesprächspartner am Anruf beteiligt ist, wird zudem eine Liste der Teilnehmer zusammen mit deren Verbindungsstatus angezeigt.
+Die Statusanzeige unterscheidet zwischen ''Verbindung erfolgreich'', ''Verbindung nicht erfolgreich'' und ''Verbindung in Arbeit''.
 Allen Gesprächsteilnehmern stehen Buttons zur Stummschaltung des eigenen Lautsprechers und Mikrofons zur Verfügung.
 Zudem können alle Gesprächsteilnehmenden die Unterhaltung durch den roten Auflegen Button beenden.
+
+In Abbildung 8.6 wird ein Aktiver Anruf mit den Empfängern Empfang und Steri dargestellt.
+Dabei hat die Verbindung zu Empfang den Status ''Verbindung hergestellt'' und die Verbindung zu Steri den Status ''Verbindung nicht erfolgreich''.
+Konnte die Verbindung zu einem Empfänger nicht hergestellt werden, wird dieser mit einer Benachrichtigung darüber informiert.
+
 
 \clearpage
 
