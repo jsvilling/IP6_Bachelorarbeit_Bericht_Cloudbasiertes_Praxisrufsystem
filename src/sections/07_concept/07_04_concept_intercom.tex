@@ -128,16 +128,15 @@ Der Verbindungsaufbau und Austausch von Signalmeldungen über das Signaling Modu
 
 \subsubsection{Anmeldung und Registrierung}
 
-Dieses Kapitel beschreibt, wie die Anmelde und Registrierungsprozesse im Mobile Client ablaufen, um eine Verbindung zu der Signaling Instanz zu ermöglichen.
+Dieses Kapitel beschreibt, welche Anmelde- und Registrierungsprozesse im Mobile Client benötigt werden.
 
-Der Ablauf von Anmeldung und Registrierung wird in Abbildung 7.16 dargestellt.
 Anmeldung und Registrierung für Benachrichtigungen funktionieren mit dem neuen Mobile Client nach demselben Ablauf wie im Vorgängerprojekt.
 Die Registrierung für Sprachverbindungen beim Signaling Modul des Cloudservice wird mit diesem Projekt hinzugefügt.
-
+Der gesamte Ablauf von Anmeldung und Registrierung wird in Abbildung 7.16 dargestellt.
 Praxismitarbeitende öffnen die Applikation und geben ihr Benutzername und Passwort ein.
 Der Mobile Client verwendet diese, um sich über Basic Authentication beim Cloudservice anzumelden.
 Als Antwort auf die Anmeldung gibt der Cloudservice ein Json Web Token (JWT) zurück.
-Dieses wird für die Authorisierung aller weiteren Anfragen an den Cloudservice verwendet.
+Dieses wird lokal auf dem Gerät gespeichert und für alle weiteren Anfragen an den Cloudservice verwendet.
 Nachdem die Anmeldung erfolgt ist, wird eine Liste der verfügbaren Konfigurationen geladen.
 Der Benutzer wählt die gewünschte Konfiguration aus und bestätigt.
 
@@ -183,7 +182,7 @@ Wenn ein Signal nicht zugestellt werden kann und dieses Flag aktiviert ist, wird
 Dazu wird die API des Notification Moduls des Cloudservices verwendet.
 
 Praxisruf verwendet sechs Typen von Signalmeldungen.
-Folgende Übersicht beschreibt pro Typ welche Daten die Meldung beinhaltet und welche Rolle sie erfüllt.
+Folgende Übersicht beschreibt pro Typ welche Daten ein Signal beinhaltet und welche Rolle es erfüllt.
 \\
 \begin{tabbing}
     Left \= Middle \= Right \= Right \kill
@@ -196,10 +195,10 @@ Folgende Übersicht beschreibt pro Typ welche Daten die Meldung beinhaltet und w
     \\\> \> \> Es beinhaltet SDP Informationen des Empfängers und bestätigt eine Verbindung. \\ \\
 
     Ice Candidate
-    \> \> \> Beinhaltet Informatinoen eines ICE Candidates, die für den Verbindungsaufbau ver-
+    \> \> \> Beinhaltet Informationen eines ICE Candidates, die für den Verbindungsaufbau ver-
     \\ \> \> \> wendet werden. Nach Verarbeitung von Offer und Answer tauschen Initiator und
     \\ \> \> \> Empfänger solange Ice Candidate Signale aus, bis sie sich auf einen Kandidaten
-    \\ \> \> \> geeinigt haben.
+    \\ \> \> \> geeinigt haben. Dieser wird verwendet, um die Verbindung aufzubauen.
     \\ \> \> \> \\
 
     End
@@ -214,8 +213,9 @@ Folgende Übersicht beschreibt pro Typ welche Daten die Meldung beinhaltet und w
 
     Decline
     \> \> \> Wird ein Offer empfangen während die Gegensprechanlage in den lokalen Einstel-
-    \\ \> \> \> lungen deaktiviert ist, sendet der Mobile Client ein Decline Signal zurück. Der Sen-
-    \\ \> \> \>  der ist so informiert, dass die Verbindung zum Gesprächspartner abgelehnt wurde.
+    \\ \> \> \> lungen deaktiviert ist oder bereits in Anruf aktiv ist, sendet der Mobile Client ein
+    \\ \> \> \> Decline Signal zurück. Der Sender ist so informiert, dass die Verbindung zum Ge-
+    \\ \> \> \> sprächspartner abgelehnt wurde.
 \end{tabbing}
 
 \clearpage
@@ -234,7 +234,7 @@ Der Cloudservice findet die Verbindung der jeweiligen Empfänger und leitet die 
 Nach Eingang des Offer-Signals wird die Verbindung auf Empfängerseite initialisiert und eine Answer zurück an den Initiator gesendet.
 Diese wird gleich wie das Offer-Signal über die Signaling Instanz zugestellt.
 Der Initiator empfängt die Antwort Signale und ergänzt die notwendigen Verbindungsinformationen.
-Abbildung 7.20 visualisiert diesen Ablauf.
+Abbildung 7.18 visualisiert diesen Ablauf.
 
 \begin{figure}[h]
     \centering
@@ -287,6 +287,8 @@ Wurde eine gültige Signalmeldung empfangen, wird diese über die Methode onSign
 Wurde hingegen eine ungültige Signalmeldung oder eine Fehlermeldung empfangen wird die Methode onErrorReceived aufgerufen.
 Im Fehlerfall wird zudem überprüft, ob die Verbindung noch offen verwendbar ist.
 Sollte die Verbindung nicht mehr verwendbar sein, wird die Methode onConnectionLost des Delegates aufgerufen.
+Dadurch wird versucht, die Verbindung erneut aufzubauen.
+Ist dies nicht möglich, wird eine Fehlermeldung angezeigt. 
 
 PraxisrufApi+Signaling definiert weiter Methoden um Signal- und Pingmeldungen zu versenden.
 Pingmeldungen werden in Regelmässigen Abständen gesendet um sicherzustellen, dass die Verbindung zu der Signaling Instanz geöffnet bleibt.
@@ -306,7 +308,7 @@ Wenn die Verbindung dadurch nicht repariert werden kann, wird sie geschlossen un
 
 Dieses Kapitel beschreibt, wie im Mobile Client sichergestellt wird, dass die Verbindung zu der Signaling Instanz langfristig zur Verfügung steht.
 Abbildung 7.20 gibt einen Überblick, über die Abläufe dazu umgesetzt werden.
-Diese werden mit den Komponenten CallService und PraxisrufApi+Signaling implementiert.
+Dieser Ablauf ist mit den Komponenten CallService und PraxisrufApi+Signaling die, in Kapitel 7.4.7 beschrieben sind, implementiert.
 
 \begin{figure}[h]
     \centering
