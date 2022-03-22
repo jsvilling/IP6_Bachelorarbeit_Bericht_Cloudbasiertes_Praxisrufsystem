@@ -79,7 +79,7 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2
         \hline
         S08         & Push Benachrichtigung im Hintergrund.  & +\\
         \hline
-        S09         & Erinnerungston für nicht Quittierte Benachrichtigungen.   & +\\
+        S09         & Erinnerungston für nicht quittierte Benachrichtigungen.   & +\\
         \hline
         S10         & Start Mobile Client - Nicht angemeldet   & +\\
         \hline
@@ -158,8 +158,8 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2
 \end{table}
 
 Alle Testszenarien konnten mit einem positiven Resultat abgeschlossen werden.
-Das System erfüllt damit die Mindestanforderungen an ein Praxisrufsystem.
-Es weist aber durchaus noch Lücken und Potential zur Weiterentwicklung auf.
+Das System erfüllt damit die Anforderungen, die im Rahmen dieses Projektes an ein Praxisrufsystem gestellt werden.
+Das umgesetzte System weist aber durchaus noch Potential zur Weiterentwicklung auf.
 
 Im Bereich Gegensprechanlage, besteht Optimierungspotential für das Entgegennehmen von Anrufen.
 Das Empfangen von Anrufen ist aktuell nur möglich, wenn die Praxisruf-App aktiv ist.
@@ -191,7 +191,7 @@ Für die Weiterentwicklung des Systems sollten sprechende Begriffe in der Benutz
 Die Konfiguration des Systems sollte vereinfacht werden, so dass keine doppelten Konfigurationen vorgenommen werden müssen.
 
 Das System bringt noch diverse Lücken aus dem Vorgängerprojekt mit sich und hat Potential sich in den Bereichen Benutzerfreundlichkeit und Stabilität zu verbessern.
-Trotz dieser Lücken werden alle Mindestanforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden, erfüllt.
+Trotz dieser Lücken werden die funktionalen Anforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden, erfüllt.
 Die Funktionstests sind dadurch mit einem positiven Resultat abgeschlossen.
 Das System kann in der aktuellen Form eingesetzt werden.
 Für den langfristigen Erfolg des Systems, sollten die bekannten Lücken allerdings bei der Weiterentwicklung adressiert werden.
@@ -222,20 +222,19 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2
         \hline
         P07         & Übertragungsqualität von Sprachverbindungen ist ausreichend für normale Unterhaltungen & +\textbackslash- \\
         \hline
-        P08         & Verbindung zur Signaling Instanz bleibt geöffnet & +\textbackslash- \\
+        P08         & Verbindung zur Signaling Instanz bleibt geöffnet und wird bei Fehlern automatisch wiederhergestellt. & +\textbackslash- \\
         \hline
     \end{tabular}\label{tab:testplan_performance}
 \end{table}
 
 Die Performancekriterien P01 bis P06 sind vollständig erfüllt.
-Die Performance des Systems ist allerdings noch nicht optimal.
-Dies wurde insbesondere bei den Tests für die Kriterien P07 und P08 ersichtlich.
+Die Kriterien P07 und P08 sind mit Einschränkungen erfüllt und zeigen, dass das die Performance des Systems weiter verbessert werden könnte.
 
 Das Kriterium P07 wird mit Einschränkungen erfüllt.
 Die Qualität der Sprachverbindungen ist ausreichend für eine Gegensprechanlage.
 Es ist problemlos möglich Unterhaltungen über die aufgebaute Sprachverbindung zu führen.
 Probleme können entstehen, wenn eine Verbindung zwischen Endgeräten aufgebaut wird, welche nahe beieinander installiert sind.
-In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem Echo und schrillen Pfeifton führen kann.
+In diesem Fall können Rückkoppelungen entstehen, welche zu einem Echo und schrillen Pfeifton führen kann.
 Dieses Problem ist durch eine entsprechende Ausrichtung der Geräte vermeidbar.
 Es schränkt aber ein, wie die Endgeräte des Systems in einer Praxis installiert werden können.
 
@@ -248,7 +247,7 @@ Nach Bestätigung des Dialogs, konnte die Verbindung in jedem Fall wiederhergest
 Versuche dieses Verhalten gezielt zu reproduzieren waren nicht erfolgreich.
 Da die Verbindung in jedem Fall wiederhergestellt werden konnte, wird das Kriterium P08 als erfüllt betrachtet.
 Für die Weiterentwicklung des Systems, sollte die Verbindungsverwaltung in einem produktionsnahen Umfeld getestet werden.
-Dabei können weitere Performancemetriken gesammelt werden und wenn nötig Korrekturen an der Verwaltung vorgenommen werden.
+Dabei kann die Performance des Systems beobachtet werden und wenn nötig Korrekturen an der Verwaltung vorgenommen werden.
 
 Letztlich haben Installationstests des Releases für die Praxisruf-App gezeigt, dass die initiale Installation des Systems aufwändig sein kann.
 In einzelnen Testdurchläufen konnten direkt nach der Installation keine Sprachverbindungen aufgebaut werden.
