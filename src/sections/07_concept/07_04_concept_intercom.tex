@@ -349,15 +349,17 @@ Wenn Praxismitarbeitende einen Anruf starten und die Verbindung immer noch getre
 Ist dies erfolgreich, wird der Anruf gestartet.
 Andernfalls wird erneut ein Fehlerdialog angezeigt.
 
+\clearpage
+
 \subsubsection{Sprachverbindungen im Mobile Client}
 
 Dieses Kapitel beschreibt wie WebRTC-Komponenten in den Mobile Client integriert werden, um Sprachverbindungen zu ermöglichen.
 
 Für die Integration der WebRTC-Komponenten wird eine Klasse CallClient und ein Protokoll CallClientDelegate erstellt.
 Der CallClient verwaltet Sprachverbindungen, während der Delegate zur Integration mit der restlichen Applikation dient.
-Abbildung 7.18 zeigt das Klassendiagramm beider Komponenten.
+Abbildung 7.21 zeigt das Klassendiagramm beider Komponenten.
 Die Methoden des CallClientDelegate-Protokolls werden von der Klasse CallService implementiert.
-Da diese Klasse auch das Protokoll SignalingDelegate implementiert, kann sie verwendet werden um Signalmeldungen zwischen CallClient und PraxusrufApi zu vermitteln.
+Da diese Klasse auch das Protokoll SignalingDelegate implementiert, kann sie verwendet werden um Signalmeldungen zwischen CallClient und PraxusrufApi+Signaling zu vermitteln.
 
 \begin{figure}[h]
     \centering
