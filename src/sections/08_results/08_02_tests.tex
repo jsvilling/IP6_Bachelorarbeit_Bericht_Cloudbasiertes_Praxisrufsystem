@@ -50,10 +50,10 @@ Eine Änderung der Töne ist nur über Änderungen am Quellcode möglich.
 
 Im Rahmen des Projektes Peer-To-Peer Kommunikation für Sprachübertragung in einem Praxisrufsystem wurde ein finaler Testplan definiert.
 Diese Tests wurden zum Abschluss des Projektes durchgeführt, um die Funktionalität des Systems abschliessend zu testen.
-Die Szenarien S01 bit S18 wurden dabei aus dem Vorgängerprojekt ''IP5 Cloudbasiertes Praxisrufsystem'' übernommen.
+Die Szenarien S01 bis S18 wurden dabei aus dem Vorgängerprojekt ''IP5 Cloudbasiertes Praxisrufsystem'' übernommen.
 Dadurch kann sichergestellt werden, dass alle Funktionen aus dem Vorgängerprojekt korrekt migriert wurden.
 Die Testszenarien S19 bis S40 behandeln die Funktionen Sprachsynthese und Gegensprechanlage.
-Die detaillierte Definition mit Ausgangslage, Testschritten und erwartetem Resultat sind im Anhang C aufgeführt.
+Die detaillierte Definition mit Ausgangslage, Testschritten und erwartetem Resultat der Testszenarien sind im Anhang C aufgeführt.
 
 Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2022:
 
@@ -65,7 +65,7 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2
         \hline
         S01         & Benachrichtigung versenden - Empfänger konfiguriert   & +\\
         \hline
-        S02         & Benachrichtigung versenden - kein Empfänger & +\\
+        S02         & Benachrichtigung versenden - Kein Empfänger konfiguriert & +\\
         \hline
         S03         & Benachrichtigung empfangen.  & +\\
         \hline
@@ -81,9 +81,9 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2
         \hline
         S09         & Erinnerungston für nicht Quittierte Benachrichtigungen.   & +\\
         \hline
-        S10         & Start Mobile Client - nicht angemeldet   & +\\
+        S10         & Start Mobile Client - Nicht angemeldet   & +\\
         \hline
-        S11         & Start Mobile Client  - angemeldet & +\\
+        S11         & Start Mobile Client  - Angemeldet & +\\
         \hline
         S12         & Anmelden mit korrekten Daten.   & +\\
         \hline
@@ -161,21 +161,26 @@ Alle Testszenarien konnten mit einem positiven Resultat abgeschlossen werden.
 Das System erfüllt damit die Mindestanforderungen an ein Praxisrufsystem.
 Es weist aber durchaus noch Lücken und Potential zur Weiterentwicklung auf.
 
-Das Empfangen von Anrufen ist nur möglich, wenn die Praxisruf-App aktiv ist.
+Im Bereich Gegensprechanlage, besteht Optimierungspotential für das Entgegennehmen von Anrufen.
+Das Empfangen von Anrufen ist aktuell nur möglich, wenn die Praxisruf-App aktiv ist.
 Ist die App nicht aktiv, werden Empfänger über Benachrichtigungen auf verpasste Anrufe hingewiesen.
 Das Antippen dieser Benachrichtigungen öffnet die Praxisruf-App.
 Es wird dabei aber kein Anruf entgegengenommen.
 Für die Weiterentwicklung des Systems wäre es ideal, wenn das Öffnen einer Benachrichtigung für verpasste Anrufe einen direkten Rückruf ermöglicht.
 
-Das Quittieren von Benachrichtigungen ist mit dem aktuellen System nur lokal auf dem Empfängergerät möglich.
-Für die Weiterentwicklung des Systems wäre es wünschenswert, dass ein Sender über die Quittierung von Benachrichtigungen informiert wird.
-So kann er sicher sein, dass die Benachrichtigung empfangen und gelesen wurde.
-
 Die Benutzeroberflächen des Mobile Clients erlaubt eine effiziente Bedienung des Systems.
-Design und User Experience der Applikationen können aber weiter verbessert werden.
+Design und User Experience der Applikationen könnten aber weiter verbessert werden.
 Für die Weiterentwicklung der App sollte die Applikation zusammen mit Praxismitarbeitenden getestet werden.
 So können diese Rückmeldung zur Bedienung der App geben.
 Basierend darauf kann die App für Bedürfnisse der Anwendenen optimiert werden.
+
+Weiter hat das System noch Lücken die auf das Vorgängerprojekt zurückzuführen sind.
+Diese Verbesserungen sind ausserhalb des Umfangs dieses Projektes gefallen, sollten für die Weiterentwicklung von Praxisruf aber berücksichtigt werden.
+Insbesondere das Quittieren von Benachrichtigungen und die Konfigurationsverwaltung könnten verbessert werden.
+
+Das Quittieren von Benachrichtigungen ist mit dem aktuellen System nur lokal auf dem Empfängergerät möglich.
+Für die Weiterentwicklung des Systems wäre es wünschenswert, dass ein Sender über die Quittierung von Benachrichtigungen informiert wird.
+So kann er sicher sein, dass die Benachrichtigung empfangen und gelesen wurde.
 
 Das Admin UI ermöglicht heute die Konfiguration des Systems.
 Die Konfiguration des Systems könnte aber weiter optimiert werden.
@@ -186,7 +191,7 @@ Für die Weiterentwicklung des Systems sollten sprechende Begriffe in der Benutz
 Die Konfiguration des Systems sollte vereinfacht werden, so dass keine doppelten Konfigurationen vorgenommen werden müssen.
 
 Das System bringt noch diverse Lücken aus dem Vorgängerprojekt mit sich und hat Potential sich in den Bereichen Benutzerfreundlichkeit und Stabilität zu verbessern.
-Trotz dieser Lücken werden alle Mindestanforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden erfüllt.
+Trotz dieser Lücken werden alle Mindestanforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden, erfüllt.
 Die Funktionstests sind dadurch mit einem positiven Resultat abgeschlossen.
 Das System kann in der aktuellen Form eingesetzt werden.
 Für den langfristigen Erfolg des Systems, sollten die bekannten Lücken allerdings bei der Weiterentwicklung adressiert werden.
@@ -194,8 +199,8 @@ Für den langfristigen Erfolg des Systems, sollten die bekannten Lücken allerdi
 \subsubsection{Performancetests}
 
 Neben Szenarien für Funktionstests, wurden einfache Tests zur Messung der Performance des Systems definiert.
-Dazu wurden die Performancekriterien P01 bis P07 definiert.
-Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 06.03.2022.
+Dazu wurden die Performancekriterien P01 bis P08 definiert.
+Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2022.
 
 \begin{table}[h]
     \centering
@@ -227,10 +232,10 @@ Die Performance des Systems ist allerdings noch nicht optimal.
 Dies wurde insbesondere bei den Tests für die Kriterien P07 und P08 ersichtlich.
 
 Das Kriterium P07 wird mit Einschränkungen erfüllt.
-Die Qualität der Sprachverbindungen ist grundsätzlich ausreichend für eine Gegensprechanlage.
-Es ist problemlos Möglich Unterhaltungen über die aufgebaute Sprachverbindung zu führen.
-Probleme können entstehen, wenn eine Sprachverbindung zwischen zwei Endgeräten im selben Raum aufgebaut wird.
-In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem starken Echo und schrillem Pfeifton führt.
+Die Qualität der Sprachverbindungen ist ausreichend für eine Gegensprechanlage.
+Es ist problemlos möglich Unterhaltungen über die aufgebaute Sprachverbindung zu führen.
+Probleme können entstehen, wenn eine Verbindung zwischen Endgeräten aufgebaut wird, welche nahe beieinander installiert sind.
+In diesem Fall kann ein positiver Feedback Loop entstehen, welcher zu einem Echo und schrillen Pfeifton führen kann.
 Dieses Problem ist durch eine entsprechende Ausrichtung der Geräte vermeidbar.
 Es schränkt aber ein, wie die Endgeräte des Systems in einer Praxis installiert werden können.
 
@@ -245,10 +250,10 @@ Da die Verbindung in jedem Fall wiederhergestellt werden konnte, wird das Kriter
 Für die Weiterentwicklung des Systems, sollte die Verbindungsverwaltung in einem produktionsnahen Umfeld getestet werden.
 Dabei können weitere Performancemetriken gesammelt werden und wenn nötig Korrekturen an der Verwaltung vorgenommen werden.
 
-Letztlich haben Installationstests des Releases für die Praxisruf-App gezeigt, dass die initiale Installation des Systems unzuverlässig sein kann.
+Letztlich haben Installationstests des Releases für die Praxisruf-App gezeigt, dass die initiale Installation des Systems aufwändig sein kann.
 In einzelnen Testdurchläufen konnten direkt nach der Installation keine Sprachverbindungen aufgebaut werden.
 Dieses Problem konnte darauf zurückgeführt werden, dass die Berechtigungen, welche für Netzwerkverbindungen benötigt werden, nicht korrekt angefordert wurden.
-In der Installationsanleitung (Anhang d) wird beschrieben, wie dieses Problem bei der Installation gelöst werden kann.
+In der Installationsanleitung (Anhang D) wird beschrieben, wie dieses Problem bei der Installation gelöst werden kann.
 Für die Weiterentwicklung des Systems wäre es wünschenswert, dass alle Berechtigungen automatisch und zwingend beim Start der Applikation angefordert werden.
 
 Die Performancetests konnten mit einem positiven Resultat abgeschlossen werden.
