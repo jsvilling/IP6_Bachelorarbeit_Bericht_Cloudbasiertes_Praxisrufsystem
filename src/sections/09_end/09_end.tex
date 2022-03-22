@@ -3,10 +3,10 @@
 Im Rahmen dieser Projektarbeit wurden Peer-To-Peer Sprachverbindungen und Sprachsynthese in ein cloudbasiertes Praxisrufsystem integriert.
 Die umgesetzte Lösung basiert auf dem Praxisrufsystem das im Rahmen des Projektes ''IP5 Cloudbasiertes Praxisrufsystem'' umgesetzt wurde.
 Das Praxisrufsystem kann zum Austausch von Informationen in einem Praxisumfeld verwendet werden.
-Kommunikation ist dabei über Textnachrichten und Sprachverbindungen zwischen mehreren Teilnehmern möglich.
+Kommunikation ist dabei über Benachrichtigungen und Sprachverbindungen zwischen mehreren Teilnehmern möglich.
 
-Das erweiterte System besteht aus einer Mobilen Applikation, einer Serverkomponente und einer Webapplikation.
-Die Mobile Applikation wurde neu als native Applikation für iOS entwickelt.
+Das erweiterte System besteht aus einer mobilen Applikation, einer Serverkomponente und einer Webapplikation.
+Die mobile Applikation wurde neu als native Applikation für iOS entwickelt.
 Sie ersetzt die Shared Platform Applikation, welche im Rahmen des Vorgängerprojektes entwickelt wurde.
 Dabei wurden sämtliche bestehende Funktionen und Anbindungen an Umsysteme in die neue Applikation migriert.
 Mit diesem Projekt neu konzipiert und umgesetzt wurden die Sprachsynthese für empfangene Benachrichtigung sowie die Integration einer Gegensprechanlage über Peer-To-Peer Sprachverbindungen.
@@ -14,34 +14,34 @@ Die Serverkomponente und Webapplikation wurden erweitert, um diese Funktionen im
 
 Die mobile Applikation dient als Benutzeroberfläche für das Rufsystem.
 In der Applikation können über vorkonfigurierte Buttons Sprachverbindungen aufgebaut und Benachrichtigungen versendet werden.
-Empfangene Benachrichtigungen werden als Push-Benachrichtigungen angezeigt und in eine Inbox eingefügt.
-Durch die Anbindung von der Dienstleistung Amazon Polly, kann der Inhalt von empfangen Textnachrichten automatisch vorgelesen werden.
+Empfangene Benachrichtigungen werden als Push-Benachrichtigungen angezeigt und können auch empfangen werden, wenn die Applikation nicht aktiv ist.
+Durch die Anbindung von der Dienstleistung Amazon Polly, kann der Inhalt von empfangen Benachrichtigungen automatisch vorgelesen werden.
 Die Integration von Sprachverbindungen wurde mit der Technologie WebRTC umgesetzt.
-Die umgesetzte Lösung erlaubt es Sprachverbindungen zwischen einem Sender und mehreren Empfängern aufzubauen.
+Die umgesetzte Lösung erlaubt es, Sprachverbindungen zwischen einem Sender und mehreren Empfängern aufzubauen.
 Sender und Empfänger können über die geöffnete Verbindung miteinander sprechen.
 Dadurch kann das Rufsystem als konfigurierbare Gegensprechanlage verwendet werden.
 Kann ein Empfänger für Sprachverbindungen nicht erreicht werden, wird er mit einer Benachrichtigung über die verpasste Unterhaltung informiert.
 Sowohl empfangene Benachrichtigungen als auch verpasste und vergangene Anrufe werden gesammelt und in einer Inbox angezeigt.
-Empfangene Benachrichtigungen und verpasste Anrufe müssen von Praxismitarbeitenden quittiert werden.
+Benachrichtigungen und verpasste Anrufe müssen von Praxismitarbeitenden quittiert werden.
 Sind unquittierte Elemente in der Inbox, ertönt in regelmässigen Abständen ein Erinnerungston.
 
 Das umgesetzte System deckt die wesentlichen Anforderungen eines cloudbasierten Praxisrufsystems ab.
 Für eine kommerzielle Nutzung des Systems sind aber zusätzliche Erweiterungen notwendig.
-Das mit diesem Projekt umgesetzte Rufsystem ist noch nicht mandantenfähig.
-Praxismitarbeitende haben nur Zugriff auf Konfigurationen, welche dem verwendeten Benutzer zugewiesen sind.
-Praxisadministratoren können allerdings immer alle bekannten Konfigurationen verwalten.
-Weiter wird bei der Auswertung der Konfiguration für das Zustellen von Textnachrichten und bei der Signalvermittlung für den Aufbau von Sprachverbindungen keine Zuordnung an Benutzer oder Mandat geprüft.
+Einerseits müssen bekannte Lücken aus dem Vorgängerprojekt geschlossen werden und die Stabilität des Systems in einem produktionsnahem Umfeld verifiziert werden.
+Weiter muss Praxisruf mandantenfähig werden.
+Mit dem umgesetzten System ist keine Trennung zwischen verschiedenen Kunden im System möglich.
+Praxisadministratoren können uneingeschränkt alle bekannten Konfigurationen verwalten.
+Bei der Auswertung der Konfiguration für das Zustellen von Benachrichtigungen und bei der Signalvermittlung für den Aufbau von Sprachverbindungen wird keine Zuordnung an Benutzer oder Mandat geprüft.
 Um Praxisruf produktiv bei mehreren Kunden einzusetzen, muss eine Trennung von Mandanten ermöglicht werden.
 Es wird empfohlen vor der produktiven Nutzung des Systems die Berechtigungsprüfung des Systems zu überarbeiten.
 Es sollte ein externer Identity Provider angebunden werden und ein Rollensystem entwickelt werden, welches die Verwaltung einzelner Mandate in Praxisruf erlaubt.
-Letztlich sind heute einfache Mechanismen für das Wiederholen von Benachrichtigungen und Wiederaufbau von verlorenen Verbindungen implementiert.
-Für den produktiven Betrieb können diese allerdings noch erweitert werden.
 
 Eine weitere Gefahr für die produktive Nutzung des Systems ist, dass es noch nicht über einen längeren Zeitraum in einem produktionsnahen Umfeld getestet wurde.
 Es wird empfohlen, das System als Prototypen in einem Pilotbetrieb zu testen.
-So kann Testfeedback von Praxismitarbeitenden eingeholt werden und es können Performancemetriken gesammelt werden.
-Anhand der Resultate dieser Tests können nötige Erweiterungen und Optimierungen am System identifiziert werden.
+So können Rückmeldungen von Praxismitarbeitenden eingeholt werden und die Performance des Systems beobachtet werden.
+Anhand der Resultate dieser Tests können weitere nötigeOptimierungen am System identifiziert werden.
 
+Das Projekt ''Peer-to-Peer Sprachverbindungen in einem Praxisrufsystem'' konnte erfolgreich abgeschlossen werden.
 Die erarbeiteten Konzepte bilden eine solide Grundlage für die Architektur eines cloudbasierten Praxisrufsystems.
 Das umgesetzte Rufsystem erfüllt die Anforderungen eines cloudbasiertes Praxisrufsystem.
 Es bildet einen Prototyp, welcher für die Entwicklung eines kommerziell erfolgreichen Praxisrufsystems erweitert werden kann.
