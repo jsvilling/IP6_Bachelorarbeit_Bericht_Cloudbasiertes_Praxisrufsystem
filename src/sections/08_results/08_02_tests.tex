@@ -242,10 +242,11 @@ Das Kriterium P08 ist grundsätzlich erfüllt.
 Wenn die Verbindung zur Signaling Instanz verloren geht, wird eine Fehlermeldung angezeigt.
 Die Verbindung wird danach sobald möglich automatisch wiederhergestellt.
 Dies wurde mehrmals über einen Zeitraum von 12h getestet und hat zuverlässig funktioniert.
-Dabei ist es in Einzelfällen dazu gekommen, dass die Fehlermeldung angezeigt wird, obwohl es keinen ersichtlichen Grund gibt, dass die Verbindung getrennt wurde.
-Nach Bestätigung des Dialogs, konnte die Verbindung in jedem Fall wiederhergestellt werden.
+Dabei ist es in Einzelfällen dazu gekommen, dass die Verbindung ohne ersichtlichen Grund verloren ging.
+In diesen Situation wurde wie erwartet der Fehlerdialog angezeigt.
+Nach Bestätigung des Dialogs, konnte die Verbindung wiederhergestellt werden.
 Versuche dieses Verhalten gezielt zu reproduzieren waren nicht erfolgreich.
-Da die Verbindung in jedem Fall wiederhergestellt werden konnte, wird das Kriterium P08 als erfüllt betrachtet.
+Da die Verbindung im Fehlerfall wiederhergestellt werden konnte, wird das Kriterium P08 als erfüllt betrachtet.
 Für die Weiterentwicklung des Systems, sollte die Verbindungsverwaltung in einem produktionsnahen Umfeld getestet werden.
 Dabei kann die Performance des Systems beobachtet werden und wenn nötig Korrekturen an der Verwaltung vorgenommen werden.
 
