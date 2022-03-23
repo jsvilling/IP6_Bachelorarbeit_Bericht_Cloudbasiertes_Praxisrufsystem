@@ -19,7 +19,7 @@ Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün mar
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.6\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_t2s_v01.drawio}}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/erd_t2s_v01.drawio}
         \caption{ERD Ausschnitt - Konfiguration Sprachsynthese}
     \end{minipage}
 \end{figure}
@@ -57,7 +57,7 @@ Das Klassendiagramm in Abbildung 7.12 gibt einen Überblick über den Aufbau des
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V02}}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_AWS_Polly_Configuration_V02}
         \caption{Klassendiagramm - Modul SpeechSynthesis}
     \end{minipage}
 \end{figure}
@@ -158,6 +158,8 @@ Bevor der SpeechSynthesisService eine Anfrage an den Cloudservice absetzt, prüf
 Ist dies der Fall, wird keine Anfrage an den Cloudservice gesendet und es wird die bereits gespeicherte Sprachdatei abgespielt.
 Dieses Cache ermöglicht es Anfragen für Sprachsynthese zu minimieren und nach Änderungen trotzdem immer die aktuellsten Daten zu erhalten.
 
+\clearpage
+
 \subsubsection{Laufzeitsicht}
 
 Dieses Kapitel beschreibt die Prozesse für das Vorlesen von Benachrichtigungen.
@@ -178,8 +180,8 @@ Ab diesem Moment ist die Benachrichtigung in der Inbox des Mobile Clients ersich
 
 \begin{figure}[h]
     \centering
-    \begin{minipage}[b]{1\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Sequence_Speech_Synth_System}}
+    \begin{minipage}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Sequence_Speech_Synth_System}
         \caption{Sequenzdiagramm - Sprachsynthese auf Systemebene}
     \end{minipage}
 \end{figure}
