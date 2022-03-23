@@ -43,6 +43,7 @@ Mit WebRTC werden Peer-To-Peer Verbindungen aufgebaut~\cite{webrtc}.
 Damit diese Verbindungen aufgebaut werden können, müssen die beteiligten Geräte Signalmeldungen austauschen können.
 Dazu ist eine Instanz notwendig, welche Signale zwischen den Endgeräten vermitteln kann.
 Diese Signaling Instanz wird als Teil des Cloudservice implementiert.
+Abbildung 7.15 zeigt das Klassendiagramm der dazu umgesetzten Komponenten.
 
 Der Cloudservice wird um ein neues Modul ''Signaling'' erweitert.
 Dieses soll den Austausch von Signalen zwischen Clients ermöglichen.
@@ -63,7 +64,7 @@ Diese muss verwendet werden, um ein Signal entgegenzunehmen und an relevante Emp
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Intercom_Full_V01}}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Class_Intercom_Full_V01}
         \caption{Klassendiagramm - Modul Signaling}
     \end{minipage}
 \end{figure}
@@ -141,8 +142,8 @@ Der Benutzer wählt die gewünschte Konfiguration aus und bestätigt.
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.9\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_Registration}}
-        \caption{Sequenzdiagramm - Anmeldung und Registrierung im Mobile Client}
+        \includegraphics[width=\textwidth]{/home/joshua/FHNW/dev/IP6/IP6_Bachelorarbeit_Bericht_Cloudbasiertes_Praxisrufsystem/src/graphics/diagramms/Sequence_Registration}
+        \caption{Sequenzdiagramm - Anmeldung und Registrierung}
     \end{minipage}
 \end{figure}
 
@@ -167,7 +168,7 @@ Abbildung 7.17 zeigt, wie Signalmeldungen im Mobile Client modelliert werden.
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.5\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Class_Signal}}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Signal}
         \caption{Klassendiagramm - Signal}
     \end{minipage}
 \end{figure}
@@ -237,7 +238,7 @@ Abbildung 7.18 visualisiert diesen Ablauf.
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.9\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Sequence_Intercom_Broking_V02}}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Sequence_Intercom_Broking_V02}
         \caption{Sequenzdiagramm - Verbindungsaufbau mit Offer und Answer Signalen}
     \end{minipage}
 \end{figure}
@@ -267,7 +268,7 @@ Diese setzen die Anbindung von Websockets für den Austausch von Signalmeldungen
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{0.6\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signaling_Connection}}
+        \includegraphics[width=\textwidth]{graphics/diagramms/Class_Mobile_Client_Signaling_Connection}
         \caption{Klassendiagramm - Signaling Schnittstelle in Mobile Client}
     \end{minipage}
 \end{figure}
@@ -311,7 +312,7 @@ Dieser Ablauf ist mit den Komponenten CallService und PraxisrufApi+Signaling die
 \begin{figure}[h]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \fbox{\includegraphics[width=\textwidth]{graphics/diagramms/flow_connection}}
+        \includegraphics[width=\textwidth]{graphics/diagramms/flow_connection}
         \caption{Flowchart - Verbindungsverwaltung}
     \end{minipage}
 \end{figure}
