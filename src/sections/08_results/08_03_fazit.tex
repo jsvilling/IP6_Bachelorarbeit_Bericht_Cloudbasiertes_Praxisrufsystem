@@ -8,7 +8,8 @@ Die iOS Standardbibliothek sowie die Bibliotheken der verwendeten Anbieter biete
 Die Herausforderung bestand darin, diese Komponenten anzuwenden und Strukturen aufzubauen, welche die effiziente Integration in eine SwiftUI Applikation ermöglichen.
 Das Erarbeiten, Umsetzten und Dokumentieren dieser Konzepte hat mehr Zeit in Anspruch genommen als erwartet.
 Schlussendlich hat dieser Aufwand aber einen grossen Mehrwert gebracht.
-Die Anbindungen an Umsysteme und Peer-To-Peer Sprachverbindungen wurden eigenen Komponenten gekapselt, welche effizient in SwiftUI eingebunden werden können.
+Die Anbindungen an Umsysteme sowie die Integration von Peer-To-Peer Sprachverbindungen wurden in eigenen Komponenten gekapselt.
+Diese können effizient in SwiftUI eingebunden werden.
 Im Unterschied zur Entwicklung des Shared Platform Mobile Clients im Vorgängerprojekt, konnte der Aufwand hier mehrheitlich auf konzeptioneller, fachlicher Ebene gehalten werden.
 Die Anbindung der Schnittstellen und insbesondere die Verwendung von Gerätehardware und Betriebssystemfunktionen wie Push-Benachrichtigungen konnten deutlich einfacher umgesetzt werden.
 Es sind keine Probleme bezüglich Kompatibilität oder nicht unterstützten Funktionen aufgetreten.
@@ -29,7 +30,7 @@ Diese sind allerdings auf ein Minimum reduziert.
 Sie beinhalten keine Mechanismen zum Verbindungsmanagement und keine Integration in eine grössere Applikation.
 Die notwendigen Abläufe für Verbindungen konnten basierend auf dem WebRTC Standard erarbeitet werden.
 Das Konzept zur effizienten Integration eine SwiftUI Applikation wurde mit diesem Projekt erarbeitet.
-Schlussendlich konnte so eine Lösung umgesetzt werden, die Anforderungen einer Gegensprechanlage im Praxisrufsystem erfüllt.
+Schlussendlich konnte so eine Lösung umgesetzt werden, welche die Anforderungen eines Praxisrufsystems erfüllt.
 Durch die Verwendung von WebRTC ist die Gegensprechanlage unabhängig von spezifischen Anbietern und bietet maximale Flexibilität für den Betrieb des Systems.
 Die umgesetzte Signaling Instanz hat keine Abhängigkeiten auf Dienste ausserhalb von Praxisruf und kann bei einem beliebigen Provider betrieben werden.
 Sprachverbindungen im Mobile Client werden Peer-To-Peer zwischen beteiligten Endgeräten aufgebaut.

@@ -1,10 +1,10 @@
 \subsection{Resultate}
 
 Mit dieser Arbeit wurde das cloudbasierte Praxisrufsystem ''Praxisruf'' erweitert.
-Das erweiterte Rufsystem erlaubt es, Benachrichtigungen zu Versenden und über Sprachverbindungen zu kommunizieren.
+Das erweiterte Rufsystem erlaubt es, Benachrichtigungen zu versenden und über Sprachverbindungen zu kommunizieren.
 Es wurde eine native iOS App entwickelt, welche es erlaubt Praxisruf zu bedienen.
 Diese App ersetzt den Mobile Client aus dem Vorgängerprojekt und unterstützt dabei alle Funktionen des alten Clients.
-Die Systemarchitektur sowie die Komponenten Cloudservice und Admin UI wurden erweitert, um die neuen Funktionen ermöglichen.
+Die Systemarchitektur sowie die Komponenten Cloudservice und Admin UI wurden erweitert, um die neuen Funktionen zu ermöglichen.
 
 Mit Amazon Polly wurde ein Service für Sprachsynthese an das System angebunden.
 Diese Anbindung wird verwendet, um den Inhalt empfangener Benachrichtigungen automatisch vorzulesen.
@@ -13,7 +13,7 @@ Diese erlaubt es mit der iOS App Sprachverbindungen über das Praxisrufsystem au
 Sowohl das Vorlesen von Benachrichtigungen, als auch die Gegensprechanlage sind über eine Weboberfläche konfigurierbar.
 
 Die zu Projektbeginn definierten Meilensteine M01 bis M08 wurden erreicht.
-Die Funktionalen Anforderungen an das System wurden umgesetzt.
+Die funktionalen Anforderungen an das System wurden umgesetzt.
 Die bestehende Infrastruktur aus dem Vorgängerprojekt wurde für dieses Projekt übernommen.
 Umgesetzt wurden die Meilensteine mit folgenden User Stories:
 
@@ -44,12 +44,12 @@ Während der Umsetzung ist es hingegen zu mehreren Verzögerungen gekommen.
 Die Umsetzung und Testen der Gegensprechanlage hat deutlich mehr Zeit beansprucht, als eingeplant wurde.
 Insbesondere die Integration und effiziente Verwendung von WebRTC im nativen iOS Client war anspruchsvoller als erwartet.
 Dies ist einerseits auf mangelhafte Dokumentation der verwendeten Bibliotheken zurückzuführen.
-Andererseits wurde schlicht zu wenig Puffer für die Implementation und unerwartete Probleme eingeplant.
+Andererseits wurde zu wenig Puffer für die Implementation und unerwartete Probleme eingeplant.
 Die Verzögerungen während der Umsetzung hat dazu geführt, dass weniger Zeit als geplant für Polishing und Erweiterungen aufgewendet werden konnten.
 Dementsprechend konnte der Meilenstein M09 nicht vollständig erreicht werden.
 Das entwickelte System hat in den Bereichen Stabilität und Benutzerfreundlichkeit noch Lücken.
 
-Der Meilenstein M10 betrifft Abschluss und Abgabe des Projektberichts und Entwicklung des Systems.
+Der Meilenstein M10 betrifft Abschluss und Abgabe des Projektberichts und Quellcode des Systems.
 Er ist mit dem Abschluss dieses Projektes erfüllt.
 
 \subsubsection{Native iOS Applikation}
@@ -60,8 +60,8 @@ Sämtliche in diesem Kapitel dargestellten Ansichten wurden als Screenshots auf 
 \subsubsection*{Anmeldung und Konfiguration}
 
 Der Mobile Client bietet eine einfaches Verfahren zur Anmeldung und Konfiguration.
-In einem ersten Schritt gibt der Praxismitarbeitende in der Login-Ansicht Benutzername und Passwort ein (Abbildung 8.1).
-Anschliessend kann er auf einer zweiten Ansicht, die gewünschte Zimmerkonfiguration wählen (Abbildung 8.2).
+In einem ersten Schritt geben Praxismitarbeitende in der Login-Ansicht Benutzername und Passwort ein (Abbildung 8.1).
+Anschliessend kann auf einer zweiten Ansicht, die gewünschte Zimmerkonfiguration gewählt werden (Abbildung 8.2).
 Benutzer, Passwort und die gewählte Konfiguration werden dabei auf dem Gerät gespeichert.
 Bis sich der Benutzer manuell abmeldet, erfolgt die Anmeldung bei allen zukünftigen Starts der App automatisch.
 Dabei wird die gespeicherte Kombination von Benutzer und Konfiguration wiederverwendet.
@@ -91,7 +91,7 @@ Nach der Anmeldung und Konfigurationsauswahl wird der Benutzer auf die Hauptansi
 Der Bereich Home (Abbildung 8.3) ist in zwei Teile gegliedert.
 Diese beinhalten Buttons, über welche Benachrichtigungen versendet und Sprachverbindungen gestartet werden können.
 Welche Buttons zur Verfügung stehen werden durch die gewählte Zimmerkonfiguration vorgegeben und wurden im Vorfeld von Praxisadministrierenden konfiguriert.
-Der Bereich Inbox (Abbildung 8.4) zeigt eine Liste von empfangenen Benachrichtigungen sowie verpassten und vergangenen Anrufen.
+Der Bereich Inbox (Abbildung 8.4) zeigt eine Liste von empfangenen Benachrichtigungen sowie verpassten und empfangenen Anrufen.
 Einzelne Einträge in dieser Liste können durch eine Wischgeste (Swipe left) quittiert und damit entfernt werden.
 Weiter können mit der Schaltfläche ''Inbox leeren'' am unteren Ende der Liste alle Einträge gleichzeitig quittiert werden.
 Das quittieren von Inboxelementen geschieht ausschliesslich lokal auf dem Gerät des Empfängers.
@@ -115,7 +115,7 @@ Damit wurde das Quittieren von Elementen analog zum Vorgängerprojekt umgesetzt.
 Ein Hintergrundprozess prüft in regelmässigen Abständen, ob es unquittierte Elemente in der Inbox gibt.
 Ist dies der Fall wird eine Push-Benachrichtigung angezeigt und der Benachrichtigungston abgespielt.
 Diese Benachrichtigung ist in Abbildung 8.4 zu sehen.
-Eine Ausnahme bilden Elemente für eingehende Anrufe, die erfolgreich empfangen wurden.
+Eine Ausnahme bilden Elemente für empfangene Anrufe.
 Diese werden in der Inbox angezeigt und können quittiert werden.
 Sie werden aber bei der Prüfung auf nicht quittierte Elemente ignoriert.
 
@@ -148,13 +148,13 @@ Der Status des Empfängers wird in der Ansicht für Aktive Anrufe auf Senderseit
     \label{fig:MobileClient-Screens3}
 \end{figure}
 
-Die Ansicht ''Aktive Anruf'' (Abbildung 8.6) wird angezeigt, nachdem ein Anruf gestartet wurde.
+Die Ansicht ''Aktiver Anruf'' (Abbildung 8.6) wird angezeigt, nachdem ein Anruf gestartet wurde.
 Entweder durch antippen eines Buttons in der Home Ansicht oder beim Empfang eines Anrufes von einem anderen Endgerät.
 In dieser Ansicht wird der Titel des gestarteten Anrufes bzw.\ Name des Zimmer des Gesprächspartners angezeigt.
-Wenn mehr als ein Gesprächspartner am Anruf beteiligt ist, wird zudem eine Liste der Teilnehmer zusammen mit deren Verbindungsstatus angezeigt.
+Wenn mehrere Gesprächspartner an der Verbindung beteiligt sind, wird zudem eine Liste der Teilnehmer zusammen mit deren Verbindungsstatus angezeigt.
 Die Statusanzeige unterscheidet zwischen ''Verbindung erfolgreich'', ''Verbindung nicht erfolgreich'' und ''Verbindung in Arbeit''.
 Allen Gesprächsteilnehmern stehen Buttons zur Stummschaltung des eigenen Lautsprechers und Mikrofons zur Verfügung.
-Zudem können alle Gesprächsteilnehmenden die Unterhaltung durch den roten Auflegen Button beenden.
+Zudem können alle Gesprächsteilnehmenden die Unterhaltung durch den roten Auflegen-Button beenden.
 
 In Abbildung 8.6 wird ein Aktiver Anruf mit den Empfängern Empfang und Steri dargestellt.
 Dabei hat die Verbindung zu Empfang den Status ''Verbindung hergestellt'' und die Verbindung zu Steri den Status ''Verbindung nicht erfolgreich''.

@@ -26,7 +26,7 @@ Der Kunde hat während den Tests folgende Verbesserungswünsche eingebracht:
     \item Die Töne für Benachrichtigungen und eingehende Anrufe sollen konfigurierbar sein.
     \item Icon und Name der App sollen angepasst werden.
     \item Bei eingehenden Sprachverbindungen soll ein Benachrichtigungston erklingen.
-    \item Status von Verbindungsteilnehmern soll als Icon dargestellt werden.
+    \item Der Status von Verbindungsteilnehmern soll als Icon dargestellt werden.
 \end{enumerate}
 
 Dieses Feedback konnte grösstenteils umgesetzt werden.
@@ -41,7 +41,7 @@ Dadurch können Praxismitarbeitende die Bedeutung eines Tons aus der Praxisruf-A
 Damit sind die Anforderungen aus Punkten 1.\ bis 3.\ sowie 5.\ bis 7.\ erfüllt.
 
 Der Punkt 4.\ konnte aus Zeitgründen nicht umgesetzt werden.
-Alle Töne sind allerdings fest definiert und können nicht durch den Benutzer konfiguriert werden.
+Alle Töne sind fest definiert und können nicht durch den Benutzer konfiguriert werden.
 Eine Änderung der Töne ist nur über Änderungen am Quellcode möglich.
 
 \clearpage
@@ -172,26 +172,26 @@ Die Benutzeroberflächen des Mobile Clients erlaubt eine effiziente Bedienung de
 Design und User Experience der Applikationen könnten aber weiter verbessert werden.
 Für die Weiterentwicklung der App sollte die Applikation zusammen mit Praxismitarbeitenden getestet werden.
 So können diese Rückmeldung zur Bedienung der App geben.
-Basierend darauf kann die App für Bedürfnisse der Anwendenen optimiert werden.
+Basierend darauf kann die App für Bedürfnisse der Anwendenden optimiert werden.
 
-Weiter hat das System noch Lücken die auf das Vorgängerprojekt zurückzuführen sind.
-Diese Verbesserungen sind ausserhalb des Umfangs dieses Projektes gefallen, sollten für die Weiterentwicklung von Praxisruf aber berücksichtigt werden.
+Weiter hat das System noch Lücken, die auf das Vorgängerprojekt zurückzuführen sind.
+Diese Verbesserungen sind ausserhalb des Umfangs dieses Projektes gefallen.
+Sie sollten für die Weiterentwicklung von Praxisruf aber berücksichtigt werden.
 Insbesondere das Quittieren von Benachrichtigungen und die Konfigurationsverwaltung könnten verbessert werden.
 
 Das Quittieren von Benachrichtigungen ist mit dem aktuellen System nur lokal auf dem Empfängergerät möglich.
 Für die Weiterentwicklung des Systems wäre es wünschenswert, dass ein Sender über die Quittierung von Benachrichtigungen informiert wird.
-So kann er sicher sein, dass die Benachrichtigung empfangen und gelesen wurde.
+So kann dieser sicher sein, dass die Benachrichtigung empfangen und gelesen wurde.
 
-Das Admin UI ermöglicht heute die Konfiguration des Systems.
-Die Konfiguration des Systems könnte aber weiter optimiert werden.
-Heute ist es nicht möglich, die Konfiguration für ein Zimmer mehrfach zu verwenden.
+Das Admin UI ermöglicht die Konfiguration des Systems.
+Diese könnte aber weiter optimiert werden.
+Es ist nicht möglich, die Konfiguration eines Zimmers mehrfach zu verwenden.
 Dies bedeutet, dass Praxisadministrierende manche Konfigurationen mehrfach erfassen müssen.
 Weiter verwendet die Benutzeroberfläche des Admin UI ausschliesslich technische Begriffe für die Konfigurationseinheiten.
-Für die Weiterentwicklung des Systems sollten sprechende Begriffe in der Benutzeroberfläche verwendet werden.
+Für die Weiterentwicklung des Systems sollten aussagekräftige Begriffe in der Benutzeroberfläche verwendet werden.
 Die Konfiguration des Systems sollte vereinfacht werden, so dass keine doppelten Konfigurationen vorgenommen werden müssen.
 
-Das System bringt noch diverse Lücken aus dem Vorgängerprojekt mit sich und hat Potential sich in den Bereichen Benutzerfreundlichkeit und Stabilität zu verbessern.
-Trotz dieser Lücken werden die funktionalen Anforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden, erfüllt.
+Trotz bekannter Lücken werden die funktionalen Anforderungen, die im Rahmen dieses Projektes an Praxisruf gestellt wurden, erfüllt.
 Die Funktionstests sind dadurch mit einem positiven Resultat abgeschlossen.
 Das System kann in der aktuellen Form eingesetzt werden.
 Für den langfristigen Erfolg des Systems, sollten die bekannten Lücken allerdings bei der Weiterentwicklung adressiert werden.
@@ -216,7 +216,7 @@ Folgendes Protokoll zeigt den Stand der letzten Ausführung der Tests am 21.03.2
         \hline
         P04         & Verbindungsaufbau Sprachverbindung $<$ 5s  & +\\
         \hline
-        P05         & Verzögerung bei Sprachverbindung klein um kurze Gespräche zu führen & +\\
+        P05         & Verzögerung bei Sprachverbindungen ist klein genug für Gespräche & +\\
         \hline
         P06         & Ressourcenverbrauch der Applikation bleibt über Zeit konstant & +\\
         \hline
@@ -234,7 +234,7 @@ Das Kriterium P07 wird mit Einschränkungen erfüllt.
 Die Qualität der Sprachverbindungen ist ausreichend für eine Gegensprechanlage.
 Es ist problemlos möglich Unterhaltungen über die aufgebaute Sprachverbindung zu führen.
 Probleme können entstehen, wenn eine Verbindung zwischen Endgeräten aufgebaut wird, welche nahe beieinander installiert sind.
-In diesem Fall können Rückkoppelungen entstehen, welche zu einem Echo und schrillen Pfeifton führen kann.
+In diesem Fall können Rückkoppelungen entstehen, welche zu einem Echo und Pfeifton führen können.
 Dieses Problem ist durch eine entsprechende Ausrichtung der Geräte vermeidbar.
 Es schränkt aber ein, wie die Endgeräte des Systems in einer Praxis installiert werden können.
 
