@@ -57,9 +57,9 @@ Dazu wurde die Anleitung aus dem Anhang D des Projektberichts ''IP5 Cloudbasiert
     \end{enumerate}
     \item Um die Anbindung an Amazon Polly nutzen zu können, muss ein Benutzer für den Zugriff definiert und berechtigt werden.
     \begin{enumerate}
-        \item Erstellen Sie einen IAM Benutzer für den Zugriff auf Amazon Polly. Folgen Sie dazu der \href{https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/}{\textit{Offiziellen Anleitung}}.
+        \item Erstellen Sie einen IAM Benutzer für den Zugriff auf Amazon Polly. Folgen Sie dazu der \href{https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/}{\textit{offiziellen Anleitung}}.
         \item Stellen Sie sicher, dass der Benutzer die Rolle \textit{AmazonPollyFullAccess} zugewiesen hat.
-        \item Erstellen Sie einen Access Key für den erstellten Benutzer. Folgen Sie dazu der \href{https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/}{\textit{Offiziellen Anleitung}}.
+        \item Erstellen Sie einen Access Key für den erstellten Benutzer. Folgen Sie dazu der \href{https://aws.amazon.com/premiumsupport/knowledge-center/create-access-key/}{\textit{offiziellen Anleitung}}.
         \item Speichern Sie den generierten Access Key ID und Access Secret Key an einem sicheren Ort. Sie werden für die weitere Konfiguration benötigt.
     \end{enumerate}
 
@@ -131,8 +131,9 @@ Diese Art den Cloudservice zu installieren sollte nur zu Testzwecken verwendet w
         \item Passwort: secret
         \item Name der Datenbank: intercom\_configuration\_db\_local
     \end{enumerate}
+    \item Führen Sie die Skripts aus Schritt 10 aus dem vorhergehenden Abschnitt auf der erstellten Datenbank aus.
     \item Stellen Sie sicher, das die Umgebungsvariablen aus Schritt 5 der Anleitung für Installation mit AWS auf ihrem System gesetzt sind.
-    \item Kopieren Sie die .jar Datei des Cloudservice auf ihr System
+    \item Kopieren Sie die .jar Datei des Cloudservices auf ihr System
     \item Öffnen Sie ein Terminal im Verzeichnis in welchen die .jar Datei abgeleg ist.
     \item Führen Sie den Befehl ''java -jar -Dspring.profiles.active=local ./$<$filename$>$.jar'' aus.
     \item Der Cloudservice wird gestartet und ist danach unter der localhost:5000 erreichbar.
@@ -188,19 +189,19 @@ Das Admin UI kann lokal mit einem Webserver betrieben werden.
 Diese Art das Admin UI zu betreiben sollte nur zu Testzwecken verwendet werden.
 
 \begin{enumerate}
-    \item Stellen Sie sicher, dass npm und Node.js auf Ihrem System installiert sind.
+    \item Stellen Sie sicher, dass npm\footnote{\href{https://www.npmjs.com/}{https://www.npmjs.com/}}  und Node.js\footnote{\href{https://nodejs.org/en/}{https://nodejs.org/en/}} auf Ihrem System installiert sind.
     \item Stellen Sie sicher, dass der Webserver ''serve''\footnote{\href{https://www.npmjs.com/package/serve}{https://www.npmjs.com/package/serve}} auf Ihrem System installiert ist.
     \item Kopieren Sie die Dateien des Releases in ein Verzeichnis auf ihrem System.
     \item Öffnen Sie ein Terminal in disem Verzeichnis.
     \item Führen Sie den Befehl ''serve -s .'' aus.
     \item Das Admin UI ist danach unter localhost:3000 erreichbar.
-    Wenn Sie den Release Build der mit dem Abgabe des Projektes veröffentlicht wurde verwenden, muss der Cloudservice unter localhost:5000 erreichbar sein.
+    Wenn Sie den Release Build, der mit der Abgabe des Projektes veröffentlicht wurde verwenden, muss der Cloudservice unter localhost:5000 erreichbar sein.
 \end{enumerate}
 
 
 \textit{Admin UI Release bauen}
 
-Mit dem Sourcecode des Admin UIs wurde ein Release Build basierend auf dem aktuellsten Stand des Admin UI geliefert.
+Mit dem Sourcecode des Admin UIs wurde ein Release Build basierend auf dem aktuellsten Stand des Projektes geliefert.
 Dieser kann, wie im vorhergehenden Abschnitt beschrieben installiert werden.
 
 Um einen neuen Release Build auszuführen, gehen Sie wie folgt vor:
@@ -226,6 +227,7 @@ Dieses Kapitel beschreibt wie die native iOS Applikation auf Geräten installier
 
 Mit dem Quellquode des Mobile Clients ist ein deploybares Image veröffentlicht.
 Dieses beinhaltet die Credentials und Konfigurationen für die Infrastruktur die während diese Projektarbeit aufgebaut wurden.
+Das Image ist im Verzeichnis release unter dem Rootverzeichnis des Mobile Client-Projektes abgelegt.
 Solange diese Infrastruktur besteht und verwendet wird, kann das veröffentlichte Image verwendet werden, um Praxisruf zu betreiben.
 
 Das veröffentlichte Image und Images die neu gebaut werden, können wie folgt installiert werden:
@@ -247,11 +249,11 @@ Dazu gehen Sie wie folgt vor:
 \begin{enumerate}
     \item Öffnen Sie das Projekt \textit{praxisruf-ios-mobile-client} in die XCode Entwicklungsumgebung.
     \item Öffnen Sie die Projekteinstellungen (Doppelklick auf das Topverzeichnis \textit{praxisruf-ios-mobile-client} in XCode)
-    \item Navigieren Sie zu Build Settings > User Defined
+    \item Navigieren Sie zu Build Settings $>$ User Defined
     \item Setzten Sie den Wert für BASE\_URL\_HTTPS auf die URL unter welcher die HTTP API des Cloudservice erreichbar ist. Dies entspricht standardmässig $<$serverUrl$>$/api
     \item Setzten Sie den Wert für BASE\_URL\_WSS unter welcher die Websocket API des Cloudservice erreichbar ist. Dies entspricht standardmässig $<$serverUrl$>$
     \item Wenn Sie die Instanz des Cloudservice unter ''www.praxisruf.ch'' verwenden, müssen Sie die Werte nicht anpassen.
-    \item Kopieren Sie die Konfigurationsdatei aus Schritt 13 der Firebase Cloud Messaging Installationsanleitung im XCode Projekt unter praxisruf-ios-mobile-client/Resources/GoogleService-Info.plist ab.
+    \item Speichern Sie die Konfigurationsdatei aus Schritt 13 der Firebase Cloud Messaging Installationsanleitung im XCode Projekt unter praxisruf-ios-mobile-client/Resources/GoogleService-Info.plist ab.
     \item Führen Sie den Build der Applikation aus. (shift + command + R).
     \item Wählen Sie in der Top Menüleiste von XCode Product $>$ Archive.
     \item Warten Sie bis die Aktion beendet hat und der Dialog \textit{Archives} sich öffnet.

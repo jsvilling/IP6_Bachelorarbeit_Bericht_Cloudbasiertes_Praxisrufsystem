@@ -25,8 +25,8 @@
     \item Im Bereich ''Gegensprechanlage'' Button mit dem gewünschten Titel antippen
     \item Die Sprachverbindung wird aufgebaut.
     \item In der geöffneten Ansicht sehen Sie alle Teilnehmer und deren Status.
-    \item Die grauen Buttons in der Ansicht geben die Möglichkeit Mikrofon und Lautsprecher stummzuschalten.
-    \item Mit dem rote Button in der Ansicht kann die Verbindung getrennt werden.
+    \item Die grauen Buttons in der Ansicht geben die Möglichkeit, Mikrofon und Lautsprecher stummzuschalten.
+    \item Mit dem roten Button in der Ansicht kann die Verbindung getrennt werden.
 \end{enumerate}
 
 \textbf{Inbox}
@@ -34,7 +34,7 @@
 \begin{enumerate}
     \item In Navigationsleiste (unten) ``Inbox'' auswählen
     \item In dieser Ansicht sehen Sie alle empfangenen noch nicht quittierten Benachrichtigungen
-    \item Zum Quittieren einer Benachrichtigung den ``OK'' Button der Benachrichtigung antippen
+    \item Zum Quittieren eines Eintrages den Eintrag nach Links wischen.
 \end{enumerate}
 
 \textbf{Lokale Einstellungen ändern}
@@ -42,7 +42,7 @@
     \item In Navigationsleiste (unten) ``Einstellungen'' auswählen
     \item Über die Schaltfläche ''Benachrichtigungen vorlesen'' kann das Vorlesen für alle Benachrichtigungen deaktiviert werden.
     \item Über die Schaltfläche ''Anrufe empfangen'' können eingehende Anrufe automatisch abgelehnt werden.
-    \item Logout bestätigen
+    \item Über den Button logout können Sie sich aus der Applikation abmelden.
 \end{enumerate}
 
 \textbf{Abmeldung}
@@ -57,6 +57,7 @@
 Die Praxisruf-App benötigt mehrere lokale Berechtigungen.
 Um sicherzustellen, dass alle Funktionen zur Verfügung stehen, müssen diese vom Benutzer bestätigt werden.
 Zu diesem Zweck müssen alle Funktionen direkt nach Installation einmal verwendet werden.
+Nachdem diese Berechtigungen einmal erteilt sind, müssen Sie nicht erneut bestätigt werden.
 Gehen Sie dazu wie folgt vor:
 
 \begin{enumerate}
@@ -82,7 +83,7 @@ Um sicherzustellen, dass Daten ausgetauscht werden können, müssen Sie auf folg
 
 \begin{enumerate}
     \item Benachrichtigungen können nur ausgetauscht werden, wenn die Geräte eine Verbindung ins Internet haben.
-    \item Anrufe können nur zwischen Geräten die im selben lokalen Netzwerk sind geführt werden.
+    \item Anrufe können nur zwischen Geräten, die im selben lokalen Netzwerk sind geführt werden.
 \end{enumerate}
 
 \subsubsection*{Admin UI}
@@ -98,12 +99,12 @@ Um sicherzustellen, dass Daten ausgetauscht werden können, müssen Sie auf folg
 \textbf{Konfiguration verwalten}
 \begin{enumerate}
     \item Melden Sie sich im Admin UI an.
-    \item Wählen Sie auf der Linken Seite die Kategorie, die Sie verwalten möchten-
+    \item Wählen Sie auf der Linken Seite die Kategorie, die Sie verwalten möchten.
     \item Auf dieser Seite können Sie nun Einträge zur gewählten Kategorie verwalten:
     \begin{itemize}
         \item Klicken Sie oben rechts auf die Schaltfläche ``Create'' um einen neuen Eintrag zu erstellen.
-        \item Klicken Sie auf einen Eintrag in der Liste um ihn zu bearbeiten.
-        \item Klicken Sie die Checkbox auf der Linken Seite eines Eintrages und dann auf die Schaltfläche ``löschen'' um einen Eintrag zu löschen.
+        \item Klicken Sie auf einen Eintrag in der Liste, um ihn zu bearbeiten.
+        \item Klicken Sie die Checkbox auf der Linken Seite eines Eintrages und dann auf die Schaltfläche ``löschen'', um einen Eintrag zu löschen.
     \end{itemize}
 \end{enumerate}
 
@@ -147,7 +148,7 @@ Dazu gehen Sie wie folgt vor:
     \item Öffnen Sie die Detailansicht für den NotificationType.
     \item Kopieren Sie die technische Id des NotificationType aus der URL im Browserfenster.
     Die id ist der letzte Teil der URL.
-    \item Aktualisieren Sie die Konfiguration des Cloudservice und setzten den Wert der Umgebungsvariable NOTIFICATION\_TYPE\_FOR\_UNAVAILABLE auf die kopierte id.
+    \item Aktualisieren Sie die Konfiguration des Cloudservice und setzten den Wert der Umgebungsvariable NOTIFICATION\_TYPE\_FOR\_UNAVAILABLE auf die kopierte Id.
     \item Starten Sie den Cloudservice neu.
     Anschliessend wird die konfigurierte Benachrichtigung für alle folgenden verpassten Anrufe verwendet.
 \end{enumerate}
