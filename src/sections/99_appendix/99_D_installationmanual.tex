@@ -189,15 +189,21 @@ Diese Art das Admin UI zu betreiben sollte nur zu Testzwecken verwendet werden.
 
 \begin{enumerate}
     \item Stellen Sie sicher, dass npm und Node.js auf Ihrem System installiert sind.
-    \item Stellen Sie sicher, dass der Webserver ''serve''\footnote{\href{https://www.npmjs.com/package/serve}} auf Ihrem System installiert ist.
+    \item Stellen Sie sicher, dass der Webserver ''serve''\footnote{\href{https://www.npmjs.com/package/serve}{https://www.npmjs.com/package/serve}} auf Ihrem System installiert ist.
     \item Kopieren Sie die Dateien des Releases in ein Verzeichnis auf ihrem System.
     \item Öffnen Sie ein Terminal in disem Verzeichnis.
     \item Führen Sie den Befehl ''serve -s .'' aus.
-    \item Das Admin UI ist danach unter localhost:3000 erreichbar. 
+    \item Das Admin UI ist danach unter localhost:3000 erreichbar.
+    Wenn Sie den Release Build der mit dem Abgabe des Projektes veröffentlicht wurde verwenden, muss der Cloudservice unter localhost:5000 erreichbar sein.
 \end{enumerate}
 
 
 \textit{Admin UI Release bauen}
+
+Mit dem Sourcecode des Admin UIs wurde ein Release Build basierend auf dem aktuellsten Stand des Admin UI geliefert.
+Dieser kann, wie im vorhergehenden Abschnitt beschrieben installiert werden.
+
+Um einen neuen Release Build auszuführen, gehen Sie wie folgt vor:
 
 \begin{enumerate}
     \item Stellen Sie sicher, dass npm und Node.js auf Ihrem System installiert sind.
