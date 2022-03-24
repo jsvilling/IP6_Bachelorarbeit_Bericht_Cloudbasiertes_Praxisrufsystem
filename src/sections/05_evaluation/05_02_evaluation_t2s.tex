@@ -72,8 +72,8 @@ Die Sprachsynthese wird durch die Anbindung des externen Anbieters Amazon Polly 
 Der Cloudservice übernimmt die Kommunikation mit Amazon Polly und bietet eine Schnittstelle, über welche Clients Audiodaten beziehen können.
 Diese Schnittstelle wird in die API des Cloudservices integriert.
 Die Anbindung an Amazon Polly wird dabei direkt im Cloudservice implementiert und nicht über AWS Lambda gelöst.
-So kann die bestehende Infrastruktur des Cloudservices übernommen werden und es ist nicht notwendig die Sprachdaten ausserhalb von Mobile Clients zu persistieren.
-Dies erlaubt es einerseits ein Clientseitiges Cache für Sprachdaten zu implementieren und dadurch Netzwerkanfragen zu minimieren.
+So kann die bestehende Infrastruktur des Cloudservices übernommen werden und es ist nicht notwendig, die Sprachdaten ausserhalb von Mobile Clients zu persistieren.
+Dies erlaubt es einerseits, ein Clientseitiges Cache für Sprachdaten zu implementieren und dadurch Netzwerkanfragen zu minimieren.
 Es erlaubt es weiter, nur Sprachdaten zu synthetisieren, welche tatsächlich von Clients angefragt werden.
 
 Durch diesen Ansatz wird die Abhängigkeit zu einzelnen Anbieter minimiert.

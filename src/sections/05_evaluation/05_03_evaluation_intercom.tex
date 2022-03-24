@@ -13,19 +13,19 @@ Auch für die Integration von Sprachverbindungen gilt, dass für Infrastruktur u
 Mit Amazon Chime bietet Amazon einen Dienst für Telefonie, Chats und Videokonferenzen~\cite{aws_chime}.
 Chime bietet einerseits Web- und Mobile Applikationen für Anrufe und Meetings.
 Andererseits ist es mit dem Amazon Chime SDK für iOS möglich, Chime in eigene native iOS Applikationen zu integrieren~\cite{aws_chime_sdk}.
-Chime ermöglicht es Konferenzunterhaltungen mit bis zu 250 Teilnehmern zu starten~\cite{aws_faq}.
+Chime ermöglicht Konferenzunterhaltungen mit bis zu 250 Teilnehmern~\cite{aws_faq}.
 Damit bietet der Anbieter alle benötigte Funktionen um Einzel- und Gruppenunterhaltungen in einem Praxisrufsystem umzusetzen.
 
 Integration eines Providers wie Amazon Chime hat den Vorteil, dass die Telefonie in einen etablierten Provider ausgelagert werden kann.
 Durch Verträge mit dem Provider können Verfügbarkeitsgarantien und Supportleistungen vereinbart werden.
 Dies erhöht die Stabilität des Systems und ermöglicht effizientes Reagieren im Fehlerfall.
-Weiter fallen für Praxisruf selbst wenig bis keine Aufwände für den Betrieb der nötigen Infrastruktur.
+Weiter fallen für Praxisruf selbst wenig bis keine Aufwände für den Betrieb der nötigen Infrastruktur an.
 
-Amazon Chime unterstützt deutlich mehr Funktionen als in einem Praxisrufsystem benötigt werden.
+Amazon Chime unterstützt deutlich mehr Funktionen, als in einem Praxisrufsystem benötigt werden.
 Ein Rufsystem muss als Gegensprechanlage verwendet werden können und kurze Gespräche zwischen Teilnehmern erlauben.
-Dies bedeutet einerseits, dass Chime garantiert alle Funktionen bietet welche benötigt werden.
+Dies bedeutet einerseits, dass Chime garantiert alle Funktionen bietet, welche benötigt werden.
 Es bedeutet aber andererseits auch, dass nur ein kleines Subset der vorhandenen Möglichkeiten ausgenutzt wird.
-Ein Nachteil daran ist, dass eine starke Bindung an Amazon als Telefonieanbieter und die Infrastruktur, die Amazon Chime zum Verbindungsaufbau anbietet, stattfindet.
+Ein Nachteil daran ist, dass eine starke Bindung an Amazon Chime als Telefonieanbieter stattfindet.
 Gleichzeitig kann von vielen Vorteilen von Amazon Chime nicht profitiert werden, weil die entsprechenden Funktionen für ein Praxisrufsystem nicht relevant sind.
 
 \subsubsection{WebRTC}
@@ -38,9 +38,9 @@ Wie auf der offiziellen Webseite von WebRTC beschrieben stehen die Technologien
 Für native Clients wie Android- und iOS-Anwendungen steht eine Bibliothek zur Verfügung, die dieselben Funktionen bietet.''~\cite{webrtc}.
 
 WebRTC baut zur Kommunikation direkte Peer-To Peer-Verbindungen zwischen den Kommunikationspartnern auf.
-Die WebRTC Libraries und APIs bieten Komponenten für die Integration von Peer-To-Peer Verbindung, Hardwarezugriff auf Microphon und Kamera.
+Die WebRTC Libraries und APIs bieten Komponenten für die Integration von Peer-To-Peer Verbindung und Hardwarezugriff auf Mikrofon, Lautsprecher und Kamera.
 WebRTC spezifiziert allerdings nicht, wie für den Verbindungsaufbau notwendige Informationen zwischen Teilnehmern ausgetauscht werden müssen.
-Um den Austausch diese Informationen zu ermöglichen ist eine Signaling Instanz notwendig.
+Um den Austausch dieser Informationen zu ermöglichen ist eine Signaling Instanz notwendig.
 Die Signaling Instanz muss es ermöglichen, Informationen zwischen Teilnehmern zu vermitteln.
 WebRTC spezifiziert nicht, wie diese Signaling Instanz aussehen muss.
 Neben der Signaling Instanz ist keine weitere Infrastruktur notwendig.
@@ -50,9 +50,9 @@ Dies hat den Vorteil, dass die Abhängigkeit zu externen Umsystemen minimiert we
 Die Signaling Instanz kann auf die eigenen Anforderungen zugeschnitten werden.
 Die Technologie über welche Signale ausgetauscht werden, kann frei gewählt werden.
 Signaling für Sprachverbindungen im Praxisrufsystem kann damit in den Cloudservice integriert werden.
-So kann notwendige Infrastruktur, die als Teil des Praxisrufsystems betrieben werden muss, schlank gehalten werden.
+So kann Infrastruktur, die als Teil des Praxisrufsystems betrieben werden muss, schlank gehalten werden.
 Die Integration der Signalvermittlung in den Cloudservice bietet weiter den Vorteil, dass bestehende Funktionen des Systems angesprochen werden können.
-So können z.B. \ Benachrichtigung bei verpassten Anrufen über die bereits umgesetzte Benachrichtigungsfunktion versendet werden.
+So können z.B.\ Benachrichtigung bei verpassten Anrufen über die bereits umgesetzte Benachrichtigungsfunktion versendet werden.
 
 Die Verwendung von WebRTC hat den Nachteil, dass kein fachlicher Support bei Verbindungsproblemen zur Verfügung steht.
 Signaling Instanz und Implementation der Sprachverbindungen stehen in der alleinigen Verantwortung des Betreibers des Praxisrufsystems.

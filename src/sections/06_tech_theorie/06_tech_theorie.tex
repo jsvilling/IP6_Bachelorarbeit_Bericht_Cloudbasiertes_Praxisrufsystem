@@ -10,7 +10,7 @@ Die wichtigsten Protokolle im WebRTC Umfeld sind das Session Description Protoco
 Das Session Description Protocol (SDP) dient als Beschreibung einer Verbindung über welche Multimediadaten wie Audio oder Video übertragen werden~\cite{rfc_4566_sdp}.
 Diese Beschreibung beinhaltet Metainformationen zu einer Verbindung.
 Dazu gehören unter anderem Auflösung, Format sowie Verschlüsselung und Codierung der zu übertragenden Daten~\cite{mozilla_webRTC_protocols}.
-WebRTC verwendet SDP, um zu Beschreiben welche Art von Daten mit einer Verbindung übertragen werden und wie diese verarbeitet werden können~\cite{webrtc_spec}.
+WebRTC verwendet SDP, um zu beschreiben, welche Art von Daten mit einer Verbindung übertragen werden und wie diese verarbeitet werden können~\cite{webrtc_spec}.
 Um eine Verbindung mit WebRTC aufzubauen, müssen die Teilnehmer der Verbindung SDP Informationen austauschen.
 Dieser Austausch bildet den ersten Teil an Signalmeldungen, welche über die Signaling Instanz ausgetauscht werden müssen.
 
@@ -38,17 +38,17 @@ Wenn alle beteiligten Endgeräte im selben lokalen Netzwerk sind und direkte Ver
 
 Die Protokolle SDP und ICE werden in Endgeräten verwendet, um Verbindungen aufzubauen.
 Als zentrale Schnittstelle für diese Protokolle im Endgerät definiert der Standard das Interface RTCPeerConnection.
-Diese Schnittstelle repräsentiert die Peer-To-Peer Verbindung zu einem anderen Endgerät.
+Diese Schnittstelle repräsentiert die Peer-to-Peer Verbindung zu einem anderen Endgerät.
 Sie muss sowohl auf dem Gerät, welches einen Anruf startet, als auch auf dem Zielgerät initialisiert werden~\cite{webrtc_spec}.
 
 Die WebRTC Bibliothek für iOS implementiert dieses Interface.
 Es bietet die Möglichkeit, eine RTCPeerConnection für die gewünschte Übertragung zu initialisieren.
-Nach dieser Initialisierung ist noch keine Verbindung zu einem anderen Endgerät aufgebaut.
+Damit ist noch keine Verbindung zu einem anderen Endgerät aufgebaut.
 Es ist ausschliesslich ein lokales Verbindungsobjekt initialisiert.
 Aus diesem Verbindungsobjekt können die nötigen SDP Informationen generiert werden.
 Diese Informationen müssen über die Signaling Instanz an das Zielgerät übertragen werden.
 Die Signalmeldung, welche SDP Informationen des Initiators der Verbindung überträgt, stellt ein Offer-Signal dar.
-Dieses kann darauf die RTCPeerConnection auf seiner Seite initialisieren und entsprechende SDP Informationen über die Signaling Instanz zurücksenden.
+Bei Empfang eines Offer-Signals, kann das Ziel die RTCPeerConnection auf seiner Seite initialisieren und entsprechende SDP Informationen über die Signaling Instanz zurücksenden.
 Die Signalmeldung, welche die SDP Informationen des Verbindungsziels an den Sender übermittelt, stellt ein Answer-Signal dar.
 
 Damit die Peer-To-Peer Verbindung aufgebaut werden kann, müssen die ICE Candidates gemäss dem ICE Protokoll ermittelt werden.
@@ -68,16 +68,16 @@ Dabei sind wie in Kapitel 6.2 beschrieben mindestens die drei Signale Offer, Ans
 Um diesen Austausch zu ermöglichen ist eine zentrale Signaling Instanz notwendig.
 Diese muss Signale entgegennehmen und an relevante Empfänger weiterleiten können~\cite{webrtc_spec}.
 
-Der WebRTC Standard schreibt nicht, vor wie eine Signaling Instanz umgesetzt werden muss.
-Er definiert einzig, welchen Inhalt Signale für den Verbindungsaufbau beinhalten müssen und wie dieser Inhalt verarbeitet werden muss~\cite{webrtc_spec}.
+Der WebRTC Standard schreibt nicht vor, wie eine Signaling Instanz umgesetzt werden muss.
+Er definiert einzig welchen Inhalt Signale für den Verbindungsaufbau beinhalten müssen und wie dieser Inhalt verarbeitet werden muss~\cite{webrtc_spec}.
 Konzept und Funktionsweise der Signaling Instanz und Signalmeldungen in Praxisruf werden in Kapitel 7 beschrieben.
 
 \subsection{Sicherheit}
 
 Bei Sprachverbindungen mit WebRTC gibt es zwei sicherheitskritische Kanäle.
-Erstens muss der Kanal, über welchen Signalmeldungen ausgetauscht werden gesichert sein.
+Erstens muss der Kanal, über welchen Signalmeldungen ausgetauscht werden, gesichert sein.
 Nur Berechtigte dürfen Signalmeldungen versenden und empfangen.
-Dazu muss die Identität der Teilnehmer, die Signalmeldungen austauschen verifiziert werden.
+Dazu muss die Identität der Teilnehmer, die Signalmeldungen austauschen, verifiziert werden.
 Aussenstehende und nicht Berechtigte dürfen den Inhalt von Signalmeldungen nicht lesen können~\cite{rfc_8827_webRTC_SecurityArchitecture}.
 Die Implementierung dieser Mechanismen muss vom Anbieter der Signaling Instanz umgesetzt werden~\cite{webrtc_spec}.
 
@@ -86,7 +86,7 @@ Diese Datenverbindungen werden über das Protokoll Datagram Transport Layer Secu
 Bevor Daten über eine Verbindung ausgetauscht werden, wird pro Übertragungskanal ein DTLS-Handshake ausgeführt.
 Über diesen Handshake werden die nötigen Schlüsselinformationen ausgetauscht.
 Diese Schlüssel werden anschliessend für sichere Datenübertragung über das Protokoll ''Secure Real-Time Transport'' verwendet~\cite{rfc_8827_webRTC_SecurityArchitecture}.
-Die Implementierung dieser Mechanismen muss von der Bibliothek, welcher den Standard implementiert umgesetzt werden~\cite{webrtc_spec}.
+Die Implementierung dieser Mechanismen muss von der Bibliothek, welche den Standard implementiert, umgesetzt werden~\cite{webrtc_spec}.
 
 \subsection{Unicast, Multi-Cast, Broadcast}
 
@@ -116,7 +116,7 @@ Eine Kommunikation zwischen einzelnen Empfängern ist in dieser Form nicht mögl
 
 Kommunikation zwischen allen Verbindungsteilnehmern wird möglich, wenn n:n Verbindungen verwendet werden.
 Dabei baut jeder Teilnehmer eine Verbindung zu jedem anderen Teilnehmer auf~\cite{webrtc_mesh}.
-Im Rahmen dieser Arbeit sind lediglich 1:n Verbindungen gefordert.
+Im Rahmen dieser Arbeit sind lediglich 1:n Verbindungen gefordert~\cite{aufgabenstellung}.
 Konzepte und Umsetzung für n:n Verbindungen werden hier deshalb nicht weiter behandelt.
 
 \clearpage
