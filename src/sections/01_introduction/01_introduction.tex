@@ -32,7 +32,7 @@ Das System unterstützt sowohl private Gespräche als 1:1 Verbindungen wie auch 
 Welche Buttons und damit welche Benachrichtigungen und Sprachverbindungen zur Verfügung stehen, wird durch Administratoren konfiguriert.
 Die Konfiguration von Buttons für Sprachverbindungen beinhaltet, mit welchen Empfängern eine Verbindung aufgebaut wird.
 Die Konfiguration von Buttons für Benachrichtigungen definiert den Inhalt der Benachrichtigung, welche Empfänger sie erhalten und ob die Benachrichtigung vorgelesen wird.
-Für die Verwaltung dieser Konfiguration kann durch eine Weboberfläche vorgenommen werden.
+Die Verwaltung dieser Konfiguration kann durch eine Weboberfläche vorgenommen werden.
 Abbildung 1.3 zeigt die Übersicht verfügbarer Benachrichtigung in dieser Weboberfläche.
 
 \begin{figure}[h]
@@ -77,8 +77,8 @@ Der zentrale Cloudservice dient zur Verwaltung der Konfiguration und dem Vermitt
 Das Admin UI bietet eine Weboberfläche, mit der die Konfiguration des Cloudservice verwaltet werden kann.
 Mit dem Mobile Client bietet das System neu eine native iOS App über welche Sprachverbindungen aufgebaut und Benachrichtigungen versendet/empfangen werden können.
 Für das Versenden von Benachrichtigungen senden Mobile Clients HTTP Anfragen an den Cloudservice.
-Der Cloudservice findet in der Konfiguration alle relevanten empfänger und leitet die Benachrichtigung an diese weiter.
-Für die Zustellung von aus dem Cloudservice an Mobile Clients wird Firebase Cloud Messaging verwendet.
+Der Cloudservice findet in der Konfiguration alle relevanten Empfänger und leitet die Benachrichtigung an diese weiter.
+Für die Zustellung von dem Cloudservice an Mobile Clients wird Firebase Cloud Messaging verwendet.
 
 Das Vorlesen von Benachrichtigungen wurde mit einer Anbindung an Amazon Polly im Cloudservice implementiert.
 Bei Amazon Polly handelt es sich um einen Dienst zur Sprachsynthese von Amazon Webservices~\cite{aws_polly}.
