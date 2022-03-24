@@ -29,7 +29,11 @@ Diese Anleitung hat sich im Vergleich zum Vorgängerprojekt nicht verändert und
 
 Mehr Informationen zu Firebase und der Integration von Firebase Projekten finden Sie in der \href{https://firebase.google.com/docs/projects/learn-more#setting_up_a_firebase_project_and_registering_apps}{offiziellen Dokumentation.}\cite{understand-firebase}
 
-\subsubsection*{Cloud Service}
+\clearpage
+
+\subsubsection*{Cloudservice}
+
+\textit{Installation mit Amazon Webservices}
 
 Im Folgenden wird beschrieben wie die Cloud Service Applikation mit AWS betrieben werden kann.
 Diese Anleitung wurde im Vergleich zum Vorgängerprojekt erweitert um die Konfiguration von Gegensprechanlage und Sprachsynthese zu erweitert.
@@ -110,7 +114,52 @@ Dazu wurde die Anleitung aus dem Anhang D des Projektberichts ''IP5 Cloudbasiert
 
 \end{enumerate}
 
+\clearpage
+
+\textit{Lokale Installation}
+
+Die folgende Anleitung beschreibt, wie der Cloudservice lokal gestartet werden kann.
+Diese Art den Cloudservice zu installieren sollte nur zu Testzwecken verwendet werden.
+
+\begin{enumerate}
+    \item Stellen Sie sicher, dass auf Ihrem System Java in der Version 13 oder neuer installiert ist.
+    \item Installieren Sie PostgreSQL auf Ihrem System und erstellen Sie eine Datenbank für den Cloudservice.
+    Verwenden Sie die folgenden Informationen für die Konfiguration: 
+    \begin{enumerate}
+        \item Port: 5433
+        \item Benutzer: admin
+        \item Passwort: secret
+        \item Name der Datenbank: intercom\_configuration\_db\_local
+    \end{enumerate}
+    \item Stellen Sie sicher, das die Umgebungsvariablen aus Schritt 5 der Anleitung für Installation mit AWS auf ihrem System gesetzt sind.
+    \item Kopieren Sie die .jar Datei des Cloudservice auf ihr System
+    \item Öffnen Sie ein Terminal im Verzeichnis in welchen die .jar Datei abgeleg ist.
+    \item Führen Sie den Befehl ''java -jar -Dspring.profiles.active=local ./$<$filename$>$.jar'' aus.
+    \item Der Cloudservice wird gestartet und ist danach unter der localhost:5000 erreichbar.
+    \item Die API Dokumentation des Cloudservice ist unter localhost:5000/swagger-ui.html zu finden.
+\end{enumerate}
+
+
+\textit{Cloudservice Release bauen}
+
+Mit dem Sourcecode des Cloudservice wurde eine ausführbare .jar-Datei basierend auf dem aktuellen Stand des Cloudservice veröffentlicht.
+Sie finden dieses im Verzeichnis release im Rootverzeichnis des Cloudservice-Projektes.
+Dieses Image kann, wie im vorhergehenden Abschnitt beschrieben installiert werden.
+
+Um einen neuen Release zu bauen, gehen Sie wie folgt for:
+
+\begin{enumerate}
+    \item Öffnen Sie ein Terminal im Rootverzeichnis des Cloudservice-Projektes.
+    \item Setzen Sie den Befhel ''./gradlew build'' ab.
+    \item Nach Abschluss des Befehls finden Sie die ausführbare .jar Datei im Verzeichnis ./praxisruf-app/build/libs
+    (Relativ zum Rootverzeichnis des Cloudservice-Projektes).
+\end{enumerate}
+
+\clearpage
+
 \subsubsection*{Admin UI}
+
+\textit{Installation mit Amazon Webservices}
 
 Im Folgenden wird beschrieben wie die Admin UI Applikation mit AWS betrieben werden kann.
 Diese Anleitung hat sich im Vergleich zum Vorgängerprojekt nicht verändert und ist direkt aus dem Anhang D des Projektberichts ''IP5 Cloudbasiertes Praxisrufsystem''~\cite{ip5} übernommen.
@@ -132,6 +181,36 @@ Diese Anleitung hat sich im Vergleich zum Vorgängerprojekt nicht verändert und
         \item Folgen Sie dazu den Schritten in der \href{https://docs.aws.amazon.com/amplify/latest/userguide/custom-domains.html}{\textit{offiziellen Anleitung}}.\cite{aws-amplify-domain} folgen.
     \end{enumerate}
 \end{enumerate}
+
+\textit{Lokale Installation}
+
+Das Admin UI kann lokal mit einem Webserver betrieben werden.
+Diese Art das Admin UI zu betreiben sollte nur zu Testzwecken verwendet werden.
+
+\begin{enumerate}
+    \item Stellen Sie sicher, dass npm und Node.js auf Ihrem System installiert sind.
+    \item Stellen Sie sicher, dass der Webserver ''serve''\footnote{\href{https://www.npmjs.com/package/serve}} auf Ihrem System installiert ist.
+    \item Kopieren Sie die Dateien des Releases in ein Verzeichnis auf ihrem System.
+    \item Öffnen Sie ein Terminal in disem Verzeichnis.
+    \item Führen Sie den Befehl ''serve -s .'' aus.
+    \item Das Admin UI ist danach unter localhost:3000 erreichbar. 
+\end{enumerate}
+
+
+\textit{Admin UI Release bauen}
+
+\begin{enumerate}
+    \item Stellen Sie sicher, dass npm und Node.js auf Ihrem System installiert sind.
+    \item Stellen Sie sicher, dass folgende Umgebungsvariable gesetzt ist:
+    \begin{enumerate}
+        \item Name: REACT\_APP\_BACKEND\_BASE\_URI   Wert: Basis URL des Cloudservice.   
+    \end{enumerate}
+    \item Öffnen Sie ein Terminal im Rootverzeichnis des Admin UI Projektes.
+    \item Führen Sie den Befehl ''npm install''  aus.
+    \item Führen Sie den Befehl ''npm run build'' aus.
+    \item Die Releasedateien das Admin UIs finden sich danach im Verzeichnis ./build unter dem Rootverzeichnis des Projektes. 
+\end{enumerate}
+
 
 \clearpage
 
