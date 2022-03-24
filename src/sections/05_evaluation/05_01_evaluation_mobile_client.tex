@@ -32,7 +32,7 @@ SwiftUI fokussiert sich auf eine deklarative Syntax und ist dadurch leichtgewich
 Es bietet zudem ausgezeichnete Integration in die XCode Entwicklungsumgebung und viele Standardkomponenten wie Listenansichten, Formfelder und andere UIKomponenten~\cite{ios_swift_ui}.
 Dadurch wird es einfacher eine Benutzeroberfläche mit nativem Look und Feel einer iOS Applikation umzusetzten.
 
-Da SwiftUI deutlich neuer ist als UIKit, ist es möglich das es noch nicht alle Funktionen und Betriebssystem Integrationen unterstützt die in UIKit möglich sind.
+Da SwiftUI deutlich neuer ist als UIKit, ist es möglich das es noch nicht alle Funktionen und Betriebssystem-Integrationen unterstützt die in UIKit möglich sind.
 Dieses Problem wird dadurch relativiert, dass UIKit Funktionen nahtlos in SwiftUI integriert werden können~\cite{ios_swift_ui_uikit}.
 Es ist also grundsätzlich möglich alles, was mit UIKit umgesetzt werden kann, auch mit SwiftUI umzusetzen.
 
@@ -40,7 +40,7 @@ Es ist also grundsätzlich möglich alles, was mit UIKit umgesetzt werden kann, 
 
 \subsubsection{Anbindung Firebase Cloud Messaging}
 
-Die neue iOS Applikation, muss es weiterhin ermöglichen Benachrichtigungen über Firebase Cloud Messaging zu empfangen.
+Die neue iOS Applikation, muss es weiterhin ermöglichen, Benachrichtigungen über Firebase Cloud Messaging zu empfangen.
 Firebase stellt dazu eine native iOS Bibliothek zur Verfügung~\cite{firebase_github_ios}.
 Die Integration von Firebase Cloud Messaging kann mit dieser Library implementiert werden.
 Dies beinhaltet die Registrierung bei Firebase Cloud Messaging, sowie das Empfangen der Benachrichtigungen über Firebase~\cite{firebase_ios}.
@@ -52,14 +52,14 @@ Die Firebase Cloud Messaging Bibliothek kann sowohl mit SwiftUI als auch mit UIK
 Die Integration muss dabei aber auf jeden Fall über einen AppDelegate umgesetzt werden~\cite{firebase_ios}.
 AppDelegates sind ein Konzept welches aus UIKit stammt und in reinen SwiftUI Applikationen nicht verwendet werden~\cite{ios_app_delegate}.
 UIKit Funktionen können allerdings nahtlos mit SwiftUI integriert werden.
-So ist es auch möglich AppDelegates in SwiftUI Anwendungen zu verwenden~\cite{ios_swift_ui_uikit}.
+So ist es auch möglich, AppDelegates in SwiftUI Anwendungen zu verwenden~\cite{ios_swift_ui_uikit}.
 Die Firebase Cloud Messaging Bibliothek für iOS ermöglicht es damit, Benachrichtigungen von Praxisruf sowohl mit UIKit als auch mit SwiftUI umzusetzen.
 
 \subsubsection{Anbindung Cloudservice API}
 
 Die iOS Applikation muss die API des Cloudservice ansprechen können, um Konfigurationen zu laden und Benachrichtigungen zu versenden.
 Die bestehende API des Cloudservice ist als HTTP-Schnittstelle umgesetzt~\cite{ip5}.
-Die Integration von Http Anfragen in nativen iOS Applikationen ist über die URLRequest-Komponente aus der iOS Standardbibliothek möglich.
+Die Integration von Http-Anfragen in nativen iOS Applikationen ist über die URLRequest-Komponente aus der iOS Standardbibliothek möglich.
 Diese erlaubt das Erstellen von beliebigen Http-Requests~\cite{ios_urlrequest}.
 Dies bedeutet, dass die Anbindung an die API des Cloudservice kann mit Mitteln der iOS Standardbibliothek umgesetzt werden.
 
@@ -71,10 +71,10 @@ Die App prüft regelmässig, ob ungelesene Benachrichtigungen vorhanden sind.
 Ist dies der Fall, wird ein Benachrichtigungston zur Erinnerung abgespielt.
 Diese Funktion muss auch von der neuen iOS Applikation unterstützt werden.
 
-Die iOS Standardbibliothek bietet Mittel, mit welchen regelmässige Aufgaben angestossen werden können.
-Einerseits können über eine Timer-Komponente in regelmässigen abständen Events veröffentlicht werden.
+Die iOS Standardbibliothek bietet Mittel, mit welchen regelmässige Aufgaben ausgeführt werden können.
+Über eine Timer-Komponente können in regelmässigen abständen Events veröffentlicht werden.
 Auf einer SwiftUI Ansicht (View) können Komponenten (Listener) registriert werden, die beim Empfang eines Timer-Events aufgerufen werden.
-Dies bringt die Einschränkung mit sich, dass die Prüfung nur ausgeführt ist, wenn die App im Vordergrund läuft und die View geladen wurde~\cite{ios_timer}.
+Dies bringt die Einschränkung mit sich, dass die Prüfung nur ausgeführt wird, wenn die App im Vordergrund läuft und die View geladen wurde~\cite{ios_timer}.
 Da der bestehende Mobile Client dieselbe Einschränkung hat, kann mit einem Timer dasselbe Verhalten, wie in der bestehenden Applikation, umgesetzt werden.
 Um die Prüfung auch im Hintergrund auszuführen, kann die Komponente BGTaskScheduler verwendet werden.
 Über diese können Aufgaben erfasst werden, die im Hintergrund ausgeführt werden~\cite{ios_bgtaskscheduler}.
@@ -88,12 +88,12 @@ Weiter kann die Prüfung in Zukunft erweitert werden, um auch nach dem Beenden d
 \subsubsection{Entscheid}
 
 Die native iOS Applikation für Praxisruf wird mit Swift und SwiftUI umgesetzt.
-Für die Anbindung an Firebase Cloud Messaging wird die nativen iOS Bibliothek von Firebase umgesetzt.
+Die Anbindung an Firebase Cloud Messaging wird mit der nativen iOS Bibliothek von Firebase umgesetzt.
 Die Anbindung an die API des Cloudservice und die Umsetzung der Erinnerungsfunktion werden mit Mitteln der iOS Standardbibliothek umgesetzt.
 
 Die deklarative Syntax von SwiftUI ermöglicht es, einfacher übersichtliche und lesbare Komponenten zu implementieren.
 Integration in die XCode Entwicklungsumgebung und verfügbare Standardkomponenten vereinfachen diese Entwicklung weiter.
-Es ist möglich, dass einige Funktionen noch nicht mit SwiftUI umgesetzt werden können, weil dafür benötigte Funktionen noch nicht unterstützt werden.
+Es ist möglich, dass einige Funktionen noch nicht mit SwiftUI umgesetzt werden können, weil diese von SwiftUI noch nicht unterstützt werden.
 Da UIKit Funktionen nahtlos in SwiftUI integriert werden können, ist es möglich betroffene Teile der Applikation mit UIKit zu implementieren.
 Diese Teile können, sobald die entsprechenden Funktionen in SwiftUI verfügbar sind, migriert werden.
 Um die Verwendung von UIKit Funktionen auf ein Minimum zu reduzieren wird als Zielplattform iOS15 verwendet.

@@ -7,7 +7,8 @@ Diese Sprachdaten müssen als Audiodateien von der iOS Applikation abgespielt we
 
 Diese Anforderungen können mit den Standardbibliotheken für iOS-Entwicklung oder durch die Anbindung eines externen Anbieters umgesetzt werden.
 Die Anbindung eines externen Anbieters kann direkt im Mobile Client implementiert werden.
-Alternativ kann die Serverkomponente Cloudservice an einen Anbieter angebunden werden und allen Clients eine einheitliche Schnittstelle bieten, um diese Daten abzufragen.
+Alternativ kann die Serverkomponente Cloudservice an einen Anbieter angebunden werden.
+So kann der Cloudservice allen Clients eine einheitliche Schnittstelle bieten, um diese Daten abzufragen.
 
 \subsubsection{Apple Speech Synthesis}
 
@@ -26,8 +27,8 @@ Eine einheitliche Integration der Sprachsynthese in zukünftigen Plattformen ist
 
 Die Anforderung U19\footnote{Siehe Kapitel 3.1.3} fordert, dass für Infrastruktur und Dienstleistungen wo möglich Amazon Webservices verwendet wird.
 Mit dem Amazon Polly bietet Amazon Webservices einen Dienst, welcher Text in Sprachdaten verwandeln kann~\cite{aws_polly}.
-Amazon Webservices stellt Libraries für iOS~\cite{aws_polly_ios}, Android~\cite{aws_polly_sdks} und für Java zur Verfügung~\cite{aws_polly_java}.
-Amazon Polly kann damit sowohl direkt in native mobile Applikationen als auch in den Cloudservice integriert werden.
+Amazon Polly stellt Libraries für iOS~\cite{aws_polly_ios}, Android~\cite{aws_polly_sdks} und für Java zur Verfügung~\cite{aws_polly_java}.
+Es kann damit sowohl direkt in native mobile Applikationen als auch in den Cloudservice integriert werden.
 
 Die iOS Library von Amazon Polly ermöglicht es, die Anbindung des externen Sprachsyntheseproviders direkt im Mobile Client zu implementieren~\cite{aws_polly_ios}.
 Diese Lösung kann für zukünftige Android Clients analog mit der Android Library für Aws Polly umgesetzt werden.
