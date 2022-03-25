@@ -9,7 +9,7 @@ Dieses Kapitel beschreibt wie das Praxisrufsystem erweitert wird, um eine konfig
 Die Gegensprechanlage wird in den nativen Mobile Client integriert.
 Praxismitarbeitende können über Buttons Sprachverbindungen zu anderen Clients aufbauen.
 Welche Buttons und damit welche Sprachverbindungen zur Verfügung stehen, wird durch Praxisadministrierende über das Admin UI konfiguriert.
-Damit dies möglich ist, sind Änderungen an de Configuration-Modul des Cloudservice sowie am Admin UI notwendig.
+Damit dies möglich ist, sind Änderungen an dem Configuration-Modul des Cloudservice sowie am Admin UI notwendig.
 
 Die Konfiguration von Mobile Clients wird in der Domäne Configuration abgebildet.
 Zentral sind dabei die beiden Entities Client und ClientConfiguration.
@@ -33,7 +33,7 @@ Dabei sind die Teile, die für die Konfiguration von Sprachverbindungen ergänzt
 \end{figure}
 
 Das Admin UI wird mit Ansichten erweitert, über welche CallTypes erstellt, angezeigt, bearbeitet und gelöscht werden können.
-Gleichzeitig wird der Cloudservice um Rest Endpunkte für das Lesen, Erstellen, Aktualisieren und Löschen von CallTypes erweitert.
+Gleichzeitig wird der Cloudservice um Http-Endpunkte für das Lesen, Erstellen, Aktualisieren und Löschen von CallTypes erweitert.
 Die Ansichten für ClientConfigurations im Admin UI werden so erweitert, dass CallTypes darauf angezeigt, hinzugefügt und entfernt werden können.
 Die API des Cloudservice wird erweitert, um die erweiterte Konfiguration verwalten zu können.
 
@@ -48,11 +48,11 @@ Abbildung 7.15 zeigt das Klassendiagramm der dazu umgesetzten Komponenten.
 Der Cloudservice wird um ein neues Modul ''Signaling'' erweitert.
 Dieses soll den Austausch von Signalen zwischen Clients ermöglichen.
 Gleich wie das Modul für Sprachsynthese wird es unabhängig von den anderen Domänenmodulen im Cloudservice implementiert.
-Das Modul Signaling muss dabei zwei Aufgaben übernehmen.
+Das Modul Signaling muss zwei Aufgaben übernehmen.
 Erstens muss es Mobile Clients die Möglichkeit bieten, sich für Sprachverbindungen zu registrieren.
 Zu diesem Zweck müssen Mobile Clients eine Verbindung mit der Signaling Instanz herstellen und trennen können.
 Zweitens muss es Signalmeldungen empfangen und an die relevanten Empfänger zustellen können.
-Kann eine Signalmeldung nicht zugestellt werden, muss es den betroffenen Empfänger über das verpasste Signal informieren.
+Kann eine Signalmeldung nicht zugestellt werden, muss der betroffenen Empfänger über das verpasste Signal informiert werden.
 
 Für diese Funktionen wird das Interface ClientConnector definiert.
 Dieses definiert die Methoden afterConnectionEstablished und afterConnectionClosed.
@@ -70,7 +70,7 @@ Diese muss verwendet werden, um ein Signal entgegenzunehmen und an relevante Emp
 \end{figure}
 
 Für die Verwaltung von Verbindungen wird die Komponente ConnectionRegistry implementiert.
-Diese führt eine Liste bekannter Verbindungen und bietet Methoden um Verbindungen zu registrieren und wieder entfernen.
+Diese führt eine Liste bekannter Verbindungen und bietet Methoden, um Verbindungen zu registrieren und wieder zu entfernen.
 Sie bietet weiter eine Methode, um zu überprüfen, ob eine bestimmte Verbindung bekannt ist.
 Bekannte Verbindungen werden mit der Klasse ClientConnection abgebildet.
 Ein ClientConnection beinhaltet immer einen Identifikator und das technische Verbindungsobjekt.
@@ -162,7 +162,7 @@ Dazu wird wie in Kapitel 7.4.6 beschrieben eine Websocketverbindung geöffnet.
 \subsubsection{Signalmeldungen}
 
 Dieses Kapitel beschreibt die Signalmeldungen, welche in Praxisruf verwendet werden.
-Dabei wird beschrieben wie diese aufgebaut sind und welchen Rolle sie im System erfüllen.
+Dabei wird beschrieben wie diese aufgebaut sind und welche Rolle sie im System erfüllen.
 Abbildung 7.17 zeigt, wie Signalmeldungen im Mobile Client modelliert werden.
 
 \begin{figure}[h]
@@ -206,13 +206,13 @@ Folgende Übersicht beschreibt pro Typ welche Daten ein Signal beinhaltet und we
     \\ \> \> \> verbindungen zum Sender dieses Signals beim Empfänger beendet werden.\\ \\
 
     Unavailable
-    \> \> \> Wenn der Signalingserver ein Signal nicht zustellen kann, wird ein Unavailable-
+    \> \> \> Wenn die Signaling Instanz ein Signal nicht zustellen kann, wird ein Unavailable-
     \\ \> \> \> Signal zurück an den Sender gesendet. Der Sender ist so informiert, dass die Ver-
     \\ \> \> \> bindung zum Gesprächspartner nicht aufgebaut wurde. \\ \\
 
     Decline
     \> \> \> Wird ein Offer empfangen während die Gegensprechanlage in den lokalen Einstel-
-    \\ \> \> \> lungen deaktiviert ist oder bereits in Anruf aktiv ist, sendet der Mobile Client ein
+    \\ \> \> \> lungen deaktiviert ist oder bereits ein Anruf aktiv ist, sendet der Mobile Client ein
     \\ \> \> \> Decline Signal zurück. Der Sender ist so informiert, dass die Verbindung zum Ge-
     \\ \> \> \> sprächspartner abgelehnt wurde.
 \end{tabbing}
