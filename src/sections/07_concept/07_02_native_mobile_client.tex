@@ -3,7 +3,7 @@
 Dieses Kapitel beschreibt das Konzept für einen nativen iOS Client zur Bedienung von Praxisruf.
 Es wird Entwurf und Funktionsweise der notwendigen Ansichten der Benutzeroberfläche beschrieben.
 Weiter wird definiert, wie die aus dem Vorgängerprojekt zu migrierenden Funktionen in eine native iOS Applikation integriert werden können.
-Dies beinhaltet insbesondere Anbindung der API des Cloudservice und Firebase Cloud Messaging.
+Dies beinhaltet insbesondere die Anbindung der API des Cloudservice und Firebase Cloud Messaging.
 Die Integration von Gegensprechanlage und Sprachsynthese wird nur im Rahmen des Entwurfs der Benutzeroberfläche beschrieben.
 Eine detaillierte Beschreibung der Konzepte für diese Features folgt in den Kapiteln 7.3 und 7.4.
 
@@ -64,12 +64,12 @@ Der Bereich Inbox (Abbildung 7.7) zeigt eine Liste der empfangenen Benachrichtig
 Für alle Elemente in der Inbox wird der Name des Senders als Überschrift angezeigt.
 Darunter werden weitere Detailinformationen beschrieben.
 Für Benachrichtigungen beinhaltet dies den Textinhalt der Benachrichtigungen.
-Bei Anrufen beschrieben ob, es sich um einen empfangenen, verpassten oder abgelehnten Anruf handelt.
+Bei Anrufen wird beschrieben, ob es sich um einen empfangenen, verpassten oder abgelehnten Anruf handelt.
 Einträge für Benachrichtigungen sowie verpasste und abgelehnte Anrufe müssen durch eine Wischgeste quittiert werden.
 Die Funktionsweise der Quittierung wird aus dem bestehenden Mobile Client übernommen.
 Quittierte Meldungen werden aus der Inbox entfernt und nicht mehr angezeigt.
 Ein Quittieren von Meldungen und Anrufen passiert ausschliesslich lokal in der iOS Applikation.
-Der Empfänger wird nicht über die Quittierung informiert~\cite{ip5}.
+Der Sender wird nicht über die Quittierung informiert~\cite{ip5}.
 
 Es muss sichergestellt werden, dass verpasste Benachrichtigungen und Anrufe nicht übersehen werden.
 Dazu wird im Abstand von 60 Sekunden geprüft, ob unquittierte Benachrichtigungen oder Anrufe in der Inbox vorhanden sind.
@@ -101,7 +101,7 @@ Ausgehende Anrufe können auch getätigt werden, wenn diese Option aktiviert ist
 \subsubsection{Anbindung Cloudservice API}
 
 Der Mobile Client muss an die API des Cloudservices angebunden werden.
-Es wird eine Anbindung an das Modul Configuration zur Anmeldung und Auswahl des gewünschten Zimmers und an das Modul Notification zum Versenden von Benachrichtigungen benötigt.
+Es wird eine Anbindung an das Modul Configuration zur Anmeldung und Auswahl der gewünschten Konfiguration und an das Modul Notification zum Versenden von Benachrichtigungen benötigt.
 Die Schnittstellen dieser Module stehen als Http-Endpunkte zur Verfügung.
 In diesem Unterkapitel wird beschrieben, wie Http-Anfragen an die Cloudservice API in den nativen iOS Client integriert werden.
 Das Abrufen von Sprachdaten und die Anbindung an die Signaling Instanz werden in den Kapiteln 7.3 und 7.4 beschrieben.
@@ -129,14 +129,14 @@ Die Basis-URL für Http-Anfragen wird in der Konfiguration der iOS Applikation d
 Der PraxisrufApi Service lädt diese und verwendet sie für alle Abfragen, die abgesetzt werden.
 Alle öffentlichen Methoden von PraxisrufApi nehmen einen Parameter ''subUrl'' als String entgegen.
 Dieser String wird der Basis-URL angehängt.
-Die Methoden Post nimmt zudem einen optionalen Parameter von Typ Data entgegen.
-Dieser definiert den Inhalt des Request Bodies.
+Die Methode post nimmt zudem einen optionalen Parameter von Typ Data entgegen.
+Dieser definiert den Inhalt des Request-Bodies.
 Mit diesen Informationen können Http-Requests erstellt und versendet werden.
 
-Sämtliche öffentlichen Methoden des PraxisrufApi Service nehmen weiter einen Parameter mit dem Namen completion entgegen.
+Sämtliche öffentlichen Methoden des PraxisrufApi-Service nehmen weiter einen Parameter mit dem Namen completion entgegen.
 Dabei handelt es sich um eine Funktion, welche beim Erfolg oder Fehlschlagen der Http-Anfragen ausgeführt wird.
 Als Parameter dieser Funktion wird immer der Typ Result$<$T, PraxisrufApiError$>$ verwendet.
-Bei Result handelt es sich um einen Wrapper Typen welcher entweder das Resultat einer Abfrage oder ein Fehlerobjekt beinhaltet~\cite{ios_result}.
+Bei Result handelt es sich um einen Wrapper-Typen, welcher entweder das Resultat einer Abfrage oder ein Fehlerobjekt beinhaltet~\cite{ios_result}.
 Im Fehlerfall wird das Result mit einem PraxisrufApiError Objekt erstellt.
 Im Erfolgsfall wird es mit den Daten aus dem Body der Http-Antwort befüllt.
 Zur Darstellung dieser Daten wird der generische Typ T verwendet.
@@ -144,12 +144,12 @@ Der Typ wird vom Aufrufer von PraxisrufApi definiert und kann grundsätzlich bel
 Er muss aber das Protokoll Decodable aus der iOS Standardbibliothek implementieren.
 Decodable Instanzen können von einer JSON-String-Repräsentation in ein Swift-Objekt konvertiert werden~\cite{ios_decodable}.
 So kann das Resultat im Erfolgsfall aus der Response generiert und an, die completion-Funktion übergeben werden.
-Dadurch kann die Konvertierung generisch in im PraxisurfApi-Service behandelt werden.
+Dadurch kann die Konvertierung generisch im PraxisurfApi-Service behandelt werden.
 
 Anhand des Inhalts der Result-Instanz kann geprüft werden, ob die Anfrage erfolgreich war.
 Das Resultat kann entsprechend verarbeitet werden.
 Diese Prüfung und Verarbeitung findet innerhalb der completion-Funktion statt.
-Dieser Ansatz ermöglicht es im PraxisrufApi-Service ausschliesslich Http-Anfragen zu senden und die entsprechenden Antworten entgegenzunehmen.
+Dieser Ansatz ermöglicht es, im PraxisrufApi-Service ausschliesslich Http-Anfragen zu senden und die entsprechenden Antworten entgegenzunehmen.
 Der Api Service behandelt damit ausschliesslich die technische Anbindung an die API des Cloudservice.
 Er muss keine fachliche Logik implementieren und kann generisch für alle Anwendungen wiederverwendet werden.
 
@@ -170,26 +170,25 @@ Diese definieren Methoden mit sprechenden Namen für die benötigte Funktionalit
 
 Der PraxisrufApi-Service ermöglicht es, Abfragen an die Cloudservice API abzusetzen.
 Die Resultate dieser Abfragen müssen in der Benutzeroberfläche angezeigt werden können.
-Es wird pro Domäne ein weiterer Service geschrieben, welche den Aufruf des PraxisrufAPI-Services kapselt.
-Dieser Service bietet Methoden, über welche der PraxisrufApi-Service angesprochen werden kann.
+Dazu werden Service-Klassen implementiert, welche den Aufruf des PraxisrufAPI-Services kapseln.
+Dieses Services bieten Methoden, über welche der PraxisrufApi-Service angesprochen werden kann.
 View-Komponenten können diese Services nutzen, um durch Benutzereingaben ausgelöste Anfragen an die Cloudservice Api zu senden.
 Resultate und Fehler aus Anfragen an den Cloudservice werden in diesen Services als Instanzvariablen gehalten.
-Die View-Komponenten können lesend auf diese Variablen zugreifen, um die entsprechenden Resultate oder Fehler anzuzeigen.
+Die View-Komponenten können auf diese Variablen zugreifen, um die entsprechenden Resultate oder Fehler anzuzeigen.
 
 \subsubsection{Anbindung Messaging Service}
 
-Um Benachrichtigungen empfangen zu können, muss Firebase Cloud Messaging an die native iOS Applikation angebunden werden.
+Um Benachrichtigungen empfangen zu können, muss Firebase Cloud Messaging (FCM) an die native iOS Applikation angebunden werden.
 Firebase bietet eine Bibliothek mit welcher Firebase Cloud Messaging in iOS Clients integriert werden kann~\cite{firebase_ios}.
 Diese Integration kann allerdings nicht mit dem Mitteln von SwiftUI implementiert werden.
-Dies liegt daran, dass für das Empfangen von Benachrichtigungen und das Anzeigen von Push-Benachrichtigungen Integration mit dem Benachrichtigungszenter des Betriebssystems notwendig ist.
-Diese Integration kann bis heute nur über AppDelegates umgesetzt werden.
+Dies liegt daran, dass das Empfangen von Push-Benachrichtigungen und die Registrierung bei FCM nur über AppDelegates umgesetzt werden kann~\cite{firebase_ios}.
 Zur Anbindung von Firebase Cloud Messaging wird dementsprechend ein AppDelegate implementiert.
 Dieser muss bei Initialisierung der SwiftUI Applikation registriert werden.
 
 Die Logik des AppDelegates wird auf das minimal Nötige reduziert.
 Der AppDelegate selbst ist für die direkte Kommunikation mit Firebase verantwortlich und muss empfangene Daten an Betriebssystem und SwiftUI Applikation übergeben.
 Fachliche Logik wird nicht im AppDelegate, sondern in der SwiftUI Applikation ausgeführt.
-Dies ermöglicht es die Anbindung des Messaging Service im AppDelegate zu kapseln.
+Dies ermöglicht es, die Anbindung des Messaging Service im AppDelegate zu kapseln.
 Sollte Firebase Cloud Messaging in Zukunft durch einen anderen Anbieter ersetzt werden, muss damit ausschliesslich die Logik im AppDelegate angepasst werden.
 Diese Trennung stellt sicher, dass die Fachlogik vollständig mit SwiftUI implementiert werden kann.
 Der AppDelegate beinhaltet lediglich die Teile, welche aus technischen Gründen nicht mit SwiftUI umgesetzt werden können.
@@ -235,6 +234,7 @@ Die dazu definierten Konzepte werden aus dem Vorgängerprojekt übernommen.
 Alle Daten zwischen den Services müssen über verschlüsselte Verbindungen ausgetauscht werden.
 Http-Anfragen CloudService API erfolgen ausschliesslich über Https\@.
 Alle Anfragen an die API des Cloudservice müssen zudem mit einem Json Web Token (JWT) authentifiziert sein.
+Eine Ausnahme bildet die Anfrage, um sich im System anzumelden.
 Praxismitarbeitende werden durch den Cloudservice mittels Basic Authentication authentifiziert.
 Bei der Anmeldung mit Benutzername und Passwort liefert der Cloudservice ein JWT, welches vom Client für weitere Anfragen verwendet wird.
 Sowohl die Credentials für die Basic Authentication als auch das JWT Token werden durch die iOS Applikation im Keystore des Betriebssystems gespeichert~\cite{ip5}.

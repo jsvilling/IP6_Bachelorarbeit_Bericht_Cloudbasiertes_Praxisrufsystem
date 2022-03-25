@@ -7,7 +7,8 @@ Der Empfang von Benachrichtigungen wird so erweitert, dass der Inhalt empfangene
 \subsubsection{Konfiguration}
 
 Benachrichtigungen für Praxisruf können über das Admin UI konfiguriert werden.
-Es kann pro Benachrichtigung Titel, Inhalt, Anzeigetext für Benachrichtigungsbuttons und eine Beschreibung erfasst werden.
+Es können pro Benachrichtigung Titel, Inhalt, Beschreibung sowie ein Anzeigetext erfasst werden.
+Der Anzeigetext wird als Text des Buttons verwendet, über welchen die Benachrichtigung versendet wird.
 Diese Konfiguration wird über die Entität NotificationType verwaltet.
 Neu soll auch konfiguriert werden können, ob eine Benachrichtigung für die Sprachsynthese relevant ist.
 Dazu wird die Entität NotificationType um ein boolean Flag mit dem Namen ''isTextToSpeech'' erweitert.
@@ -24,7 +25,7 @@ Dabei sind die Felder, welche für die Sprachsynthese ergänzt werden, grün mar
     \end{minipage}
 \end{figure}
 
-Neben dem Feld isTextToSpeech, wird die NotificationType Entity um ein weiteres Feld ''version'' erweitert.
+Neben dem Feld ''isTextToSpeech'', wird die NotificationType-Entität um ein weiteres Feld ''version'' erweitert.
 Das Versionsfeld beinhaltet eine Ganzzahl, welche mit jeder Änderung inkrementiert wird.
 Der Inhalt dieses Felds wird ebenfalls beim Versenden von Benachrichtigungen mitgesendet.
 Auf Client-Seite wird diese Information zur Implementierung eines Cache verwendet.
@@ -47,8 +48,10 @@ Diese Trennung ermöglicht es, das Modul in Zukunft einfach aus dem Cloudservice
 Die Abhängigkeit zu Amazon Polly als Anbieter soll weitmöglichst minimiert werden.
 So kann bei Bedarf einfacher auf einen anderen Provider gewechselt werden.
 Um dies zu ermöglichen wird das Interface SpeechSynthesisService definiert.
-Dieses gibt eine einzelne Methode vor, welche eine InputStreamResource zurückgibt und eine Universal Unique Id (UUID) als Parameter entgegennimmt.
-Der Parameter entspricht der technischen Identifikation des zu synthetisierenden Benachrichtigungstypes (NotificationType).
+Dieses gibt eine Methode vor, welche eine InputStreamResource zurückgibt.
+Sie nimmt zwei Universal Unique Ids (UUID) als Parameter entgegennimmt.
+Der erste Parameter entspricht der technischen Identifikation des zu synthetisierenden Benachrichtigungstypes (NotificationType).
+Der zweite Parameter entspricht der Identifikation des Senders der Benachrichtigung.
 Die InputStreamResource muss die synthetisierten Sprachdaten enthalten.
 Dieses Interface wird von der Komponente, welche die Schnittstelle nach aussen bietet verwendet.
 Um einen Anbieter für Sprachsynthese anzubinden, kann dieses Interface implementiert werden und der Schnittstelle zur Verfügung gestellt werden.
@@ -64,15 +67,16 @@ Das Klassendiagramm in Abbildung 7.12 gibt einen Überblick über den Aufbau des
 
 Für die Anbindung des Providers Amazon Polly wird das Interface SpeechSynthesisService mit der Klasse AwsPollySpeechSynthesisService implementiert.
 Amazon stellt einen Java Bibliothek für Amazon Polly zur Verfügung, welcher diese Anbindung ermöglicht~\cite{aws_polly_sdks}.
-Diese Bibliothek bietet alle Klassen die für die Anbindung an AWS Polly nötig sind und wird in der Implementierung des SprachSyntheseProviderService verwendet, um den Service anzubinden.
+Diese Bibliothek bietet alle Klassen, die für die Anbindung an Amazon Polly nötig sind.
+Sie wird bei in AwsPollySpeechSynthesisService verwendet, um Amazon Polly anzubinden.
 
 Die Anbindung von Amazon Polly benötigt drei Komponenten.
 Als Erstes muss eine Instanz von AWSStaticCredentialsProvider zur Verfügung gestellt werden.
-Dieser liefert die Credentials, welche das System berechtigen, Anfragen an AWS Polly zu senden.
+Diese liefert die Credentials, welche das System berechtigen, Anfragen an Amazon Polly zu senden.
 Als Zweites muss eine Voice konfiguriert werden.
 Die Voice definiert Sprache und Stimme, welche für die Sprachausgabe verwendet wird.
 Letztlich muss eine Instanz von AmazonPollyClient konfiguriert werden.
-Dieser Client wird verwendet, um Anfragen an AWS Polly zu senden.
+Dieser Client wird verwendet, um Anfragen an Amazon Polly zu senden.
 Er verwendet den zuvor konfigurierten CredentialsProvider, um die Anfrage mit den entsprechenden Credentials zu ergänzen.
 Die zuvor konfigurierte Voice wird bei Anfragen an Amazon Polly mitgesendet, damit die Daten mit den gewünschten Parametern synthetisiert werden.
 
