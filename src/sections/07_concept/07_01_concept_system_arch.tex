@@ -86,7 +86,7 @@ Als Speech Synthesis Service wird Amazon Polly verwendet.
 Der mit dem Vorgängerprojekt umgesetzte Cloudservice ist als monolithische Applikation implementiert.
 Er trennt intern die beiden Domänen Notification und Configuration.
 Die Domäne Configuration ist für die Verwaltung und Auswertung der Konfiguration des Systems und die Domäne Notification für das Versenden von Benachrichtigungen verantwortlich.
-Abhängigkeiten zwischen den beiden Domänen ist über eine REST-Schnittstelle abstrahiert.
+Abhängigkeiten zwischen den beiden Domänen ist über eine Http-Schnittstelle abstrahiert.
 
 Die Trennung der Domänen, erlaubt es die Anwendung zukünftig in mehrere Microservices aufzuteilen.
 Diese könnten unabhängig betrieben und erweitert werden.
@@ -110,10 +110,11 @@ Das Modul Signaling dient als Signaling Instanz für den Aufbau von Sprachverbin
 Es beinhaltet Domänenobjekte, Services und Schnittstellen für die Signalvermittlung zwischen Mobile Clients.
 
 Weiter werden die zwei Module Commons und App definiert.
-Komponenten, welche in mehr als einer Domäne verwendet werden, werden in ein zusätzliches Commons Modul verlegt.
-Dazu gehören Data Transfer Objects für Schnittstellen zwischen den Modulen, geteilte Clients um Abfragen auf andere Module abzusetzen sowie Komponenten Fehlerhandling.
-Das Modul App hat eine Abhängigkeit auf alle Domänen Module und bietet ein Modul, über welches diese als einzelne Applikation gestartet werden können.
-Das Modul beinhaltet weiter die globale Security Konfiguration des Systems.
+Das Modul Commons beinhaltet Komponenten, welche in mehr als einer Domäne verwendet werden.
+Dazu gehören Data Transfer Objects für Schnittstellen zwischen den Modulen, geteilte Clients um Abfragen auf andere Module abzusetzen sowie Komponenten für das Fehlerhandling.
+Das Modul App hat eine Abhängigkeit auf alle Domänen Module.
+Es bietet eine Komponente, über welche der Cloudservice als monolithische Applikation gestartet werden kann.
+Das Modul beinhaltet weiter die globale Security-Konfiguration des Systems.
 Dadurch kann sichergestellt werden, dass diese für alle Systemteile angewendet wird.
 
 Der Cloudservice wird weiterhin als monolithische Applikation betrieben.
@@ -126,7 +127,7 @@ In Zukunft können einzelne Module aus dem Cloudservice ausgelöst und als eigen
 
 Das Domänenmodell Cloudservices wird für die Integration von Sprachsynthese und Gegensprechanlage erweitert.
 Abbildung 7.2 zeigt das vollständige Domänenmodell der Domänen Configuration und Notification.
-Dabei sind Felder und Entitäten die in diesem Projekt hinzugefügt werden grün markiert.
+Dabei sind Felder und Entitäten, die in diesem Projekt hinzugefügt werden grün markiert.
 Die neuen Domänen Speech Synthesis und Signaling führen keine persistenten Daten.
 Die Services und Komponenten dieser Domänen sind in den Kapiteln 7.3 und 7.4 beschrieben.
 
