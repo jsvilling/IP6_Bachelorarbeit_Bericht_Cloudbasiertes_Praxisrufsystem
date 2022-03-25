@@ -116,13 +116,13 @@ Die von Polly gelieferten Sprachdaten können anschliessend als Resultat zurück
 
 Der Endpunkt für die Abfrage von Sprachdaten im Cloud Service wird als Spring RestController umgesetzt.
 Die Sprachdaten werden darin als Binärdaten mit Media Type ''audio/mp3'' im Body der Response zurückgegeben.
-Der Endpunkt wird kann über Http-Get-Anfragen angesprochen werden.
+Der Endpunkt kann über Http-Get-Anfragen angesprochen werden.
 
 \subsubsection{Security}
 
 Anfragen an die API des Moduls Speech Synthesis müssen, wie alle Anfragen an die Cloudservice API, authentisiert werden.
 Für die Authentisierung wird derselbe Mechanismus wie für Http-Anfragen in allen Cloudservice Modulen verwendet.
-Über die Konfiguration des App Modules des Cloudservices wird die Authentifizierung aller Http-Requests überprüft.
+Über die Konfiguration des App-Moduls des Cloudservices wird die Authentifizierung aller Http-Requests überprüft.
 Mit dieser Prüfung wird sichergestellt, dass ein gültiges JWT Token im Authentication Header der Anfrage vorhanden ist~\cite{ip5}.
 Diese Prüfung wurde im Rahmen des Vorgängerprojektes umgesetzt und wird weiterverwendet.
 Die entsprechenden Abläufe sind in dem Kapiteln 5.3.6 und 5.3.7 im Projektbericht ''IP5 Cloudbasiertes Praxisrufsystem'' dokumentiert~\cite{ip5}.
@@ -201,9 +201,9 @@ Ist dies der Fall, werden die Inhalte dieser Datei abgespielt und es wird keine 
 Wenn die Daten gar nicht oder nur in einer anderen Version lokal gefunden werden, wird eine Anfrage an den CloudService gesendet.
 
 Sobald Sprachdaten über die Cloudservice API angefragt werden, lädt dieser den Namen des Senders und die Inhalte der Benachrichtigung aus der Konfiguration.
-Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um den Titel der Benachrichtigung als Sprachdaten zu synthetisieren.
+Anschliessend sendet der Cloudservice eine Anfrage an Amazon Polly, um Titel und Sender der Benachrichtigung als Sprachdaten zu synthetisieren.
 Die Resultate von Amazon Polly werden als Resultat der Anfrage des Mobile Clients zurückgegeben.
-Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis unter Id und Version verknüpften NotificationType.
+Der Client speichert die empfangenen Daten lokal im Applikationsverzeichnis.
 Nachdem die Daten gespeichert wurden, wird deren Inhalt abgespielt.
 
 \clearpage
