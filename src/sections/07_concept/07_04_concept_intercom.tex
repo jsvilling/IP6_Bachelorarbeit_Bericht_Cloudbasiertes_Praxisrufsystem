@@ -221,7 +221,7 @@ Folgende Übersicht beschreibt pro Typ welche Daten ein Signal beinhaltet und we
 
 \subsubsection{Verbindungsaufbau}
 
-Praxismitarbeitende können Sprachverbindungen zu anderen Clients aufbauen indem sie auf den entsprechenden Button in der Praxisruf App tippen.
+Praxismitarbeitende können Sprachverbindungen zu anderen Clients aufbauen, indem sie auf den entsprechenden Button in der Praxisruf-App tippen.
 Zum Zeitpunkt an dem der Button getippt wird, weiss der Mobile Client noch nicht, zu welchen Clients diese Verbindung aufgebaut werden soll.
 Als Erstes muss deshalb beim Cloudservice angefragt werden, zu welchen Clients eine Sprachverbindung aufgebaut werden soll.
 Der Cloudservice bietet dazu einen Endpoint an, über den der vollständige CallType des verwendeten Buttons geladen werden kann.
@@ -244,7 +244,7 @@ Abbildung 7.18 visualisiert diesen Ablauf.
 \end{figure}
 
 Nachdem die Offer und Answer Meldungen ausgetauscht sind, müssen Ice Candidate Meldungen ausgetauscht werden.
-Der Austausch von Ice Candidate Meldungen wird so lange wiederholt, bis sich beide Seiten einer Verbindung auf Verbindungsdetails geinigt haben.
+Der Austausch von Ice Candidate Meldungen wird so lange wiederholt, bis sich beide Seiten einer Verbindung auf Verbindungsdetails geeinigt haben.
 Sobald dieser Austausch beendet ist, besteht die Verbindung und es können Sprachdaten ausgetauscht werden.
 
 \clearpage
@@ -253,7 +253,7 @@ Sobald dieser Austausch beendet ist, besteht die Verbindung und es können Sprac
 
 Dieses Kapitel beschreibt, wie Websockeverbindungen zum Austausch von Signalmeldungen in den nativen Mobile Client integriert werden.
 
-In Kapitel 7.2 wird die Klasse PraxisrufApi beschrieben.
+In Kapitel 7.2.2 wird die Klasse PraxisrufApi beschrieben.
 Diese implementiert die Anbindung and die Http-API des Cloudservice.
 Um Signalmeldungen über die Signaling Instanz des Cloudservice auszutauschen, müssen Websockets verwendet werden.
 Damit die Anbindung an alle Schnittstellen des Cloudservice einheitlich bleibt, wird PraxisrufApi erweitert, um auch Websocketverbindungen zu unterstützen.
@@ -264,6 +264,7 @@ Der Austausch von Signalmeldungen ist der einzige Anwendungsfall für Websockets
 Deshalb wird auf eine generische Integration von Websockets verzichtet.
 Zur Erweiterung von PraxisrufApi werden die Extension PraxisrufApi+Signaling und das Protokoll PraxisrufApiSignalingDelegate definiert.
 Diese setzen die Anbindung von Websockets für den Austausch von Signalmeldungen um.
+Abbildung 7.19 zeigt das Klassendiagramm dieser Komponenten.
 
 \begin{figure}[h]
     \centering
@@ -451,10 +452,11 @@ Dies erlaubt es, die Geräte über ein lokales Netzwerk zu verbinden.
 Ist diese Voraussetzung gegeben, kann der Verbindungsaufbau vereinfacht werden.
 Da die Geräte direkt im lokalen Netzwerk kommunizieren können, ist es nicht nötig, die Protokolle STUN oder TURN zu verwenden.
 Damit wird es möglich auf den Betrieb eines ICE Servers zu verzichten.
-Die Geräte können ICE Kandidaten für direkte Kommunikation im lokalen Netzwerk austauschen.
+Die Geräte können ICE Candidates für direkte Kommunikation im lokalen Netzwerk austauschen.
 
 Die Integration von WebRTC in der iOS App wird unter der Voraussetzung umgesetzt, dass alle beteiligten Geräte im selben Netzwerk betrieben werden.
-Dies vereinfacht den Aufbau von Verbindungen und erlaubt es, neben der Signaling Instanz keine weitere Infrastruktur betreiben zu müssen.
+Dies vereinfacht den Aufbau von Verbindungen.
+Es erlaubt, neben der Signaling Instanz keine weitere Infrastruktur betreiben zu müssen.
 Sprachverbindungen mit Praxisruf sind deshalb nur möglich, wenn die beteiligten Geräte im selben lokalen Netzwerk betrieben werden.
 Das Versenden und Empfangen von Benachrichtigungen funktioniert wie im Vorgängerprojekt auch ausserhalb des lokalen Netzwerkes.
 Damit können auch für Empfänger, die nicht im lokalen Netzwerk sind, über verpasste Anrufe mit Benachrichtigungen informiert werden.
